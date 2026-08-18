@@ -27,14 +27,14 @@ need to share large datasets.
   
 ## Collaborators
 
-| Name                | Role                |
-|---------------------|---------------------|
-| Eli       | Project Facilitator |
-| Andrea       | Participant         |
-| Jodi       | Participant         |
-| Peter       | Participant         |
-| Charlie       | Participant         |
-| Nadir       | Participant         |
+| Name                | Role                | Affiliation |
+|---------------------|---------------------|-------------|
+| Elizabeth Eli Holmes      | Project Facilitator | NOAA Fisheries, University of Washington |
+| Andrea       | Participant         | |
+| Jodi       | Participant         | |
+| Peter       | Participant         | |
+| Charlie       | Participant         | |
+| Nadir       | Participant         | |
 
 
 ## Planning
@@ -59,4 +59,6 @@ need to share large datasets.
 ## Lessons Learned
 
 ## References
+
+* https://fish-pace.github.io/chla-z/
 
