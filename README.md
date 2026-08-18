@@ -35,7 +35,7 @@ need to share large datasets.
 | Peter       | Participant         | |
 | Charlie       | Participant         | |
 | Nadir       | Participant         | |
-
+| Haipeng       | Participant         | |
 
 ## Planning
 
