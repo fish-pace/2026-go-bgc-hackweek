@@ -1,10 +1,6 @@
-# fpyy_proj_template
+# 2026 GO-BGC Hackweek
 
-Template for starting Fish-PACE project repos. 
-
-This repo is an example of how teams can structure their project repositories and format their project README.md file, but feel free to adapt as suits your needs.
-
-**Folder Structure**
+**Structure**
 
 * `contributor_folders` (optional) Each contributor can make a folder here and 
 push their work here during the week. This will allow everyone to see each others work but prevent any merge conflicts.
@@ -14,19 +10,32 @@ can be shared here. Make sure to communicate so that you limit merge conflicts.
 * `data` Shared dataset can be shared here. Note, do not put large datasets on GitHub. Speak to the organizers if you 
 need to share large datasets. 
 
-## Project Name
+## CHLA-Z
 
-## One-line Description
+**Ideas**
 
-## Planning
-
+* Does the 3D CHLA estimation work with Sentinal-3 bands?
+    - Rerun the BRT with fewer spectral bands
+* What improves estimation? Does including other Argo variables improve?
+    - For global prediction would need to use variables that we have globally. Temp & O2 from GOBAI?
+* Does closer spatially help? PACE L2 (1k) versus L3 (4km)
+* Try other ML approaches with the training dataset
+* Test classic surf CHLA to integrated CHLA and DSL (deep scattering layer)
+* Look for deeper peaks in Argo profiles? Are there any?
+* Look for relationships with MLD (mixed layer depth)
+* Look for interesting areas with where CHLA 3D patterns might be of interest. See https://github.com/fish-pace/chla-z/blob/main/notebooks/examples.ipynb
+  
 ## Collaborators
 
 | Name                | Role                |
 |---------------------|---------------------|
-| Participant 1       | Project Facilitator |
-| Participant 2       | Participant         |
-| Participant 3       | Participant         |
+| Eli       | Project Facilitator |
+| Andrea       | Participant         |
+| Jodi       | Participant         |
+| Peter       | Participant         |
+| Charlie       | Participant         |
+| Nadir       | Participant         |
+
 
 ## Planning
 
