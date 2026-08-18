@@ -1,0 +1,39 @@
+# Dependencies for scripts/run_chla_z_local.py (and for running the notebooks
+# outside the JupyterHub image). Install into a fresh environment, e.g.:
+#
+#   uv venv --python 3.12 ~/.virtualenvs/chla-z
+#   uv pip install --python ~/.virtualenvs/chla-z/bin/python -r scripts/requirements-local.txt
+#
+# Two constraints below are load-bearing; the rest float.
+
+# The published store is Zarr v3. zarr 2.x cannot open it at all.
+zarr>=3
+
+# models/brt_chla_profiles_bundle.zip was pickled in Dec 2025. scikit-learn
+# 1.9 fails to unpickle it with "ModuleNotFoundError: No module named '_loss'".
+# Verified working on 1.6.1 and 1.7.2.
+scikit-learn>=1.6,<1.9
+
+# ml_utils.py imports skimage at module level (structural_similarity), so it is
+# required even for code paths that never compute SSIM.
+scikit-image
+
+xarray
+dask[distributed]
+gcsfs
+earthaccess
+h5netcdf
+# h5netcdf is only a wrapper; it needs h5py as its actual backend.
+h5py
+netCDF4
+pandas
+pyarrow
+numpy
+matplotlib
+cartopy
+
+# Only needed if you pass --upload-bucket
+google-cloud-storage
+
+# Only needed to run the notebooks
+ipykernel
