@@ -33,7 +33,7 @@ need to share large datasets.
 | Andrea       | Participant         | |
 | Jodi       | Participant         | |
 | Peter       | Participant         | |
-| Charlie       | Participant         | |
+| Charlie Turner       | Participant         | University of California, Davis |
 | Nadir       | Participant         | |
 | Haipeng       | Participant         | |
 
