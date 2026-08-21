@@ -40,3 +40,11 @@ jupyter lab duplicate_rows_walkthrough.ipynb   # run all
 
 Needs `pandas`, `numpy`, `pyarrow`. Verified end to end from this directory:
 all 23 code cells execute clean.
+
+## `quad_chart_1min.png`
+
+One-slide summary of the week's data-cleaning work on the CHLA-Z training set, for the
+Friday readout (four panels: the argopy standard-mode coverage trap; the June–Aug 2026
+Sauzède recalibration rewriting `CHLA_ADJUSTED`; Argo ⇄ OOI match-up population; factory
+vs adjusted fluorometer agreement). Built offline from the `drift` project's experiments
+26–28; every number on it traces to those experiments' READMEs.
