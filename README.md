@@ -61,4 +61,7 @@ need to share large datasets.
 ## References
 
 * https://fish-pace.github.io/chla-z/
+* https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2014JC010355
+* https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BIO_BGC_3D_REP_015_010/description
+* 
 
