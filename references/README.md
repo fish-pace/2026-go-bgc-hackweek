@@ -12,4 +12,5 @@
 * Sauzède, R., Johnson, J. E., Claustre, H., Camps-Valls, G., and Ruescas, A. B.: ESTIMATION OF OCEANIC PARTICULATE ORGANIC CARBON WITH MACHINE LEARNING, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci., V-2-2020, 949–956, https://doi.org/10.5194/isprs-annals-V-2-2020-949-2020, 2020.
 * García-Jiménez, J., Ruescas, A. B., Amorós-López, J., and Sauzède, R.: Combining BioGeoChemical-Argo (BGC-Argo) floats and satellite observations for water column estimations of the particulate backscattering coefficient, Ocean Sci., 21, 1677–1694, https://doi.org/10.5194/os-21-1677-2025, 2025.
     - García-Jiménez et al. 2025 move from the historical 4-km GlobColour L3 merged input to Sentinel-3 OLCI full-resolution 300 m data. Their OLCI inputs are Level 2.
+* García-Jiménez, J., Ruescas, A. B., Amorós-López, J., and Sauzède, R.: Combining BioGeoChemical-Argo (BGC-Argo) floats and satellite observations for water column estimations of the particulate backscattering coefficient, Ocean Sci., 21, 1677–1694, https://doi.org/10.5194/os-21-1677-2025, 2025.
 
