@@ -13,6 +13,7 @@
 * García-Jiménez, J., Ruescas, A. B., Amorós-López, J., and Sauzède, R.: Combining BioGeoChemical-Argo (BGC-Argo) floats and satellite observations for water column estimations of the particulate backscattering coefficient, Ocean Sci., 21, 1677–1694, https://doi.org/10.5194/os-21-1677-2025, 2025.
     - García-Jiménez et al. 2025 move from the historical 4-km GlobColour L3 merged input to Sentinel-3 OLCI full-resolution 300 m data. Their OLCI inputs are Level 2.
 * García-Jiménez, J., Ruescas, A. B., Amorós-López, J., and Sauzède, R.: Combining BioGeoChemical-Argo (BGC-Argo) floats and satellite observations for water column estimations of the particulate backscattering coefficient, Ocean Sci., 21, 1677–1694, https://doi.org/10.5194/os-21-1677-2025, 2025.
+* Livanou, E.; Sauzède, R.; Psarra, S.; Mandalakis, M.; Dall’Olmo, G.; Brewin, R.J.W.; Raitsos, D.E. Evaluating MULTIOBS Chlorophyll-a with Ground-Truth Observations in the Eastern Mediterranean Sea. Remote Sens. 2024, 16, 4705. https://doi.org/10.3390/rs16244705
 
 ## phytoplankon phenology maps (southern ocean)
 
