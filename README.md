@@ -40,11 +40,7 @@ need to share large datasets.
 ## Planning
 
 * Initial idea: "short description"
-* Ideation jam board: Add link
-* Ideation Presentation: Add link
-* Slack channel: fp25_proj_name
-* Project google drive: Add link
-* Final presentation: Add link
+* Final presentation
 
 ## Background
 
