@@ -1,0 +1,5 @@
+# Python packages for the figure scripts in scripts/.
+# Rendering the poster itself needs only Quarto (>= 1.5).
+matplotlib>=3.7
+numpy>=1.24
+segno>=1.5
