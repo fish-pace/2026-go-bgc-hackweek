@@ -6,9 +6,9 @@ plus CQR on the OLCI–PACE overlap.
 
 ## Notebook
 
-**[`chla_z_uq.ipynb`](chla_z_uq.ipynb)** — local, no Hub / S3 / `/tmp`.
+**[`chla_z_uq.ipynb`](chla_z_uq.ipynb)** — runs anywhere; no Hub / S3 / `/tmp`. Reads the training tables over HTTPS.
 
-1. Load Argo + OOI PACE matchups from the sibling `chla-z` checkout
+1. Load Argo + OOI PACE matchups from fish-pace/fish-pace-datasets release `2025_11_01` (set by `DATA_RELEASE` in the first code cell)
 2. Same merge + biofouling drop as the methods notebook
 3. Shared **float / instrument** split (`random_state=42`): Argo `PLATFORM_NUMBER`, OOI instrument id; Argo and OOI groups split separately. 20% of train **groups** are conformal calib
 4. Fit, per depth bin:
@@ -24,15 +24,21 @@ plus CQR on the OLCI–PACE overlap.
 
 ## Data
 
-Expects:
+The Argo and OOI PACE matchups are read over the network from a tagged release
+of [fish-pace/fish-pace-datasets](https://github.com/fish-pace/fish-pace-datasets/releases),
+set by `DATA_RELEASE` in each notebook's first code cell:
 
 ```text
-/Users/nmamnun/GO-BGC-Workshop/chla-z/brt_training_data/
+https://raw.githubusercontent.com/fish-pace/fish-pace-datasets/<DATA_RELEASE>/datasets/chla_z/data/
   CHLA_argo_profiles_plus_PACE.parquet
   CHLA_ooi_profiles_plus_PACE.parquet
-
-contributor_folders/nama/olci_l3_matchups.parquet
 ```
+
+`2025_11_01` is byte-identical to `fish-pace/chla-z` `brt_training_data/`, which is
+what these notebooks read when they were run at the hackweek, so the saved outputs
+still apply. (Before 2026-11-05 they read a local `chla-z` checkout.)
+
+Local file: `contributor_folders/nama/olci_l3_matchups.parquet`.
 
 Kernel: `gobgc` conda env. Does not import `ml_utils.py` (that module needs `scikit-image`). Solar hour is computed in the notebook.
 
