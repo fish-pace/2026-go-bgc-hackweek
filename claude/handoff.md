@@ -20,10 +20,14 @@ and fish-pace/chla-z (website: https://fish-pace.github.io/chla-z/).
   then (1) does hyperspectral help? (no), and (2) is there hope for coastal
   regions? Plus a "relation to existing approaches" block on the Copernicus
   SOCA2024 product.
-- #4 Blocks: split into #7–#16. **#7 (data fixes) comes first.**
+- #4 Blocks: split into #7–#16. **#7 (data fixes) comes first.** #7 is waiting
+  on two answers from Eli: whether the fixes go into fish-pace/fish-pace-datasets
+  and fish-pace/chla-z (each needs her OK) or into poster-only tables here, and
+  where Jodi's data work lives.
+- #6 holds Eli's SOCA/Sauzède references for block #12.
 
-Nabir's `nama` branch (OLCI matchups, PACE-vs-OLCI comparison, prediction
-intervals) was merged into `poster-story` on 2026-11-04.
+The story PR (#17, which also brought in Nabir's `nama` branch: OLCI matchups,
+PACE-vs-OLCI comparison, prediction intervals) was merged to `main` on 2026-11-05.
 
 Notes:
 - [notes/poster.md](notes/poster.md): how the poster is built and why.
