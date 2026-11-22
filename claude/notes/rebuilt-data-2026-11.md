@@ -55,3 +55,29 @@ fixed. They are not the poster's skill numbers.
 the 80% intervals moves toward nominal with the larger table. CQR 0.68 → 0.78,
 CQR Mondrian 0.68 → 0.81, mean BRT + conformal 0.72 → 0.79. Per-bin CQR
 coverage is 0.81–0.86 below the surface (was 0.76–0.94).
+
+`chla_z_uq.ipynb`, CQR on the OLCI overlap (all 11 bands finite, surface bin):
+the sample grows from 2,073 to 6,878 rows. PACE-full coverage 0.86 → 0.74,
+OLCI-11 0.83 → 0.77, with narrower intervals (0.87 → 0.74 and 0.73 → 0.76).
+Coverage below nominal there is worth a look before it goes on the poster.
+
+## OLCI matchups and the hyperspectral question
+
+`olci_l3_matchups.ipynb` was re-run in full on 2026-11-22 (~4 h, 936 days, 0
+failed days). 6,896 of 12,729 profiles have all 11 OLCI bands (Argo 4,936,
+OOI 1,960). Delayed-mode OLCI ends 2026-10-01, so October 2026 profiles have no
+OLCI match. The old rows could not be reused to save time: every day had new
+profiles, and the notebook opens a day's granules if any profile on it is new.
+
+`olci_l3_brt_compare.ipynb`, same profiles for all three, surface bin, test
+split by row:
+
+| | 2025_11_01 (n_test 322) | rebuild (n_test 1,144) |
+|---|---:|---:|
+| PACE-full (172 bands) | R² 0.762, RMSE 0.354 | R² 0.795, RMSE 0.312 |
+| PACE-11 (OLCI bands) | R² 0.769, RMSE 0.348 | R² 0.787, RMSE 0.318 |
+| OLCI-11 | R² 0.774, RMSE 0.344 | R² 0.793, RMSE 0.314 |
+
+Same answer as the story's finding 1: hyperspectral PACE does no better than
+the 11 OLCI bands. Deep bins (100–200 m) improve most with the extra data
+(PACE-full R² roughly 0.21–0.41 → 0.30–0.46).
