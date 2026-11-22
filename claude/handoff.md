@@ -21,19 +21,17 @@ and fish-pace/chla-z (website: https://fish-pace.github.io/chla-z/).
   regions? Plus a "relation to existing approaches" block on the Copernicus
   SOCA2024 product.
 - #4 Blocks: split into #7–#16. **#7 (data fixes) comes first.**
-- #7 status (2026-11-05): the hackweek fixes were coded but **never applied to
-  the data**. The poster still trains on the January tables. Eli decided the
-  rebuild happens in fish-pace/fish-pace-datasets as a new release; the full
-  work list is **fish-pace/fish-pace-datasets#4**. Where the fix branch
-  stands, what's already rebuilt on the hub, and the decisions still open are
-  all in that issue. Nothing in this repo or in fish-pace/chla-z changes for
-  the rebuild. Jodi's data work is still unlocated.
-- PR #18 (open, not merged): the methods notebook and Nabir's four notebooks
-  read the training tables from a fish-pace-datasets **release tag**
-  (`DATA_RELEASE = "2025_11_01"`), not from `main` or a local path. When the
-  new release exists, change that tag in each notebook and re-run. The poster
-  is meant to use the **corrected** data. The tag records which data version
-  each result used; it isn't there to keep the poster on the old data.
+- #7 status (2026-11-22): **the data is rebuilt**, on fish-pace-datasets
+  branch `chla-z-rebuild` (fish-pace/fish-pace-datasets#4), and in a PR there
+  for Eli's review. No release yet; Eli cuts it. Jodi's data work is still
+  unlocated.
+- Branch `rebuilt-training-data` here: the methods notebook and Nabir's four
+  notebooks read `DATA_RELEASE = "chla-z-rebuild"` (the fish-pace-datasets
+  branch) and are re-run on it. When the release exists, put its tag in all
+  five. Draft Methods wording and how the results changed:
+  [notes/rebuilt-data-2026-11.md](notes/rebuilt-data-2026-11.md). The tag
+  records which data version each result used; the poster uses the corrected
+  data.
 - #6 holds Eli's SOCA/Sauzède references for block #12.
 
 Facts that affect the rebuild (checked 2026-11-05):
