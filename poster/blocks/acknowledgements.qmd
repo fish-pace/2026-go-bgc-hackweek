@@ -1,0 +1,7 @@
+<!-- Block: Acknowledgements (#16). Budget: about 25 words.
+     Hackweek team, funding, data providers.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="Acknowledgements"}
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's
+:::

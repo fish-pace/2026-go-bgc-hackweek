@@ -1,0 +1,9 @@
+<!-- Block: Data leakage and split design (#20). Budget: about 90 words + figure 11.8 x 6.5 in.
+     Naive 80/20 vs space-time block vs new region; Argo, OOI, Argo+OOI.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="Data leakage and split design"}
+![Placeholder. Skill by depth under each split design.](figures/placeholder_leakage.png){#fig-leakage script="scripts/fig_placeholders.py" width="100%"}
+
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before
+:::

@@ -1,0 +1,9 @@
+<!-- Block: Key Points (#14). Budget: about 70 words.
+     Three findings, one line each.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block .highlight title="Key Points"}
+- Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized
+- Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized
+- Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized
+:::

@@ -1,0 +1,6 @@
+<!-- Block: Next Steps (#15). Budget: about 50 words.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="Next Steps"}
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be
+:::

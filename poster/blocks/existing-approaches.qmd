@@ -1,0 +1,16 @@
+<!-- Block: Relation to existing approaches (#12). Budget: about 30 words.
+     SOCA2024 vs CHLA-Z comparison table (about 6 rows) plus one or two sentences.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="Relation to existing approaches"}
+| | SOCA2024 | CHLA-Z |
+|---|---|---|
+| Inputs | Dummy | Dummy |
+| Time step | Dummy | Dummy |
+| Grid | Dummy | Dummy |
+| Coverage | Dummy | Dummy |
+| Record | Dummy | Dummy |
+| Latency | Dummy | Dummy |
+
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can
+:::

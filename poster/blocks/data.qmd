@@ -1,0 +1,9 @@
+<!-- Block: Data (#9). Budget: about 50 words + figure 11.8 x 4.5 in.
+     Argo + OOI profiles x PACE (and OLCI) L3 4 km Rrs; 10 m bins to 200 m; counts; water-depth classes.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="Data"}
+![Placeholder. Map of matched profiles by platform and water depth.](figures/placeholder_map.png){#fig-data script="scripts/fig_placeholders.py" width="100%"}
+
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be
+:::

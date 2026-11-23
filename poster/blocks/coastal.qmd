@@ -1,0 +1,9 @@
+<!-- Block: 2. Is there hope for coastal regions? (#11). Budget: about 70 words + figure 11.8 x 5.5 in.
+     Coastal vs open-ocean skill under the leakage-free split.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="2. Is there hope for coastal regions?"}
+![Placeholder. Skill on the shelf vs the open ocean.](figures/placeholder_coastal.png){#fig-coastal script="scripts/fig_placeholders.py" width="100%"}
+
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked
+:::

@@ -36,74 +36,41 @@ Poster markup (see README.md):
   {script="scripts/x.py"}    on a figure, adds a "Code:" link to its caption
 -->
 
-::: {.block .highlight title="Key Points"}
-- Dummy key point one: the single most important finding, in one line.
-- Dummy key point two: what is new about the approach.
-- Dummy key point three: why it matters for fisheries or carbon.
-:::
+<!--
+Layout (agreed 2026-11-23, issue #4): each block's text lives in blocks/<name>.qmd,
+so blocks can be written in parallel without conflicts in this file. Space budgets
+are in blocks/README.md and in a comment at the top of each block file.
+-->
 
-::: {.block title="Introduction"}
-Dummy text. Two or three sentences on why the vertical distribution of
-phytoplankton matters, and what surface-only satellite chlorophyll misses,
-such as deep chlorophyll maxima [@werdell2019pace].
+{{< include blocks/key-points.qmd >}}
 
-Dummy text. One or two sentences on earlier work extending surface ocean color
-to depth [@sauzede2015], and the gap this work fills.
-:::
+{{< include blocks/introduction.qmd >}}
 
-::: {.block title="Objectives"}
-1. Dummy objective one.
-2. Dummy objective two.
-3. Dummy objective three.
-:::
+{{< include blocks/data.qmd >}}
+
+{{< include blocks/methods.qmd >}}
 
 ::: {.colbreak}
 :::
 
-::: {.block title="Data"}
-Dummy text. The matchup data: PACE hyperspectral reflectance paired with
-BGC-Argo, mooring, and glider chlorophyll profiles, binned in depth.
+{{< include blocks/leakage.qmd >}}
 
-- Dummy bullet: number of profiles and time span.
-- Dummy bullet: spatial coverage.
-:::
-
-::: {.block title="Methods"}
-Dummy text. The model, its inputs (172 PACE bands), its outputs (CHLA in
-depth bins to 200 m), and how it was evaluated on withheld profiles.
-:::
-
-::: {.block title="Results"}
-![Dummy caption. Observed and predicted profiles at three example sites.](figures/fig_example_profiles.png){#fig-profiles script="scripts/fig_example_profiles.py" width="100%"}
-
-Dummy text. One or two sentences on what @fig-profiles shows.
-:::
+{{< include blocks/hyperspectral.qmd >}}
 
 ::: {.colbreak}
 :::
 
-::: {.block title="Results (continued)"}
-![Dummy caption. Predicted vs. observed CHLA, colored by depth.](figures/fig_example_scatter.png){#fig-scatter script="scripts/fig_example_scatter.py" width="100%"}
+{{< include blocks/coastal.qmd >}}
 
-Dummy text. One or two sentences on what @fig-scatter shows.
-:::
+{{< include blocks/existing-approaches.qmd >}}
 
-::: {.block title="Conclusions"}
-- Dummy conclusion one.
-- Dummy conclusion two.
-:::
+<!-- Conclusions: left out for space; Key Points carry the conclusions (Eli to decide). blocks/conclusions.qmd is kept. -->
 
-::: {.block title="Next Steps"}
-- Dummy next step one.
-- Dummy next step two.
-:::
+{{< include blocks/next-steps.qmd >}}
 
 ::: {.block title="References"}
 ::: {#refs}
 :::
 :::
 
-::: {.block title="Acknowledgements"}
-Dummy text. Funding, the GO-BGC Hackweek and its participants, and data
-providers.
-:::
+{{< include blocks/acknowledgements.qmd >}}

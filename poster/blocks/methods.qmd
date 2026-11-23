@@ -1,0 +1,7 @@
+<!-- Block: Methods (#8). Budget: about 90 words.
+     Terse: one BRT per depth bin on Rrs + solar hour; L3 daily matching; leakage-free evaluation (details in the leakage block).
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="Methods"}
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before
+:::

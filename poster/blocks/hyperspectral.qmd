@@ -1,0 +1,9 @@
+<!-- Block: 1. Does hyperspectral help? (#10). Budget: about 90 words + figure 11.8 x 6 in.
+     Band for band on the same profiles, and OLCI's extra matchups.
+     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+
+::: {.block title="1. Does hyperspectral help?"}
+![Placeholder. PACE-172 vs PACE-11 vs OLCI-11, skill by depth.](figures/placeholder_hyperspectral.png){#fig-hyperspectral script="scripts/fig_placeholders.py" width="100%"}
+
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before
+:::
