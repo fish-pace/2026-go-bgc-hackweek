@@ -21,17 +21,22 @@ and fish-pace/chla-z (website: https://fish-pace.github.io/chla-z/).
   regions? Plus a "relation to existing approaches" block on the Copernicus
   SOCA2024 product.
 - #4 Blocks: split into #7–#16. **#7 (data fixes) comes first.**
-- #7 status (2026-11-22): **the data is rebuilt**, on fish-pace-datasets
-  branch `chla-z-rebuild` (fish-pace/fish-pace-datasets#4), and in a PR there
-  for Eli's review (fish-pace/fish-pace-datasets#9). No release yet; Eli cuts it. Jodi's data work is still
-  unlocated.
-- Branch `rebuilt-training-data` here (PR #19): the methods notebook and Nabir's four
-  notebooks read `DATA_RELEASE = "chla-z-rebuild"` (the fish-pace-datasets
-  branch) and are re-run on it. When the release exists, put its tag in all
-  five. Draft Methods wording and how the results changed:
+- #7 status (2026-11-23): **data released** as fish-pace-datasets
+  [`2026_11_23`](https://github.com/fish-pace/fish-pace-datasets/releases/tag/2026_11_23)
+  (PR fish-pace/fish-pace-datasets#9, merged). OOI rows are 3 h solar-time
+  windows; `_plus_OLCI` tables added. Jodi's data work is still unlocated.
+- Branch `rebuilt-training-data` here (PR #19): the methods notebook and Nabir's
+  three analysis notebooks read `DATA_RELEASE = "2026_11_23"` and ran clean on
+  it. `chla_z_uq` and `olci_l3_brt_compare` take OLCI from the release
+  `_plus_OLCI` tables; `olci_l3_matchups.ipynb` is superseded (not re-run).
+  Results and the Methods draft (counts still to fill in):
   [notes/rebuilt-data-2026-11.md](notes/rebuilt-data-2026-11.md). The tag
   records which data version each result used; the poster uses the corrected
   data.
+- Story revised 2026-11-23 (`poster/STORY.md`): terse Methods (#8); data
+  leakage and split design is its own block and a main result (#20); block 1
+  adds OLCI "more data" vs band-for-band; SOCA near the end, not the focus.
+  #2 and #3 closed.
 - #6 holds Eli's SOCA/Sauzède references for block #12.
 
 Facts that affect the rebuild (checked 2026-11-05):

@@ -2,8 +2,8 @@
 
 The notebooks on branch `rebuilt-training-data` read the tables rebuilt in
 fish-pace/fish-pace-datasets#4 (branch `chla-z-rebuild`), via
-`DATA_RELEASE = "chla-z-rebuild"`. When Eli cuts the release, replace that
-value with the tag in all five notebooks. Build details, decisions and the
+`DATA_RELEASE = "2026_11_23"` (the release, cut 2026-11-23). Earlier runs read
+the PR branch `chla-z-rebuild` (now deleted). Build details, decisions and the
 before/after tables live in fish-pace-datasets
 `claude/notes/chla-z-rebuild-2026-11.md`.
 
@@ -49,24 +49,28 @@ ascending levels. That is no longer done. It has not been posted to #8.
 > biofouling). The training set has N profiles: N Argo from N floats and N
 > OOI windows from 30 instruments.
 
-**The counts above are not filled in yet.** They change with the OOI 3 h
-windows (2026-11-23). Fill them in from the methods notebook once it is re-run
-on the release. Until then, the results below are from the daily-OOI version
-(12,705 profiles: 9,542 Argo from 831 floats, 3,163 OOI days; all 24
-biofouling flags were OOI).
+**The counts above are not filled in yet** (next task: the Methods update).
+From the methods notebook on `2026_11_23`: 31,782 rows with PACE Rrs (9,542
+Argo profiles from 831 floats, 22,240 OOI 3 h windows from 30 instruments);
+159 flagged as biofouled; 31,623 training rows.
 
 ## How the results changed (methods notebook, same code, new data)
 
-| | `2025_11_01` | rebuild |
-|---|---:|---:|
-| training rows (after biofouling drop) | 5,510 | 12,705 |
-| biofouling-flagged profiles | 20 | 24 |
-| train / test rows | 4,408 / 1,102 | 10,164 / 2,541 |
-| test R² (all bins, log10) | 0.821 | 0.778 |
-| test RMSE (log10) | 0.303 | 0.318 |
-| test bias (log10) | −0.016 | 0.000 |
-| cell 49 profile-shape metrics: N | 485 | 1,983 |
-| cell 49 r2_log / rmse_log | 0.367 / 0.326 | 0.356 / 0.361 |
+| | `2025_11_01` | rebuild, OOI days | `2026_11_23`, OOI 3 h windows |
+|---|---:|---:|---:|
+| training rows (after biofouling drop) | 5,510 | 12,705 | 31,623 |
+| biofouling-flagged profiles | 20 | 24 | 159 |
+| train / test rows | 4,408 / 1,102 | 10,164 / 2,541 | 25,298 / 6,325 |
+| test R² (all bins, log10) | 0.821 | 0.778 | 0.849 |
+| test RMSE (log10) | 0.303 | 0.318 | 0.256 |
+| test bias (log10) | −0.016 | 0.000 | −0.005 |
+| cell 49 profile-shape metrics: N | 485 | 1,983 | 2,772 |
+| cell 49 r2_log / rmse_log | 0.367 / 0.326 | 0.356 / 0.361 | 0.487 / 0.291 |
+
+**The jump to R² 0.849 with the 3 h windows is the leak, not better skill.**
+Under the random row split, windows of one instrument-day that share a pixel
+land on both sides. With the split grouped by instrument (`chla_z_uq`), surface
+R² on the same release is 0.624. That gap is the #20 leakage result.
 
 The methods notebook still uses a random row split (the leakage the poster's
 methods block fixes). These numbers compare data versions with the split held
@@ -77,12 +81,30 @@ the 80% intervals moves toward nominal with the larger table. CQR 0.68 → 0.78,
 CQR Mondrian 0.68 → 0.81, mean BRT + conformal 0.72 → 0.79. Per-bin CQR
 coverage is 0.81–0.86 below the surface (was 0.76–0.94).
 
+On `2026_11_23` (3 h windows): surface CQR 0.78, Mondrian 0.82, mean BRT +
+conformal 0.82; surface R² 0.62. The OOI group regex was fixed for the window
+ids (`_YYYYMMDDTHH`); before the fix every window would have been its own
+group. **The test split has 6 OOI instruments but 5,329 OOI rows vs 1,765
+Argo rows** (surface bin), so OOI windows dominate test metrics. Worth
+handling in the shared evaluation code (#8), e.g. per-platform metrics or
+weighting by instrument.
+
 `chla_z_uq.ipynb`, CQR on the OLCI overlap (all 11 bands finite, surface bin):
 the sample grows from 2,073 to 6,878 rows. PACE-full coverage 0.86 → 0.74,
 OLCI-11 0.83 → 0.77, with narrower intervals (0.87 → 0.74 and 0.73 → 0.76).
 Coverage below nominal there is worth a look before it goes on the poster.
 
 ## OLCI matchups and the hyperspectral question
+
+**From 2026-11-23**, `chla_z_uq` and `olci_l3_brt_compare` read OLCI from the
+release `_plus_OLCI` tables instead of `olci_l3_matchups.parquet` (whose OOI ids
+are daily). `olci_l3_matchups.ipynb` was not re-run and is superseded; its
+rules are what the release uses. On `2026_11_23`, `brt_compare` (row split,
+leaky) surface R²: PACE-full 0.860, PACE-11 0.848, OLCI-11 0.849, n_test 2,255;
+same answer. `chla_z_uq` overlap (grouped split, 18,340 rows): surface RMSE
+PACE-full 0.348, OLCI-11 0.352.
+
+The history below is for the daily-OOI rebuild.
 
 `olci_l3_matchups.ipynb` was re-run in full on 2026-11-22 (~4 h, 936 days, 0
 failed days). 6,896 of 12,729 profiles have all 11 OLCI bands (Argo 4,936,
