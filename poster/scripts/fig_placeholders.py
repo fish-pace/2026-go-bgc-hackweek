@@ -13,9 +13,7 @@ from poster_style import COLUMN_WIDTH_IN, DPI, apply_style
 
 FIGS = Path(__file__).resolve().parents[1] / "figures"
 PLACEHOLDERS = {
-    "leakage": (6.5, "Leakage: skill by depth under each split design (#20)"),
     "hyperspectral": (6.0, "1. PACE-172 vs PACE-11 vs OLCI-11, skill by depth (#10)"),
-    "coastal": (5.5, "2. Coastal vs open ocean skill (#11)"),
 }
 
 

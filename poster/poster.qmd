@@ -1,5 +1,5 @@
 ---
-title: "Revealing Subsurface Phytoplankton Structure with Hyperspectral Ocean Color, In Situ Profiles, and Machine Learning"
+title: "Revealing Subsurface Phytoplankton Structure in the Ocean using Hyperspectral Ocean Color Data, in-situ Measurements and Machine-Learning"
 author:
   - name: Eli Holmes
     affiliations:
@@ -48,10 +48,10 @@ are in blocks/README.md and in a comment at the top of each block file.
 
 {{< include blocks/data.qmd >}}
 
-{{< include blocks/methods.qmd >}}
-
 ::: {.colbreak}
 :::
+
+{{< include blocks/methods.qmd >}}
 
 {{< include blocks/leakage.qmd >}}
 
@@ -68,9 +68,6 @@ are in blocks/README.md and in a comment at the top of each block file.
 
 {{< include blocks/next-steps.qmd >}}
 
-::: {.block title="References"}
-::: {#refs}
-:::
-:::
+<!-- No References block: Eli, 2026-11-23, not needed. -->
 
 {{< include blocks/acknowledgements.qmd >}}

@@ -59,6 +59,14 @@
   show heading: set text(fill: poster-primary)
   show heading: set block(above: 0.8em, below: 0.4em)
   show figure.caption: set text(size: 0.8em)
+  // Tables: no grid, a rule under the header row, caption below like figures.
+  set table(
+    stroke: (x, y) => if y == 0 { (bottom: 2pt + poster-primary) },
+    inset: (x: 0.15in, y: 0.07in),
+  )
+  show table: set text(size: 0.85em)
+  show table.cell.where(y: 0): set text(weight: "bold")
+  show figure.where(kind: table): set figure.caption(position: bottom)
   show link: set text(fill: poster-accent.darken(20%))
 
   // Affiliations are numbered in the order they are listed in the YAML.

@@ -1,7 +1,9 @@
-<!-- Block: Introduction (#13). Budget: about 70 words.
+<!-- Block: Introduction (#13). Budget: about 50 words + figure 11.8 x 5 in.
      Why vertical structure matters; PACE; the question.
      Replace the dummy text; keep within the budget so the poster stays on one page. -->
 
 ::: {.block title="Introduction"}
-Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked [@werdell2019pace; @sauzede2015]
+Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be
+
+![Observed (black) and predicted (blue dashed) CHLA for four open-ocean BGC-Argo profiles, drawn at random within each peak-depth class. Predictions are from models that saw no data from the profile's 1° cell within its 30-day block.](figures/fig_example_profiles.png){#fig-examples script="scripts/fig_example_profiles.py" width="100%"}
 :::
