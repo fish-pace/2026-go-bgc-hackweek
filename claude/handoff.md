@@ -23,9 +23,9 @@ and fish-pace/chla-z (website: https://fish-pace.github.io/chla-z/).
 - #4 Blocks: split into #7–#16. **#7 (data fixes) comes first.**
 - #7 status (2026-11-22): **the data is rebuilt**, on fish-pace-datasets
   branch `chla-z-rebuild` (fish-pace/fish-pace-datasets#4), and in a PR there
-  for Eli's review. No release yet; Eli cuts it. Jodi's data work is still
+  for Eli's review (fish-pace/fish-pace-datasets#9). No release yet; Eli cuts it. Jodi's data work is still
   unlocated.
-- Branch `rebuilt-training-data` here: the methods notebook and Nabir's four
+- Branch `rebuilt-training-data` here (PR #19): the methods notebook and Nabir's four
   notebooks read `DATA_RELEASE = "chla-z-rebuild"` (the fish-pace-datasets
   branch) and are re-run on it. When the release exists, put its tag in all
   five. Draft Methods wording and how the results changed:
