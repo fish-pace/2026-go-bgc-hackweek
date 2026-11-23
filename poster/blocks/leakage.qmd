@@ -25,5 +25,5 @@ Split by space and time, and report platforms separately.
 | | Space-time | 0.77 | 0.46 | 0.32 | 0.53 |
 | | New region | 0.70 | 0.39 | 0.23 | 0.43 |
 
-: R² of log10 CHLA by depth bin, and of integrated CHLA, on held-out data (mean of 5 repeats). {#tbl-leakage}
+: R² of log10 Chl *a* by depth bin, and of integrated Chl *a*, on held-out data (mean of 5 repeats). {#tbl-leakage}
 :::

@@ -70,7 +70,7 @@ def main():
         ax.tick_params(labelsize=18)
     axs[0].invert_yaxis()
     axs[0].set_ylabel("Depth (m)")
-    fig.supxlabel("CHLA (mg m$^{-3}$)", fontsize=22)
+    fig.supxlabel("Chl $a$ (mg m$^{-3}$)", fontsize=22)
     axs[0].legend(loc="lower right", frameon=False, fontsize=18)
     fig.savefig(OUT, dpi=DPI)
     print("profiles:", list(picked))
