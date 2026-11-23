@@ -3,7 +3,7 @@
      Replace the dummy text; keep within the budget so the poster stays on one page. -->
 
 ::: {.block title="Data"}
-![Placeholder. Map of matched profiles by platform and water depth.](figures/placeholder_map.png){#fig-data script="scripts/fig_placeholders.py" width="100%"}
+![Depth from ETOPO 2022; inset lines at 200, 1000 m. Argo floats / OOI sites: shelf 9 / 8, slope 41 / 4, open ocean 818 / 10.](figures/fig_data_map.png){#fig-data script="scripts/fig_data_map.py" width="100%"}
 
-Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be
+BGC-Argo and OOI chlorophyll profiles (March 2024 – October 2026) in 10 m bins to 200 m, matched to PACE OCI L3 daily 4 km Rrs (172 bands). After dropping 159 likely-biofouled profiles: 9,542 Argo profiles (831 floats) and 22,081 OOI 3 h windows (30 instruments). Release: fish-pace-datasets 2026_11_23.
 :::
