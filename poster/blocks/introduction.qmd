@@ -3,11 +3,7 @@
      profile from Rrs is known; the new questions are hyperspectral and coastal. -->
 
 ::: {.block title="Introduction"}
-Satellites see chlorophyll only near the surface, but phytoplankton, and the
-food webs and carbon export they support, extend through the water column and
-often peak below it. In the open ocean, ocean color can predict that profile
-(@fig-examples). We ask two new questions: does hyperspectral PACE do better
-than a multispectral sensor, and does the approach work in coastal water?
+Resolving the spatiotemporal variability of chlorophyll_a throughout the euphotic zone, including subsurface chlorophyll maxima, helps characterize phytoplankton distributions and constrain estimates of depth-integrated primary production. Previous research (Sauzède et al., 2016, 2024) has established that satellite remote-sensing reflectance at multiple bands can be used to infer subsurface chlorophyll density and locations of subsurface chlorophyll peaks in the open ocean. In this pilot study, we test whether hyperspectral PACE improves chlorophyll_a profile estimates relative to multispectral observations and whether the approach transfers to coastal waters.
 
 ![Observed (black) and predicted (blue dashed) CHLA for four open-ocean BGC-Argo profiles, drawn at random within each peak-depth class. Predictions are from models that saw no data from the profile's 1° cell within its 30-day block.](figures/fig_example_profiles.png){#fig-examples script="scripts/fig_example_profiles.py" width="100%"}
 :::

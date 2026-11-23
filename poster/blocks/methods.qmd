@@ -4,11 +4,5 @@
      early stopping), claude/notes/rebuilt-data-2026-11.md (matching), #20 (evaluation). -->
 
 ::: {.block title="Methods"}
-One boosted regression tree per 10 m bin predicts log10 CHLA from PACE Rrs,
-local solar hour and platform. Solar hour lets the model learn daytime
-quenching in the in situ fluorescence. Satellite values are L3 daily maps with
-no overpass time, so each profile is matched to its day's map at the nearest
-4 km cell. Skill is measured on held-out data: grouped 5-fold cross-validation
-over 1° × 30-day blocks, repeated 5 times. We report R² of log10 CHLA per bin,
-of integrated CHLA (surface to 200 m or the deepest bin), and peak-depth error.
+We trained a separate boosted regression tree (BRT)[^brt] for each 10 m depth bin from the surface to 200 m to predict $\log_{10}(\mathrm{Chl}\,a)$ from remote-sensing reflectance ($R_{rs}$) using 11 or 172 bands, local solar hour, and sampling platform. Local solar hour allowed the model to account for daytime quenching of in situ chlorophyll fluorescence. Each profile was matched to the nearest grid cell in the same-day Level-3 $R_{rs}$ map. We evaluated out-of-sample skill using five repeats of grouped fivefold cross-validation, keeping all profiles within each 1° × 30-day block in the same fold.  [^brt]: Neural networks yielded higher skill, but for this pilot study, we used BRTs for their shorter training time.
 :::
