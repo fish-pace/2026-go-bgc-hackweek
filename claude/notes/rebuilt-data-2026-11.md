@@ -16,23 +16,28 @@ ascending levels. That is no longer done. It has not been posted to #8.
 > Ifremer ERDDAP server with argopy 1.5.0 in expert mode (snapshot
 > 2026-11-06). Only ascending profiles were used. Adjusted chlorophyll
 > (`CHLA_ADJUSTED`) levels with QC flags 1, 2, 5 or 8 were averaged in 10 m
-> pressure bins from 0 to 200 m. OOI fluorometer data (30 profilers and fixed
-> instruments) were taken from the OOI ERDDAP server, kept where the
-> aggregate QC flag was 1, and averaged per instrument and day in the same 10 m
-> bins. Fixed-depth instruments were assigned their known depth. OOI
-> fluorescence was converted to chlorophyll with the regional
-> fluorescence:chlorophyll ratios of Sauzède et al., putting it on the same
-> basis as Argo `CHLA_ADJUSTED`. Each profile was matched to PACE OCI Level-3
-> daily 4 km V3.2 remote-sensing reflectance (172 bands), chlorophyll-a and
-> Kd(490) at the nearest grid cell, from the file whose day covers the profile
-> time, using standard files before near-real-time ones. Profiles with no valid
-> Rrs (cloud, glint) were dropped, as were 24 OOI profiles with uniformly high
-> chlorophyll from 100 to 200 m (likely biofouling). The training set has
-> 12,705 profiles: 9,542 Argo from 831 floats and 3,163 OOI from 30
-> instruments.
+> pressure bins (A < p <= B) from 0 to 200 m. OOI fluorometer data (30
+> profilers and fixed instruments) were taken from the OOI ERDDAP server, kept
+> where the aggregate QC flag was 1, and averaged per instrument in 3 h windows
+> of local solar time, in the same 10 m bins. Each window's time is the mean
+> time of its samples, so OOI rows span the day. Fixed-depth instruments were
+> assigned their known depth. OOI fluorescence was converted to chlorophyll
+> with the regional fluorescence:chlorophyll ratios of Sauzède et al., putting
+> it on the same basis as Argo `CHLA_ADJUSTED`. Each profile was matched to
+> PACE OCI Level-3 daily 4 km V3.2 remote-sensing reflectance (172 bands),
+> chlorophyll-a and Kd(490) at the nearest grid cell, from the file whose day
+> covers the profile time, using standard files before near-real-time (NRT)
+> ones. Standard V3.2 files end on 2026-09-30, so October 2026 matches use NRT
+> files. Profiles with no valid Rrs (cloud, glint) were dropped, as were
+> profiles with uniformly high chlorophyll from 100 to 200 m (likely
+> biofouling). The training set has N profiles: N Argo from N floats and N
+> OOI windows from 30 instruments.
 
-Split counted from the tables with the notebook's Rrs and biofouling rules.
-All 24 flagged profiles are OOI.
+**The counts above are not filled in yet.** They change with the OOI 3 h
+windows (2026-11-23). Fill them in from the methods notebook once it is re-run
+on the release. Until then, the results below are from the daily-OOI version
+(12,705 profiles: 9,542 Argo from 831 floats, 3,163 OOI days; all 24
+biofouling flags were OOI).
 
 ## How the results changed (methods notebook, same code, new data)
 
