@@ -1,9 +1,13 @@
 <!-- Block: Introduction (#13). Budget: about 50 words + figure 11.8 x 5 in.
-     Why vertical structure matters; PACE; the question.
-     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+     Draft by the agent, 2026-11-23, for Eli to edit. Framing (Eli): predicting the open-ocean
+     profile from Rrs is known; the new questions are hyperspectral and coastal. -->
 
 ::: {.block title="Introduction"}
-Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be
+Satellites see chlorophyll only near the surface, but phytoplankton, and the
+food webs and carbon export they support, extend through the water column and
+often peak below it. In the open ocean, ocean color can predict that profile
+(@fig-examples). We ask two new questions: does hyperspectral PACE do better
+than a multispectral sensor, and does the approach work in coastal water?
 
 ![Observed (black) and predicted (blue dashed) CHLA for four open-ocean BGC-Argo profiles, drawn at random within each peak-depth class. Predictions are from models that saw no data from the profile's 1° cell within its 30-day block.](figures/fig_example_profiles.png){#fig-examples script="scripts/fig_example_profiles.py" width="100%"}
 :::

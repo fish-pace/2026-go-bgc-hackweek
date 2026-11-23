@@ -1,7 +1,14 @@
 <!-- Block: Methods (#8). Budget: about 90 words.
-     Terse: one BRT per depth bin on Rrs + solar hour; L3 daily matching; leakage-free evaluation (details in the leakage block).
-     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+     Draft by the agent, 2026-11-23, for Eli to edit. Sources: run.py (BRT settings from
+     chla_z_uq: HistGradientBoosting, max_depth 6, learning rate 0.05, up to 400 iterations,
+     early stopping), claude/notes/rebuilt-data-2026-11.md (matching), #20 (evaluation). -->
 
 ::: {.block title="Methods"}
-Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before
+One boosted regression tree per 10 m bin predicts log10 CHLA from PACE Rrs,
+local solar hour and platform. Solar hour lets the model learn daytime
+quenching in the in situ fluorescence. Satellite values are L3 daily maps with
+no overpass time, so each profile is matched to its day's map at the nearest
+4 km cell. Skill is measured on held-out data: grouped 5-fold cross-validation
+over 1° × 30-day blocks, repeated 5 times. We report R² of log10 CHLA per bin,
+of integrated CHLA (surface to 200 m or the deepest bin), and peak-depth error.
 :::

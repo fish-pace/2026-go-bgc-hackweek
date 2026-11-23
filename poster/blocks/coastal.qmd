@@ -1,9 +1,17 @@
 <!-- Block: 2. Is there hope for coastal regions? (#11). Budget: about 70 words + figure 11.8 x 5.5 in (fig_coastal_skill.png).
-     Coastal vs open-ocean skill under the leakage-free split.
-     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+     Draft by the agent, 2026-11-23, for Eli to edit. Numbers: scripts/fig_coastal_skill.py
+     (prints them); Argo+OOI model, space-time split, 5 repeats. Integrated R² by class:
+     open 0.43 (10,187 profiles, 814 floats/sites), slope 0.35 (1,399; 42), shelf 0.33 (194; 11).
+     Shelf integrals are mostly Baltic Argo floats plus two short OOI shelf profilers.
+     Physics pilot (GLORYS12, OOI) is in Next Steps, not here, for space. -->
 
 ::: {.block title="2. Is there hope for coastal regions?"}
 ![Left: R² by depth for profiles in open-ocean, slope and shelf water (ETOPO 2022 depth); bins with fewer than 3 floats or sites not drawn. Right: integrated CHLA, observed vs predicted. Held-out data, space-time split, Argo + OOI model.](figures/fig_coastal_skill.png){#fig-coastal script="scripts/fig_coastal_skill.py" width="100%"}
 
-Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked
+Skill falls with depth everywhere, and faster in shallow water: R² reaches
+about 0 by 20 m on the shelf and by 50 m on the slope, but stays near 0.35
+below 80 m in the open ocean. Integrated CHLA holds up better (R² 0.43 open,
+0.35 slope, 0.33 shelf), because the upper bins carry most of it. Coastal
+water is sampled mostly by fixed moorings, so few whole coastal profiles
+exist to train or test on.
 :::
