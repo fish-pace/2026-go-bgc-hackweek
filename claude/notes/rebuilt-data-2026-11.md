@@ -17,18 +17,34 @@ ascending levels. That is no longer done. It has not been posted to #8.
 > 2026-11-06). Only ascending profiles were used. Adjusted chlorophyll
 > (`CHLA_ADJUSTED`) levels with QC flags 1, 2, 5 or 8 were averaged in 10 m
 > pressure bins (A < p <= B) from 0 to 200 m. OOI fluorometer data (30
-> profilers and fixed instruments) were taken from the OOI ERDDAP server, kept
-> where the aggregate QC flag was 1, and averaged per instrument in 3 h windows
-> of local solar time, in the same 10 m bins. Each window's time is the mean
-> time of its samples, so OOI rows span the day. Fixed-depth instruments were
-> assigned their known depth. OOI fluorescence was converted to chlorophyll
-> with the regional fluorescence:chlorophyll ratios of Sauzède et al., putting
-> it on the same basis as Argo `CHLA_ADJUSTED`. Each profile was matched to
-> PACE OCI Level-3 daily 4 km V3.2 remote-sensing reflectance (172 bands),
-> chlorophyll-a and Kd(490) at the nearest grid cell, from the file whose day
-> covers the profile time, using standard files before near-real-time (NRT)
-> ones. Standard V3.2 files end on 2026-09-30, so October 2026 matches use NRT
-> files. Profiles with no valid Rrs (cloud, glint) were dropped, as were
+> profilers and fixed instruments) were taken from the OOI ERDDAP server and
+> kept where the aggregate QC flag was 1. Fixed-depth instruments were assigned
+> their known depth. OOI instruments sample continuously, so their data were
+> averaged in 3 h windows of local mean solar time (00–03, 03–06, … h, where
+> solar time = UTC + longitude/15 h for each sample). Within each window and
+> instrument, CHLA is the arithmetic mean of all QC-passing samples in each
+> 10 m depth bin (same bins as Argo); a profiler window can include several
+> casts, and a fixed instrument fills only the bin of its depth. The window's
+> time is the mean time of its samples. OOI fluorescence was converted to
+> chlorophyll with the regional fluorescence:chlorophyll ratios of Sauzède et
+> al., putting it on the same basis as Argo `CHLA_ADJUSTED`.
+>
+> The satellite data are Level-3 daily 4 km maps, which composite the day's
+> Level-2 swaths and carry no per-pixel observation time. Matching is therefore
+> not one-to-one in time: each in situ profile or OOI window is paired with the
+> daily map that covers its time, at the nearest grid cell. For PACE that is
+> OCI V3.2 remote-sensing reflectance (172 bands), chlorophyll-a and Kd(490),
+> from the file whose 24 h coverage starts at most 24 h before the profile
+> time, using standard files before near-real-time (NRT) ones. Standard V3.2
+> files end on 2026-09-30, so October 2026 matches use NRT files. For
+> Sentinel-3 OLCI (11 bands, S3A then S3B) it is the map of the profile's UTC
+> day. The model estimates CHLA(z) from these daily averaged reflectances.
+> Because in situ fluorescence varies with the time of day (daytime quenching
+> lowers fluorescence per unit chlorophyll near the surface), the solar hour of
+> each in situ sample is a model input, so the model can correct for it. The
+> OOI 3 h windows give that correction samples across the whole day.
+>
+> Profiles with no valid Rrs (cloud, glint) were dropped, as were
 > profiles with uniformly high chlorophyll from 100 to 200 m (likely
 > biofouling). The training set has N profiles: N Argo from N floats and N
 > OOI windows from 30 instruments.
