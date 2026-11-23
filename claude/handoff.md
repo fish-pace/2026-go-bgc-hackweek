@@ -38,6 +38,19 @@ and fish-pace/chla-z (website: https://fish-pace.github.io/chla-z/).
   adds OLCI "more data" vs band-for-band; SOCA near the end, not the focus.
   #2 and #3 closed.
 - #6 holds Eli's SOCA/Sauzède references for block #12.
+- **Next (Eli, 2026-11-23): start the leakage block, #20.** Compare row vs
+  day vs instrument-grouped splits on the same model and release
+  `2026_11_23`, with skill by depth bin over repeated seeds. Starting points:
+  - the shared evaluation code planned in #8 (`poster/scripts/`);
+  - `chla_z_uq.ipynb` for the grouped split.
+
+  Known so far: row-split R² 0.849 vs grouped surface R² 0.62. OOI rows
+  dominate the grouped test set (6 instruments, 5,329 rows vs 1,765 Argo),
+  so decide on per-platform metrics or instrument weighting.
+
+  A parallel session in fish-pace-datasets (branch `pipeline-notebooks`) is
+  turning that repo's notebooks into data retrieval, QC and matchup method
+  examples. Don't edit that repo from here.
 
 Facts that affect the rebuild (checked 2026-11-05):
 - **PACE collections.** `PACE_OCI_L3M_RRS` and `PACE_OCI_L3M_CHL` (and their
