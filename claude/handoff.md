@@ -21,20 +21,36 @@ and fish-pace/chla-z (website: https://fish-pace.github.io/chla-z/).
   regions? Plus a "relation to existing approaches" block on the Copernicus
   SOCA2024 product.
 - #4 Blocks: split into #7–#16. **#7 (data fixes) comes first.**
-- #7 status (2026-11-05): the hackweek fixes were coded but **never applied to
-  the data**. The poster still trains on the January tables. Eli decided the
-  rebuild happens in fish-pace/fish-pace-datasets as a new release; the full
-  work list is **fish-pace/fish-pace-datasets#4**. Where the fix branch
-  stands, what's already rebuilt on the hub, and the decisions still open are
-  all in that issue. Nothing in this repo or in fish-pace/chla-z changes for
-  the rebuild. Jodi's data work is still unlocated.
-- PR #18 (open, not merged): the methods notebook and Nabir's four notebooks
-  read the training tables from a fish-pace-datasets **release tag**
-  (`DATA_RELEASE = "2025_11_01"`), not from `main` or a local path. When the
-  new release exists, change that tag in each notebook and re-run. The poster
-  is meant to use the **corrected** data. The tag records which data version
-  each result used; it isn't there to keep the poster on the old data.
+- #7 status (2026-11-23): **data released** as fish-pace-datasets
+  [`2026_11_23`](https://github.com/fish-pace/fish-pace-datasets/releases/tag/2026_11_23)
+  (PR fish-pace/fish-pace-datasets#9, merged). OOI rows are 3 h solar-time
+  windows; `_plus_OLCI` tables added. Jodi's data work is still unlocated.
+- Branch `rebuilt-training-data` here (PR #19): the methods notebook and Nabir's
+  three analysis notebooks read `DATA_RELEASE = "2026_11_23"` and ran clean on
+  it. `chla_z_uq` and `olci_l3_brt_compare` take OLCI from the release
+  `_plus_OLCI` tables; `olci_l3_matchups.ipynb` is superseded (not re-run).
+  Results and the Methods draft (counts still to fill in):
+  [notes/rebuilt-data-2026-11.md](notes/rebuilt-data-2026-11.md). The tag
+  records which data version each result used; the poster uses the corrected
+  data.
+- Story revised 2026-11-23 (`poster/STORY.md`): terse Methods (#8); data
+  leakage and split design is its own block and a main result (#20); block 1
+  adds OLCI "more data" vs band-for-band; SOCA near the end, not the focus.
+  #2 and #3 closed.
 - #6 holds Eli's SOCA/Sauzède references for block #12.
+- **Next (Eli, 2026-11-23): start the leakage block, #20.** Compare row vs
+  day vs instrument-grouped splits on the same model and release
+  `2026_11_23`, with skill by depth bin over repeated seeds. Starting points:
+  - the shared evaluation code planned in #8 (`poster/scripts/`);
+  - `chla_z_uq.ipynb` for the grouped split.
+
+  Known so far: row-split R² 0.849 vs grouped surface R² 0.62. OOI rows
+  dominate the grouped test set (6 instruments, 5,329 rows vs 1,765 Argo),
+  so decide on per-platform metrics or instrument weighting.
+
+  A parallel session in fish-pace-datasets (branch `pipeline-notebooks`) is
+  turning that repo's notebooks into data retrieval, QC and matchup method
+  examples. Don't edit that repo from here.
 
 Facts that affect the rebuild (checked 2026-11-05):
 - **PACE collections.** `PACE_OCI_L3M_RRS` and `PACE_OCI_L3M_CHL` (and their

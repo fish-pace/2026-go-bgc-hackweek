@@ -1,14 +1,15 @@
 # Nadir — CHLA-Z uncertainty quantification
 
 The published CHLA-Z BRT is a **point estimate** (`log10` CHLA). This folder
-adds prediction intervals on the **full PACE training table** (~5,510 rows),
+adds prediction intervals on the **full PACE training table** (12,705 rows from the
+November 2026 rebuild; 5,510 in release `2025_11_01`),
 plus CQR on the OLCI–PACE overlap.
 
 ## Notebook
 
 **[`chla_z_uq.ipynb`](chla_z_uq.ipynb)** — runs anywhere; no Hub / S3 / `/tmp`. Reads the training tables over HTTPS.
 
-1. Load Argo + OOI PACE matchups from fish-pace/fish-pace-datasets release `2025_11_01` (set by `DATA_RELEASE` in the first code cell)
+1. Load Argo + OOI PACE matchups from fish-pace/fish-pace-datasets (version set by `DATA_RELEASE` in the first code cell)
 2. Same merge + biofouling drop as the methods notebook
 3. Shared **float / instrument** split (`random_state=42`): Argo `PLATFORM_NUMBER`, OOI instrument id; Argo and OOI groups split separately. 20% of train **groups** are conformal calib
 4. Fit, per depth bin:
@@ -34,11 +35,18 @@ https://raw.githubusercontent.com/fish-pace/fish-pace-datasets/<DATA_RELEASE>/da
   CHLA_ooi_profiles_plus_PACE.parquet
 ```
 
-`2025_11_01` is byte-identical to `fish-pace/chla-z` `brt_training_data/`, which is
-what these notebooks read when they were run at the hackweek, so the saved outputs
-still apply. (Before 2026-11-05 they read a local `chla-z` checkout.)
+The saved outputs use `DATA_RELEASE = "chla-z-rebuild"`: the November 2026 rebuild
+on the fish-pace-datasets PR branch (fish-pace/fish-pace-datasets#4), with
+ascending-only Argo, QC applied before binning, OOI depth and duplicate fixes, the
+Sauzède correction, PACE V3.2 and data to 2026-10-31. Switch to the release tag
+once that release exists.
 
-Local file: `contributor_folders/nama/olci_l3_matchups.parquet`.
+`2025_11_01` is the pre-hackweek data, byte-identical to `fish-pace/chla-z`
+`brt_training_data/`. That is what these notebooks read at the hackweek.
+(Before 2026-11-05 they read a local `chla-z` checkout.)
+
+Local file: `contributor_folders/nama/olci_l3_matchups.parquet`, written by
+`olci_l3_matchups.ipynb` from the same `DATA_RELEASE`.
 
 Kernel: `gobgc` conda env. Does not import `ml_utils.py` (that module needs `scikit-image`). Solar hour is computed in the notebook.
 
