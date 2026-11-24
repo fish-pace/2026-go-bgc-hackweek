@@ -11,6 +11,8 @@
      Integrated Chl a: profiles with >= 10 observed 10 m bins, sum of Chl a x 10 m over them;
      R² on log10, mean over 5 repeats: open 0.40, slope 0.67, shelf -1.20. Open-ocean R² is not caused by the 24 Argo profiles
      at the sensor floor (removing them: 0.42); predictions are compressed toward the middle.
+     Rows (profiles or OOI windows) and floats/OOI sites by class, dropped from the caption
+     2026-11-24: open ocean 13,544 (819), slope 5,331 (43), shelf 11,621 (11).
      Shelf profiles: 92 Argo (7 floats, mostly Baltic); no OOI shelf profiler reaches 10 bins.
      Below ~20 m near the coast the model mostly predicts each site's average (paper note §6). -->
 
@@ -27,7 +29,7 @@ predictions are too flat, and few whole shelf profiles exist.
 | Slope | 0.69 | 0.71 | 45% | 0.60 |
 | Shelf | 0.28 | 0.40 | 46% | 0.77 |
 
-: Skill on held-out data with SOCA2024's validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. Data: open ocean 13,544 profiles or OOI windows (819 floats or OOI sites); slope 5,331 (43); shelf 11,621 (11). SOCA2024 row from its own validation. {#tbl-coastal}
+: Skill on held-out data with SOCA2024's validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. SOCA2024 row from its own validation. {#tbl-coastal}
 
 ```{=typst}
 #v(0.3in)
