@@ -13,7 +13,7 @@ Resolving the spatiotemporal variability of chlorophyll *a* (Chl *a*) throughout
 #v(0.15in)
 ```
 
-![Observed (black) and predicted (blue dashed) Chl *a* from CHLA-Z for four open-ocean BGC-Argo profiles. Predictions are from models that saw no data from the profile's 1° cell within its 30-day block.](figures/fig_example_profiles.png){#fig-examples script="scripts/fig_example_profiles.py" width="100%"}
+![Observed (black) and predicted (blue dashed) Chl *a* from CHLA-Z for typical open-ocean, slope and shelf profiles (grey: seafloor). Predictions are from models that saw no data from the profile's 1° cell within its 30-day block.](figures/fig_example_profiles.png){#fig-examples script="scripts/fig_example_profiles.py" width="100%"}
 
 ```{=typst}
 #v(0.15in)
