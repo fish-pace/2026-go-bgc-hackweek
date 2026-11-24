@@ -7,7 +7,7 @@
      2026-11-24; source notes for it are in blocks/existing-approaches.qmd (no longer included). -->
 
 ::: {.block title="Introduction"}
-Resolving the spatiotemporal variability of chlorophyll *a* (Chl *a*) throughout the euphotic zone, including subsurface chlorophyll maxima, helps characterize phytoplankton distributions and constrain estimates of depth-integrated primary production. Previous research (Sauzède et al., 2016, 2024) has established that satellite remote-sensing reflectance at multiple bands can be used to infer subsurface Chl *a* concentration and locations of subsurface chlorophyll peaks in the open ocean. In this pilot study, we test whether hyperspectral PACE improves Chl *a* profile estimates relative to multispectral observations and whether the approach transfers to coastal waters.
+Resolving the spatiotemporal variability of chlorophyll *a* (Chl *a*) throughout the euphotic zone, including subsurface chlorophyll maxima, helps characterize phytoplankton distributions and constrain estimates of depth-integrated primary production. Previous research (Sauzède et al., 2016, 2025) has established that satellite remote-sensing reflectance at multiple bands can be used to infer subsurface Chl *a* concentration and locations of subsurface chlorophyll peaks in the open ocean. In this pilot study, we test whether hyperspectral PACE improves Chl *a* profile estimates relative to multispectral observations and whether the approach transfers to coastal waters.
 
 ```{=typst}
 #v(0.25in)
@@ -19,7 +19,7 @@ Resolving the spatiotemporal variability of chlorophyll *a* (Chl *a*) throughout
 #v(0.25in)
 ```
 
-**Relation to existing approaches.** The Copernicus Marine 3D chlorophyll product (SOCA2024; Sauzède et al.) predicts 4D Chl *a*
+**Relation to existing approaches.** The Copernicus Marine 3D chlorophyll product (SOCA2024; Sauzède et al., 2025) predicts 4D Chl *a*
 profiles with neural networks trained on BGC-Argo, from 5-band $R_{rs}$ plus physical
 fields. It is weekly at 0.25°, covers only water deeper than 1000 m, and currently ends in
 December 2023. Our model (CHLA-Z) is very similar and is used to explore whether daily hyperspectral (172 $R_{rs}$ bands) improves 4D Chl *a* estimation and tests prediction in coastal (slope and shelf) regions.
