@@ -1,6 +1,24 @@
-<!-- Block: Next Steps (#15). Budget: about 50 words.
-     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+<!-- Block: Next Steps (#15). Budget: about 50 words. Draft by the agent for Eli to edit.
+     Eli (2026-11-24): only the immediate next steps, physics first, then coastal data.
+     Physics pilot: poster/analysis/physics_pilot/run_pilot.py, runs/physics-pilot-allbins,
+     OOI only, 2 repeats, release 2026_11_23 BEFORE the OOI QC exclusion (fish-pace-datasets#13).
+     GLORYS12 daily features at the pixel: T at 0.5/25/50/100/200 m, T(0)-T(50), T(0)-T(200),
+     depth of strongest cooling, mixed-layer depth. "ctx" = day of year (sin, cos) + lat/lon.
+     R² of log10 Chl a, space-time split:
+       depth   Rrs    +ctx   +physics  +ctx+physics
+       5 m     0.55   0.63   0.59      0.63
+       55 m   -0.01   0.02   0.14      0.20
+       105 m  -0.11   0.04   0.05      0.16
+       155 m  -0.17  -0.14   0.04      0.27
+     Holding out a whole site the gain is smaller (mean over bins -0.10 -> -0.03).
+     Physics inputs must be global fields (reanalysis), never the float's own T/S,
+     so the model can still make maps. -->
 
 ::: {.block title="Next Steps"}
-Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's budget so the layout can be
+- **Add ocean physics.** In a pilot on the OOI sites, adding GLORYS12 reanalysis temperature
+  structure and mixed-layer depth, with season and location, raised R² at 50–150 m from
+  below 0 to about 0.2 (preliminary). Next:
+  test it on BGC-Argo, using only global fields so the model can still make maps.
+- **More coastal training data**, from gliders and coastal moorings, with consistent
+  calibration and quality control.
 :::
