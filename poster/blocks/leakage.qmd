@@ -1,0 +1,29 @@
+<!-- Block: Data leakage and split design (#20). Budget: about 90 words + table (9 rows).
+     Numbers: fish-pace-datasets 2026_11_23; poster/analysis/split_design (run.py, metrics.py,
+     profile_metrics.py); full run on 2026-11-23, 5 repeats. Integrated = log10 of CHLA summed
+     over the contiguous bins from the surface (at least 5 bins).
+     Credit for the finding (hackweek): Charlie (duplicate OOI rows), Kai (split strategies),
+     Nabir (grouped split). Put names in Acknowledgements or here, Eli to decide. -->
+
+::: {.block title="Data leakage and split design"}
+In situ samples are not independent. An OOI mooring gives eight 3 h windows a
+day that share one daily satellite pixel, so a random 80/20 split puts
+near-copies on both sides. We hold out whole 1° × 30-day blocks instead (space-time); new region holds out 10° boxes.
+For BGC-Argo the split makes no difference. For OOI, almost all of the random
+split's skill is leakage, and pooling Argo and OOI hides it in one number.
+Split by space and time, and report platforms separately.
+
+| Data | Split | 0–10 m | 50–60 m | 100–110 m | Integrated |
+|---|---|---:|---:|---:|---:|
+| Argo | Random rows | 0.76 | 0.58 | 0.39 | 0.33 |
+| | Space-time | 0.75 | 0.58 | 0.38 | 0.32 |
+| | New region | 0.74 | 0.56 | 0.35 | 0.26 |
+| OOI | Random rows | **0.89** | **0.79** | **0.82** | **0.80** |
+| | Space-time | 0.54 | −0.01 | −0.09 | 0.18 |
+| | New region | 0.10 | −0.24 | −0.74 | −0.36 |
+| Argo + OOI | Random rows | 0.85 | 0.69 | 0.46 | 0.57 |
+| | Space-time | 0.77 | 0.46 | 0.32 | 0.53 |
+| | New region | 0.70 | 0.39 | 0.23 | 0.43 |
+
+: R² of log10 Chl *a* by depth bin, and of integrated Chl *a*, on held-out data (mean of 5 repeats). {#tbl-leakage}
+:::

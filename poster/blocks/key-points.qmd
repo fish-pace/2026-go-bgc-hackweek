@@ -1,0 +1,9 @@
+<!-- Block: Key Points (#14). Budget: about 70 words.
+     Three findings, one line each. Titled "Key Findings" and placed at the end, like results (Eli, 2026-11-24).
+     Eli, 2026-11-24: open-ocean skill bullet dropped (known from SOCA). Bullet 1 numbers
+     to recheck after the block 1 rerun on the QC'd data. Bullet 2 drafted by the agent (2026-11-24) from block 2; numbers depend on the platform test. -->
+
+::: {.block .highlight title="Key Findings"}
+- **Hyperspectral helped a little.** Models with hyperspectral information consistently beat models with multispectral bands by 0.01–0.03 in R². Most of that gain came from the PACE versus OLCI product, not extra bands.
+- **Coastal subsurface Chl *a* prediction may be possible.** On the continental slope, the model did about as well (r²) as in the open ocean and predicted integrated Chl *a* best. On the shelf, estimates were poor. This result is very preliminary since our shelf data are currently limited.
+:::

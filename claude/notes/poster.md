@@ -51,3 +51,26 @@ The poster board number arrives by email in mid-November 2026.
   Data, Methods, Results, Conclusions, Next Steps, References,
   Acknowledgements), with dummy text. #3 decides the actual blocks.
 - Logos: none yet. The header has a QR code to the CHLA-Z website on the right.
+
+## Layout changes, 2026-11-24
+
+- **Page-level columns.** `typst-template.typ` sets `columns: ncols` on the
+  page and places the title banner as a top float, instead of wrapping the
+  body in `columns()`. Inside `columns()` a full-width float sits at the
+  bottom of the column container, which ends where the tallest column ends,
+  so it landed mid-page.
+- **`.bottom` div** (poster.lua): full width across all columns at the foot of
+  page 1, no box. Used for Acknowledgements; it must come before the column
+  content in `poster.qmd`.
+- **Untitled blocks**: `::: {.block}` with no `title=` gives a box without a
+  header (the data map, `blocks/data-map.qmd`).
+- **`code-links: false`** in the YAML hides the "Code:" caption links on the
+  printed poster; `script=` stays in the source as a record of which script
+  made each figure.
+- **Spacing**: block inset 0.4 in (was 0.5, so a column is now ~12.1 in; figures are still drawn at 11.8 in and scale up ~2%), gap 0.5 in, `.bottom` clearance 0.4 in.
+  Raw Typst `#v(0.15in)` adds space inside a block (Introduction).
+- **Fitting**: overflow pushes whole blocks into the next column, then onto a
+  page 2 (`pdfinfo poster.pdf | grep Pages`). `pdftotext -bbox` gives block
+  positions in points to measure how much is over.
+- Unused block files kept for their source notes: `existing-approaches.qmd`,
+  `leakage.qmd`, `conclusions.qmd`.

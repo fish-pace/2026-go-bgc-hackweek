@@ -1,0 +1,39 @@
+<!-- Block: 2. Is there hope for coastal regions? (#11). Budget: about 70 words + figure + table.
+     Draft by the agent, 2026-11-24, for Eli to edit. Source: scripts/fig_profiles_by_class.py
+     (prints the table). Run: split-design/runs/platform, design "argo_bias" (QC'd data,
+     fish-pace-datasets#13; all OOI windows; every row predicted as Argo, OOI rows shifted by a
+     per-depth OOI offset: how a map would be made; Eli, 2026-11-24).
+     Table: SOCA2024 metrics (Copernicus QUID 015-010, IV.2): all depths pooled; r² and slope from a
+     linear regression on log10; MAPD and RMSD on linear values. SOCA2024 row: its own validation
+     (random 20% of BGC-Argo profiles, 11,340), open ocean only (product masked to > 1000 m).
+     Not like for like: SOCA adds physics (T/S, SLA, ADT, PAR), an 8-day Rrs median and ~6x more
+     training profiles, and pools depths possibly deeper than 200 m.
+     Integrated Chl a: profiles with >= 10 observed 10 m bins, sum of Chl a x 10 m over them;
+     R² on log10, mean over 5 repeats: open 0.40, slope 0.67, shelf -1.20. Open-ocean R² is not caused by the 24 Argo profiles
+     at the sensor floor (removing them: 0.42); predictions are compressed toward the middle.
+     Rows (profiles or OOI windows) and floats/OOI sites by class, dropped from the caption
+     2026-11-24: open ocean 13,544 (819), slope 5,331 (43), shelf 11,621 (11).
+     Shelf profiles: 92 Argo (7 floats, mostly Baltic); no OOI shelf profiler reaches 10 bins.
+     Below ~20 m near the coast the model mostly predicts each site's average (paper note §6). -->
+
+::: {.block title="2. Predictions in coastal regions"}
+Measured as SOCA2024 validates its open-ocean product, CHLA-Z does about as well (r²) on the
+continental slope as in the open ocean (@tbl-coastal), and it predicts integrated Chl *a*
+best on the slope (@fig-coastal). On the shelf it captures the surface but not the profile:
+predictions are too flat, and few whole shelf profiles exist.
+
+| | r² (log10) | Slope | MAPD | RMSD (mg m⁻³) |
+|---|---:|---:|---:|---:|
+| SOCA2024 (open ocean) | 0.83 | 0.82 | 30% | 0.19 |
+| CHLA-Z open ocean | 0.69 | 0.69 | 43% | 0.22 |
+| CHLA-Z slope | 0.69 | 0.71 | 45% | 0.60 |
+| CHLA-Z shelf | 0.28 | 0.40 | 46% | 0.77 |
+
+: Skill on held-out data with SOCA2024's validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. SOCA2024 row from its own validation. {#tbl-coastal}
+
+```{=typst}
+#v(0.3in)
+```
+
+![Integrated Chl *a* (sum over the observed 10 m bins to 200 m), observed vs predicted, for profiles with at least 10 observed bins, by water depth (ETOPO 2022). Dashed: 1:1; dotted: ±50%. Held-out data, space-time split, BGC-Argo + OOI model.](figures/fig_profiles_by_class.png){#fig-coastal script="scripts/fig_profiles_by_class.py" width="100%"}
+:::

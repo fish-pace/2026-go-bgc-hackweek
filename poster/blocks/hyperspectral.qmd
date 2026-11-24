@@ -1,0 +1,30 @@
+<!-- Integrated column (2026-11-24): same definition as Figure 3, profiles with >= 10 observed
+     bins, Chl a x 10 m summed over them, R² on log10, mean of 5 repeats (was >= 5 contiguous bins).
+     Block: 1. Does hyperspectral help? (#10). Budget: about 90 words + table (5 rows).
+     Draft by the agent, 2026-11-23, for Eli to edit. Numbers: fish-pace-datasets 2026_11_23;
+     poster/analysis/split_design/run_hyperspectral.py, then metrics.py and profile_metrics.py on
+     ~/shared-public/chla-z/split-design/runs/hyperspectral (5 repeats, space-time split, 1° x 30 d).
+     All rows scored on the same held-out Argo profiles that have both sensors (about 4,800).
+     Training profiles (Argo): both sensors 4,936; all PACE 9,542; all OLCI 12,537.
+     Repeat-to-repeat SD of R² is at most 0.007 for Argo, so the 0.01-0.03 gaps are consistent.
+     PACE-11 vs OLCI-11 differ in sensor and processing, not only band set: that is why the text
+     says the gain is mostly "the sensor".
+     OOI left out of the table: every input gives R² < 0 below the surface (0-10 m about 0.5). -->
+
+::: {.block title="1. Does hyperspectral help?"}
+We trained the same model on the same BGC-Argo profiles with three inputs:
+OLCI's 11 bands, the 11 PACE bands nearest them, and all 172 PACE bands. PACE-172
+scores higher than OLCI-11 in every repeat, but only by 0.01–0.03 in R², and
+most of that gain already comes from PACE's 11 bands, which points to the sensor
+rather than the extra bands.
+
+| Input | Trained on | 0–10 m | 50–60 m | 100–110 m | Integrated |
+|---|---|---:|---:|---:|---:|
+| OLCI-11 | Both | 0.75 | 0.57 | 0.39 | 0.27 |
+| PACE-11 | Both | 0.75 | 0.59 | 0.40 | 0.29 |
+| PACE-172 | Both | 0.76 | 0.60 | 0.41 | 0.30 |
+| OLCI-11 | All, 2.5× | 0.76 | 0.58 | 0.40 | 0.29 |
+| PACE-172 | All, 1.9× | **0.77** | **0.61** | **0.42** | **0.32** |
+
+: R² of log10 Chl *a* for BGC-Argo, scored on the same held-out profiles (space-time split, mean of 5 repeats). {#tbl-hyperspectral}
+:::

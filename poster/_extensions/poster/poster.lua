@@ -1,11 +1,17 @@
 -- Turns the poster markup used in poster.qmd into Typst:
 --   ::: {.block title="Methods"}     a titled box; add .highlight for an accent box
 --   ::: {.colbreak}                   start the next column
+--   ::: {.bottom}                     full width across all columns at the foot of the
+--                                     page, no box (Acknowledgements; Eli, 2026-11-24).
+--                                     Put it before the column content so it lands on page 1.
 --   ::: {#refs}                       where the bibliography goes
 --   ![Caption](figures/x.png){script="scripts/x.py"}
---                                     adds a "Code:" link to the script in the caption
+--                                     adds a "Code:" link to the script in the caption,
+--                                     unless the YAML header sets code-links: false
+--                                     (script= then only records which script made the figure)
 
 local code_base_url = ""
+local code_links = true
 local bibliography = {}
 local bibliography_style = nil
 
@@ -14,6 +20,10 @@ local function typst_escape(s)
 end
 
 local function get_meta(meta)
+  local cl = meta["code-links"]
+  if cl ~= nil then
+    code_links = (cl == true) or (pandoc.utils.stringify(cl) == "true")
+  end
   if meta["code-base-url"] then
     code_base_url = pandoc.utils.stringify(meta["code-base-url"])
   end
@@ -61,6 +71,15 @@ local function Div(div)
   if div.classes:includes("colbreak") then
     return pandoc.RawBlock("typst", "#colbreak()")
   end
+  if div.classes:includes("bottom") then
+    -- A float with scope "parent" spans all columns and shortens them to make room.
+    local blocks = pandoc.Blocks({
+      pandoc.RawBlock("typst", "#place(bottom, scope: \"parent\", float: true, clearance: 0.4in)[\n#set text(size: 0.8em)"),
+    })
+    blocks:extend(div.content)
+    blocks:insert(pandoc.RawBlock("typst", "]"))
+    return blocks
+  end
   if div.classes:includes("block") then
     local args = {}
     if div.attributes.title then
@@ -85,7 +104,7 @@ local function Figure(fig)
       script = script or img.attributes.script
     end,
   })
-  if not script then
+  if not script or not code_links then
     return nil
   end
   local link = pandoc.Link(script, code_base_url .. script)

@@ -13,8 +13,8 @@
   fill: if highlight { poster-accent.lighten(88%) } else { white },
   stroke: if highlight { 4pt + poster-accent } else { none },
   radius: 14pt,
-  inset: (x: 0.5in, y: 0.45in),
-  below: 0.6in,
+  inset: (x: 0.5in, y: 0.4in),
+  below: 0.5in,
 )[
   #if title != none {
     block(below: 0.3in)[
@@ -44,6 +44,11 @@
     width: width,
     height: height,
     margin: (x: 1in, top: 0.8in, bottom: 1.2in),
+    // Page-level columns (not columns()), so a full-width float with
+    // scope: "parent" (the .bottom div: Acknowledgements) sits at the foot of
+    // the page. Inside columns() the container ends where the tallest column
+    // ends, so the float landed mid-page (2026-11-24).
+    columns: ncols,
     fill: poster-background,
     numbering: none,
     footer: if footer != none {
@@ -59,6 +64,14 @@
   show heading: set text(fill: poster-primary)
   show heading: set block(above: 0.8em, below: 0.4em)
   show figure.caption: set text(size: 0.8em)
+  // Tables: no grid, a rule under the header row, caption below like figures.
+  set table(
+    stroke: (x, y) => if y == 0 { (bottom: 2pt + poster-primary) },
+    inset: (x: 0.15in, y: 0.07in),
+  )
+  show table: set text(size: 0.85em)
+  show table.cell.where(y: 0): set text(weight: "bold")
+  show figure.where(kind: table): set figure.caption(position: bottom)
   show link: set text(fill: poster-accent.darken(20%))
 
   // Affiliations are numbered in the order they are listed in the YAML.
@@ -74,12 +87,13 @@
     .map(((i, a)) => [#super(str(i + 1))#a.name])
     .join([#h(1em)])
 
-  block(
+  set columns(gutter: 0.7in)
+  // Title banner: a full-width float at the top of page 1.
+  place(top, scope: "parent", float: true, clearance: 0.7in, block(
     width: 100%,
     fill: poster-primary,
     radius: 14pt,
     inset: 0.6in,
-    below: 0.7in,
   )[
     #set text(fill: white)
     #grid(
@@ -98,7 +112,7 @@
         if qr-caption != none { block(above: 0.15in, text(size: 0.8em, qr-caption)) }
       },
     )
-  ]
+  ])
 
-  columns(ncols, gutter: 0.7in, doc)
+  doc
 }

@@ -1,0 +1,16 @@
+<!-- Block: Relation to existing approaches (#12). Budget: about 30 words (now a paragraph,
+     no table: Eli, 2026-11-24). Draft by the agent for Eli to edit.
+     Facts: Copernicus MULTIOBS_GLO_BIO_BGC_3D_REP_015_010, method SOCA2024, QUID issue 5.0
+     (Nov 2025, in references/), section II.2.1; see claude/notes/hackweek-experiments.md.
+     Inputs: Rrs at 412, 443, 490, 555, 670 nm (+ SD of Rrs412), PAR, SLA, ADT, first PC of
+     the T/S profile, day of year, position. 32-MLP ensemble; 58,386 BGC-Argo stations 2010-2024.
+     Weekly, 0.25 deg, masked to water deeper than 1000 m; weekly fields end Dec 2023 (checked
+     with copernicusmarine describe, 2026-11-05), so no overlap with PACE (from March 2024).
+     SOCA2016 (Sauzede et al. 2016) used surface Chl + bbp instead of Rrs. -->
+
+::: {.block title="Relation to existing approaches"}
+The Copernicus Marine 3D chlorophyll product (SOCA2024; Sauzède et al.) predicts 4D Chl *a*
+profiles with neural networks trained on BGC-Argo, from 5-band $R_{rs}$ plus physical
+fields. It is weekly at 0.25°, covers only water deeper than 1000 m, and currently ends in
+December 2023. Our model (CHLA-Z) is very similar and is used to explore whether daily hyperspectral (172 $R_{rs}$ bands) improves 4D Chl *a* estimation and tests prediction in coastal (slope and shelf) regions.
+:::

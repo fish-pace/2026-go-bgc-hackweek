@@ -1,0 +1,246 @@
+# For the paper: leakage, split design, and why OOI fails at new sites
+
+Material Eli wants in the paper but **not on the poster** (decided 2026-11-24).
+The poster shows only the space-time grouped split, as the way leakage was
+handled; no random-split numbers and no out-of-region results.
+
+All numbers: fish-pace-datasets release `2026_11_23`, BRT one model per 10 m
+bin (run.py), R² of log10 Chl *a* on held-out data, mean of 5 repeats unless
+noted. Runs on `~/shared-public/chla-z/split-design/runs/` (`full/`,
+`ooi-windows/`, `window-weights/`); scripts in `poster/analysis/split_design/`.
+
+## 1. Leakage: random rows vs grouped splits (runs/full)
+
+| Data | Split | 0–10 m | 50–60 m | 100–110 m |
+|---|---|---:|---:|---:|
+| Argo | Random rows (80/20) | 0.76 | 0.58 | 0.39 |
+| | Space-time (1° × 30 d) | 0.75 | 0.58 | 0.38 |
+| | Instrument (float) | 0.75 | 0.57 | 0.37 |
+| | New region (10° box) | 0.74 | 0.56 | 0.35 |
+| OOI | Random rows | 0.89 | 0.79 | 0.82 |
+| | Space-time | 0.54 | −0.01 | −0.09 |
+| | Instrument | 0.44 | −0.10 | −0.22 |
+| | Site | 0.43 | −0.08 | −0.20 |
+| | New region | 0.10 | −0.24 | −0.74 |
+| Argo + OOI | Random rows | 0.85 | 0.69 | 0.46 |
+| | Space-time | 0.77 | 0.46 | 0.32 |
+| | New region | 0.70 | 0.39 | 0.23 |
+
+Integrated Chl *a* (profile_metrics.py, ≥ 5 contiguous bins): Argo 0.33 / 0.32 /
+0.26 and OOI 0.80 / 0.18 / −0.36 for random / space-time / new region.
+
+Reading: for Argo the split makes no difference (each float profile is ~10
+days apart and moves). For OOI almost all of the random split's skill is
+leakage: up to eight 3 h windows per instrument-day share one daily PACE pixel,
+so near-copies land on both sides. Pooling Argo and OOI hides it in one number.
+
+## 2. One window per day (runs/ooi-windows, run_windows.py, 3 repeats)
+
+Keeping one fixed 3 h window per OOI instrument-day (night 00–03 or midday
+12–15 solar) gives the same space-time skill as all windows with 1/8 the rows:
+surface R² 0.55 (night), 0.55 (midday), 0.54 (all). The random-split R² falls
+from 0.89 to 0.58–0.65. Caveat: each variant was scored on its own rows. The
+fair comparison (same held-out rows; all / weighted 1/n per day / one random
+window per day) is `run_window_weights.py` → `runs/window-weights`.
+
+Result (2026-11-24, QC'd data, 5 repeats, space-time split, R² of log10):
+the weighting barely matters. Argo scored inside the Argo + OOI model gains
++0.003 to +0.007 with weighted or one-window training (less OOI dominance);
+OOI loses about 0.03 at the surface (0.63 all, 0.60 weighted/one window) and
+about 0.01-0.02 at 20-30 m; pooled R² changes by < 0.01. So the extra windows
+are not only leakage: under a grouped split they add a little OOI skill and
+cost Argo almost nothing. Decision: keep all windows, unweighted.
+
+## 3. Why OOI fails at a new site: per-instrument offsets (surface)
+
+OOI surface Chl *a* tracks PACE `pace_chlor_a` (same pixel and day) about as
+well as Argo does, but each site sits at its own offset (median
+log10 in situ − log10 PACE chlor_a, 0–10 m bin):
+
+| | n | r | offset |
+|---|---:|---:|---:|
+| Argo open ocean | 8,983 | 0.80 | −0.18 |
+| Argo slope | 180 | 0.85 | −0.34 |
+| Argo shelf | 168 | 0.61 | −0.66 |
+| OOI Cabled | 1,262 | 0.74 | +0.03 |
+| OOI Endurance | 2,064 | 0.71 | +0.10 |
+| OOI Pioneer | 6,525 | 0.57 | −0.19 |
+| OOI Irminger | 548 | 0.63 | −0.32 |
+
+Per instrument the offset runs from −0.49 (CE01 shelf) to +0.13 (CE04), a
+factor of about 4. Papa has no 0–10 m data.
+
+The held-out-region bias matches the sign of each site's offset (Irminger reads
+low vs PACE and is over-predicted by +0.36 when held out; Endurance reads high
+and is under-predicted by −0.43; Pioneer −0.19 → +0.18).
+
+Diagnostic: subtracting one constant per instrument from the predictions
+(computed from the test data itself, so an oracle, not a usable correction):
+
+| OOI | as is | one offset per instrument removed |
+|---|---:|---:|
+| 0–10 m, space-time | 0.54 | 0.59 |
+| 0–10 m, new region | 0.10 | 0.46 |
+| 50–60 m, space-time | −0.01 | 0.02 |
+| 50–60 m, new region | −0.24 | −0.15 |
+
+So at the surface the new-site failure is mostly a site-level offset between
+in situ fluorescence Chl *a* and satellite Rrs. Irminger is open ocean and has
+the largest offset, so this is not a coastal effect. Candidate causes, not yet
+separated: OOI factory calibration × the regional fluorescence:Chl ratio
+(`chla_ratio`, median 1.26) vs Argo's adjusted CHLA; or real local bio-optics.
+Practical meaning: a new site needs either consistent calibration or a short
+local record to learn its offset.
+
+Per-location surface R² (OOI-only model): space-time / site / new region —
+Cabled 0.58 / 0.50 / −0.01; Endurance 0.50 / 0.27 / −0.33; Pioneer
+0.31 / 0.22 / −0.21; Irminger 0.19 / −0.27 / −0.27.
+
+## 4. Depth: a coastal effect seen on both platforms
+
+Removing site offsets does not fix 50–60 m, so the loss of skill at depth is a
+separate problem. Argo, which has independent instruments and calibration,
+shows it too near coasts (Argo-only model, space-time / new region):
+
+| Argo | 0–10 m | 50–60 m |
+|---|---:|---:|
+| Open ocean (8,998 surface rows) | 0.75 / 0.74 | 0.59 / 0.58 |
+| Slope (181) | 0.74 / 0.70 | 0.16 / 0.06 |
+| Shelf (171, mostly Baltic) | 0.15 / −0.68 | −0.77 / −3.92 |
+
+Small samples on slope and shelf. Depth class: ETOPO 2022 at the profile
+position (`~/shared-public/chla-z/bathymetry/water_depth_2026_11_23.parquet`).
+
+Open (2026-11-24): whether low R² at depth near coasts is low skill or low
+variance (R² is small when Chl *a* barely varies). Check RMSE/MAE and the SD
+of observed log10 Chl *a* by depth and class, Argo and OOI separately.
+
+## 5. Thin depth bins dropped from the skill-by-depth figure (bloom caveat)
+
+Decided 2026-11-24. `explore_skill_baseline.py` (and the poster Figure 3 built
+from it) draws a depth bin only if it has at least 100 rows and at least 10% of
+the largest bin's row count in the same line (platform × water-depth class).
+On the shelf this drops 10–20 m (332 rows) and 80–110 m (≤ 330), where the
+site mix jumps: most shelf bins have ~4,000 rows, mostly Pioneer, but 10–20 m
+has no Pioneer data, only the four Endurance shelf profilers off Oregon (161
+rows, mostly summer upwelling, up to 32 mg m⁻³) plus Argo shelf floats.
+
+**Caveat (Eli): this may in effect remove outliers.** The dropped 10–20 m shelf
+bin holds real summer blooms, and not being able to predict blooms would be a
+serious limitation. Model errors there were large (shelf MAE about 1.2 mg m⁻³
+at 15 m vs 0.26 at 5 m). Bloom prediction gets its own dedicated test later;
+the paper should report it, not hide it behind the bin rule.
+
+Rules tried and rejected: "no single site > 75% of rows" (Pioneer dominates
+nearly every shelf bin, so it removed the shelf and kept the 10–20 m spike);
+"10% of the median bin" (the many near-empty deep shelf bins pull the median
+down to ~330, so the thin bins passed).
+
+## 6. Error reduction from Rrs vs an average profile (paper figure)
+
+Eli, 2026-11-24: for the poster this is summarized in text; the figure goes in
+the paper. `figs/error_reduction_vs_average_profile.png` (from
+`explore_skill_baseline.py --design all` on `runs/window-weights`: QC'd data,
+all OOI windows, Argo + OOI model, space-time split, 5 repeats, thin-bin rule
+of section 5). Left: MAE (mg m⁻³) with Rrs vs mean observed Chl *a*. Right:
+error reduction = 100 × (1 − MAE with Rrs / MAE of the average profile), where
+the average profile is the geometric-mean Chl *a* per depth bin of each fold's
+training rows: what is known from past in situ data with no satellite.
+
+Why this metric (Eli): R² compares with local variability, so near-coast
+depths look like total failure even where Chl *a* is tiny and the model is
+close; 0.002 vs 0.004 mg m⁻³ is a meaningless miss, 0.02 vs 0.2 is not. And a
+large % reduction alone could be "improved on horrible, still horrible", hence
+the MAE-vs-mean panel.
+
+Error reduction (%), pooled Argo + OOI:
+
+| Depth (m) | Open ocean | Slope | Shelf |
+|---:|---:|---:|---:|
+| 5 | 47 | 44 | 32 |
+| 25 | 49 | 42 | 21 |
+| 55 | 31 | 7 | 4 |
+| 105 | 24 | 11 | – |
+| 155 | 25 | 0 | – |
+
+Pooled vs separate platforms: the pooled line follows Argo in the open ocean
+and OOI on the slope and shelf (row counts). At 75–175 m Argo does better than
+OOI (open ocean 20–30% vs 0–10%; slope 20–30% vs ~5%); see
+`runs/window-weights/figs/skill_baseline_all.png`.
+
+## 7. Is the model just predicting each site's average? (OOI, 2026-11-24)
+
+Model vs two baselines built from the training folds only: each site's
+all-year average and each site's calendar-month average (OOI site = array
+code; runs/window-weights, Argo + OOI model, all windows). R² of log10:
+
+| OOI | Model | Site average | Site × month |
+|---|---:|---:|---:|
+| Shelf 0–10 m | 0.54 | 0.09 | 0.38 |
+| Shelf 20–30 m | 0.02 | 0.00 | 0.03 |
+| Shelf 50–60 m | −0.09 | −0.01 | −0.14 |
+| Slope 0–10 m | 0.50 | −0.02 | 0.07 |
+| Open ocean 20–30 m | 0.44 | −0.03 | −0.07 |
+
+At the surface Rrs beats even the seasonal climatology (real day-to-day
+information). Below ~20 m near the coast the model is no better than the site
+average, and the seasonal cycle does not help either. The apparent shelf skill
+against a global average profile (section 6) is the model learning the site's
+level. Linear-scale view (explore_coastal_depth.py --scale linear): at depth
+both errors and Chl *a* are small, so "R² ≈ 0" costs little in mg m⁻³.
+
+## 8. Platform as an input (run_platform.py, runs/platform, 5 repeats)
+
+| R² (log10) | 0–10 m | 20–30 m | 50–60 m | 100–110 m |
+|---|---:|---:|---:|---:|
+| Argo, with platform input | 0.75 | 0.77 | 0.58 | 0.38 |
+| Argo, no platform input | 0.75 | 0.77 | 0.57 | 0.36 |
+| Argo, as Argo + OOI offset | 0.75 | 0.77 | 0.58 | 0.38 |
+| OOI, with platform input | 0.63 | 0.23 | 0.03 | −0.08 |
+| OOI, no platform input | 0.62 | 0.20 | −0.03 | −0.26 |
+| OOI, as Argo + OOI offset | 0.61 | 0.17 | −0.08 | −0.46 |
+
+Decision (Eli): the poster uses "as Argo + per-depth OOI offset" (design
+`argo_bias`), how a map would be made. For Argo it is identical to the model
+with the platform input. For OOI a single offset per depth cannot replace the
+flag below the surface because offsets differ by site (section 3).
+
+## 9. SOCA2024 metrics by water depth (poster Table 2)
+
+SOCA2024 validates with all depths pooled: r² and slope of a regression of
+predicted on observed log10 Chl *a*, MAPD, RMSD (QUID 015-010 section IV.2;
+random 20% of BGC-Argo profiles, 11,340; open ocean only). Ours, `argo_bias`,
+space-time split, 5 repeats (scripts/fig_profiles_by_class.py):
+
+| | r² | Slope | MAPD | RMSD | rows (floats/sites) |
+|---|---:|---:|---:|---:|---|
+| SOCA2024 | 0.83 | 0.82 | 30% | 0.19 | |
+| Open ocean | 0.69 | 0.69 | 43% | 0.22 | 13,544 (819) |
+| Slope | 0.69 | 0.71 | 45% | 0.60 | 5,331 (43) |
+| Shelf | 0.28 | 0.40 | 46% | 0.77 | 11,621 (11) |
+
+Integrated Chl *a* R² (profiles with ≥ 10 observed bins): open 0.40, slope
+0.67, shelf −1.20 (92 Argo profiles, 7 floats, mostly Baltic; no OOI shelf
+profiler reaches 10 bins). Pooled-depth r² rewards getting the general profile
+shape; our per-depth R² is a harder test. The gap to SOCA is mostly inputs and
+data (physics, 8-day Rrs median, ~6x more profiles), not the split: for Argo
+random and space-time splits give the same skill (section 1).
+
+Peak depth (talk figure, tried for the poster and dropped): open ocean errors
+centre on 0 for peaks above 100 m and run ~30 m shallow for deeper peaks; on
+the slope and shelf nearly all peaks are at the surface, so the boxes collapse.
+
+## 10. Data notes found while making the poster
+
+- 24 Argo profiles sit at the sensor floor (0.000–0.02 mg m⁻³ at every depth;
+  10 from float 2902882). Bad data, but removing them moves open-ocean
+  integrated R² only 0.41 → 0.42. Not excluded; a blanket "max < 0.05" rule
+  would also drop deep single-depth OOI sensors that are legitimately low.
+- The open-ocean integrated scatter shows a second Argo cloud under-predicted
+  at high integrals. Not investigated.
+- Hyperspectral (block 1) on the QC'd data: unchanged at 2 decimals; PACE-172
+  beats OLCI-11 by 0.004–0.035 in every repeat.
+- Physics pilot (OOI only, pre-QC, 2 repeats) is not trustworthy on its own.
+  The Argo GLORYS12 fetch (physics_pilot/extract_glorys_argo.py →
+  ~/shared-public/chla-z/glorys12/argo_profiles) was started 2026-11-24 for a
+  rerun on Argo, OOI and both with the QC exclusion and `argo_bias`.
