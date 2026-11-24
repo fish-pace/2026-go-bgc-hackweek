@@ -1,7 +1,14 @@
-<!-- Block: Acknowledgements (#16). Budget: about 25 words.
-     Hackweek team, funding, data providers.
-     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+<!-- Block: Acknowledgements (#16). Budget: about 25 words (now longer: Eli asked for the
+     participant list, 2026-11-24). Participants and affiliations from the repo README
+     (Collaborators table), shortened to the institution. Workshop name and dates from
+     https://go-bgc.github.io/go-bgc-dataworkshop-2026.github.io/index.html -->
 
 ::: {.block title="Acknowledgements"}
-Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized to this block's
+This project began at the GO-BGC Data and Science Workshop 2026 (Seattle, 17–21 August;
+go-bgc.github.io/go-bgc-dataworkshop-2026.github.io). We thank the Global Ocean
+Biogeochemistry Array (GO-BGC, go-bgc.org) and the workshop organizers. Project
+participants: Andrea Albright (Michigan Technological University), Jodi Brewster
+(University of Miami), Peter Mastnak (Stanford University), Charlie Turner (University of
+California, Davis), Nabir Mamnun (Imperial College London), and Haipeng Zhao (Georgia
+Institute of Technology).
 :::

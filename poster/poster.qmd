@@ -3,21 +3,13 @@ title: "Revealing Subsurface Phytoplankton Structure in the Ocean using Hyperspe
 author:
   - name: Eli Holmes
     affiliations:
-      - ref: noaa
+      - ref: nwfsc
       - ref: uw
-  - name: Co-author Two
-    affiliations:
-      - ref: uw
-  - name: Co-author Three
-    affiliations:
-      - ref: other
 affiliations:
-  - id: noaa
-    name: NOAA Fisheries
+  - id: nwfsc
+    name: Northwest Fisheries Science Center, NOAA Fisheries
   - id: uw
     name: University of Washington
-  - id: other
-    name: Placeholder Institution
 qr: figures/qr_code.svg
 qr-caption: fish-pace.github.io/chla-z
 poster-footer: "AGU26 · Session A43L · Poster board TBD · Contact: eli.holmes@noaa.gov"
