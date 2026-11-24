@@ -1,7 +1,7 @@
 ---
 title: "Revealing Subsurface Phytoplankton Structure in the Ocean using Hyperspectral Ocean Color Data, in-situ Measurements and Machine-Learning"
 author:
-  - name: Eli Holmes
+  - name: Elizabeth Eli Holmes, PhD
     affiliations:
       - ref: nwfsc
       - ref: uw
