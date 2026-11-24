@@ -57,8 +57,12 @@ def score(p: pd.DataFrame, min_n: int = 100, min_frac: float = 0.1) -> pd.DataFr
     p = p.assign(ae_model=(yh - y).abs(), ae_base=(yb - y).abs(), obs=y)
     rows = []
     for (pl, dc, b, r), g in p.groupby(["platform", "depth_class", "bin", "repeat"]):
+        yl, yhl = g["y"], g["yhat"]
+        yv, yhv = 10 ** yl, 10 ** yhl
         rows.append(dict(platform=pl, depth_class=dc, z=int(b.split("_")[1]) + 5, repeat=r, n=len(g),
-                         mae_model=g["ae_model"].mean(), mae_base=g["ae_base"].mean(), mean_obs=g["obs"].mean()))
+                         mae_model=g["ae_model"].mean(), mae_base=g["ae_base"].mean(), mean_obs=g["obs"].mean(),
+                         r2_log=1 - ((yhl - yl) ** 2).sum() / ((yl - yl.mean()) ** 2).sum(),
+                         r2_lin=1 - ((yhv - yv) ** 2).sum() / ((yv - yv.mean()) ** 2).sum()))
     m = pd.DataFrame(rows).groupby(["platform", "depth_class", "z"]).mean(numeric_only=True).reset_index()
     typical = m.groupby(["platform", "depth_class"])["n"].transform("max")
     m = m[(m["n"] >= min_n) & (m["n"] >= min_frac * typical)]
@@ -150,6 +154,34 @@ def main():
     out2 = (args.out or args.run / "figs" / "x").with_name(f"fig3_candidate_{args.design}.png")
     fig.savefig(out2, dpi=90)
     print(out2)
+
+    # Candidate Figure 3, v2 (Eli, 2026-11-24): 2 x 3, columns = open ocean, slope,
+    # shelf; top = MAE with Rrs and mean observed Chl a (mg m^-3); bottom = R², on
+    # log10 or on linear Chl a (one file each, to choose). Pooled Argo + OOI.
+    for r2col, r2lab in [("r2_log", "R² (log$_{10}$ Chl $a$)"), ("r2_lin", "R² (Chl $a$, mg m$^{-3}$)")]:
+        fig, ax = plt.subplots(2, 3, figsize=(11.8, 9), sharey=True)
+        for j, dc in enumerate(CLASSES):
+            d = q[q.depth_class == dc].sort_values("z")
+            c = CLASS_COLORS[dc]
+            ax[0, j].plot(d["mean_obs"], d["z"], ":", lw=2.5, color="0.45", label="mean observed")
+            ax[0, j].plot(d["mae_model"], d["z"], "o-", ms=4, color=c, label="mean absolute error")
+            ax[0, j].set_xlim(left=0)
+            ax[0, j].set_xlabel("Chl $a$ (mg m$^{-3}$)")
+            ax[0, j].set_title(dc)
+            ax[1, j].plot(d[r2col], d["z"], "o-", ms=4, color=c)
+            ax[1, j].axvline(0, color="0.5", lw=0.8)
+            ax[1, j].set_xlim(-0.5, 1)
+            ax[1, j].set_xlabel(r2lab)
+            for i in range(2):
+                ax[i, j].grid(alpha=0.3)
+        for i in range(2):
+            ax[i, 0].set_ylabel("Depth (m)")
+        ax[0, 0].invert_yaxis()
+        ax[0, 0].legend(fontsize=8)
+        fig.tight_layout()
+        out3 = (args.out or args.run / "figs" / "x").with_name(f"fig3_v2_{r2col}_{args.design}.png")
+        fig.savefig(out3, dpi=90)
+        print(out3)
 
 
 if __name__ == "__main__":

@@ -135,3 +135,35 @@ Rules tried and rejected: "no single site > 75% of rows" (Pioneer dominates
 nearly every shelf bin, so it removed the shelf and kept the 10–20 m spike);
 "10% of the median bin" (the many near-empty deep shelf bins pull the median
 down to ~330, so the thin bins passed).
+
+## 6. Error reduction from Rrs vs an average profile (paper figure)
+
+Eli, 2026-11-24: for the poster this is summarized in text; the figure goes in
+the paper. `figs/error_reduction_vs_average_profile.png` (from
+`explore_skill_baseline.py --design all` on `runs/window-weights`: QC'd data,
+all OOI windows, Argo + OOI model, space-time split, 5 repeats, thin-bin rule
+of section 5). Left: MAE (mg m⁻³) with Rrs vs mean observed Chl *a*. Right:
+error reduction = 100 × (1 − MAE with Rrs / MAE of the average profile), where
+the average profile is the geometric-mean Chl *a* per depth bin of each fold's
+training rows: what is known from past in situ data with no satellite.
+
+Why this metric (Eli): R² compares with local variability, so near-coast
+depths look like total failure even where Chl *a* is tiny and the model is
+close; 0.002 vs 0.004 mg m⁻³ is a meaningless miss, 0.02 vs 0.2 is not. And a
+large % reduction alone could be "improved on horrible, still horrible", hence
+the MAE-vs-mean panel.
+
+Error reduction (%), pooled Argo + OOI:
+
+| Depth (m) | Open ocean | Slope | Shelf |
+|---:|---:|---:|---:|
+| 5 | 47 | 44 | 32 |
+| 25 | 49 | 42 | 21 |
+| 55 | 31 | 7 | 4 |
+| 105 | 24 | 11 | – |
+| 155 | 25 | 0 | – |
+
+Pooled vs separate platforms: the pooled line follows Argo in the open ocean
+and OOI on the slope and shelf (row counts). At 75–175 m Argo does better than
+OOI (open ocean 20–30% vs 0–10%; slope 20–30% vs ~5%); see
+`runs/window-weights/figs/skill_baseline_all.png`.
