@@ -74,7 +74,7 @@ local function Div(div)
   if div.classes:includes("bottom") then
     -- A float with scope "parent" spans all columns and shortens them to make room.
     local blocks = pandoc.Blocks({
-      pandoc.RawBlock("typst", "#place(bottom, scope: \"parent\", float: true, clearance: 0.5in)[\n#set text(size: 0.8em)"),
+      pandoc.RawBlock("typst", "#place(bottom, scope: \"parent\", float: true, clearance: 0.4in)[\n#set text(size: 0.8em)"),
     })
     blocks:extend(div.content)
     blocks:insert(pandoc.RawBlock("typst", "]"))

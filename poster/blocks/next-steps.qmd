@@ -19,7 +19,6 @@
 
 ::: {.block title="Next Steps"}
 - **Add ocean physics.** Test reanalysis physics (GLORYS12 temperature structure and
-  mixed-layer depth) as inputs, starting with BGC-Argo. Physics is the main input SOCA2024
-  uses that our model lacks.
+  mixed-layer depth) as inputs, starting with BGC-Argo.
 - **More coastal training data**, from gliders and coastal moorings.
 :::

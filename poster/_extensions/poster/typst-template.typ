@@ -13,8 +13,8 @@
   fill: if highlight { poster-accent.lighten(88%) } else { white },
   stroke: if highlight { 4pt + poster-accent } else { none },
   radius: 14pt,
-  inset: (x: 0.5in, y: 0.45in),
-  below: 0.6in,
+  inset: (x: 0.5in, y: 0.4in),
+  below: 0.5in,
 )[
   #if title != none {
     block(below: 0.3in)[
