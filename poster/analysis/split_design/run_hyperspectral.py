@@ -66,7 +66,7 @@ def build(cache: Path):
     o = load_olci(cache)
     bands = [f"olci_Rrs_{b}" for b in OLCI_BANDS]
     deep = [c for c in chl if 100 <= 0.5 * sum(map(int, c.split("_")[1:])) <= 200]
-    o = o[~run.flag_deep_biofouling(o, deep)]
+    o = o[~run.flag_deep_biofouling(o, deep) & ~run.qc_exclude(o)]
 
     keep = ["profile_id", "platform", "instrument", "time", "lat", "lon"] + chl
     u = pd.concat([d[keep + ["pixel"]], o.loc[~o["profile_id"].isin(d["profile_id"]), keep]], ignore_index=True)

@@ -101,6 +101,23 @@ def flag_deep_biofouling(df, deep_bins, min_valid=5, min_chl=1.0, max_spread=2):
     return (n >= min_valid) & (lo > min_chl) & ((hi - lo) < max_spread)
 
 
+OOI_QC_EXCLUDE = Path(__file__).with_name("ooi_qc_exclude.csv")
+
+
+def qc_exclude(df: pd.DataFrame, id_col: str = "profile_id") -> pd.Series:
+    """True for OOI windows in an instrument-month flagged by ooi_qc_scan.py.
+
+    Added 2026-11-24: the release's only biofouling test (below) misses
+    shallow profilers and fixed single-depth instruments. The list is
+    reviewed by eye; see ooi_qc_scan.py. Absent file = nothing excluded.
+    """
+    if not OOI_QC_EXCLUDE.exists():
+        return pd.Series(False, index=df.index)
+    ex = pd.read_csv(OOI_QC_EXCLUDE, dtype=str)
+    key = df[id_col].astype(str).str.replace(r"(\d{6})\d{2}(T\d{2})?$", r"\1", regex=True)
+    return key.isin(ex["inst"] + "_" + ex["month"])
+
+
 def load(cache: Path) -> tuple[pd.DataFrame, list, list]:
     t = fetch(cache)
     a = t["argo"].rename(columns={"LATITUDE": "lat", "LONGITUDE": "lon", "TIME": "time"})
@@ -127,6 +144,9 @@ def load(cache: Path) -> tuple[pd.DataFrame, list, list]:
     bad = flag_deep_biofouling(d, deep)
     print(f"biofouling flagged: {bad.sum()} of {len(d)}")
     d = d.loc[~bad].reset_index(drop=True)
+    qc = qc_exclude(d)
+    print(f"OOI QC excluded: {qc.sum()} windows ({OOI_QC_EXCLUDE.name})")
+    d = d.loc[~qc].reset_index(drop=True)
 
     # Grouping keys used by the designs.
     d["month"] = pd.to_datetime(d["time"], utc=True).dt.strftime("%Y-%m")
