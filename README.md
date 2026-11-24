@@ -27,32 +27,18 @@ need to share large datasets.
   
 ## Collaborators
 
-| Name                | Role                | Affiliation |
-|---------------------|---------------------|-------------|
-| Elizabeth Eli Holmes      | Project Facilitator | NOAA Fisheries, University of Washington |
-| Andrea       | Participant         | |
-| Jodi       | Participant         | |
-| Peter       | Participant         | |
-| Charlie Turner       | Participant         | University of California, Davis |
-| Nadir       | Participant         | |
-| Haipeng       | Participant         | |
+| Name | ORCID | Affiliation |
+|---|---|---|
+| Elizabeth Eli Holmes | [0000-0001-9128-8393](https://orcid.org/0000-0001-9128-8393) | Northwest Fisheries Science Center, NOAA Fisheries; School of Aquatic and Fishery Sciences, University of Washington (affiliate faculty) |
+| Andrea Albright | [0000-0003-2670-1625](https://orcid.org/0000-0003-2670-1625) | Michigan Tech Research Institute, Michigan Technological University |
+| Jodi Brewster | | Rosenstiel School of Marine, Atmospheric, and Earth Science, University of Miami |
+| Peter Mastnak | | Department of Oceans, Stanford University |
+| Charlie Turner | | University of California, Davis |
+| Nabir Mamnun | [0000-0003-3032-114X](https://orcid.org/0000-0003-3032-114X) | Department of Physics, Imperial College London |
+| Haipeng Zhao | [0000-0001-9142-1684](https://orcid.org/0000-0001-9142-1684) | School of Earth and Atmospheric Sciences, Georgia Institute of Technology |
+| Kai Yang | [0000-0002-1074-3081](https://orcid.org/0000-0002-1074-3081) | State Key Laboratory of Marine Environmental Science, Xiamen University |
 
-## Planning
-
-* Initial idea: "short description"
-* Final presentation
-
-## Background
-
-## Goals
-
-## Datasets
-
-## Workflow/Roadmap
-
-## Results/Findings
-
-## Lessons Learned
+## Results
 
 ## References
 

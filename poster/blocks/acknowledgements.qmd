@@ -4,11 +4,7 @@
      https://go-bgc.github.io/go-bgc-dataworkshop-2026.github.io/index.html -->
 
 ::: {.block title="Acknowledgements"}
-This project began at the GO-BGC Data and Science Workshop 2026 (Seattle, 17–21 August;
-go-bgc.github.io/go-bgc-dataworkshop-2026.github.io). We thank the Global Ocean
-Biogeochemistry Array (GO-BGC, go-bgc.org) and the workshop organizers. Project
-participants: Andrea Albright (Michigan Technological University), Jodi Brewster
-(University of Miami), Peter Mastnak (Stanford University), Charlie Turner (University of
-California, Davis), Nabir Mamnun (Imperial College London), and Haipeng Zhao (Georgia
-Institute of Technology).
+This work was part of project at the GO-BGC Data and Science Workshop 2026 (Seattle, 17–21 August). We thank GO-BGC and the workshop organizers for their support. Project
+members (in addition to EE Holmes): Andrea Albright (Michigan Tech), Jodi Brewster
+(UMiami), Peter Mastnak (Stanford), Charlie Turner (UC Davis), Nabir Mamnun (Imperial College), Haipeng Zhao (Georgia Tech) and Kai Yang (Xiamen Univ).
 :::
