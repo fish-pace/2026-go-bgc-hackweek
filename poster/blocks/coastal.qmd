@@ -30,7 +30,7 @@
 Measured as SOCA2024 validates its open-ocean product, CHLA-Z does about as well (r²) on the
 continental slope as in the open ocean (@tbl-coastal), and it predicts integrated Chl *a*
 best on the slope (@fig-coastal). On the shelf it captures the surface but not the profile:
-predictions are too flat, and few whole shelf profiles exist.
+predictions are often too flat, and few whole shelf profiles exist.
 
 | | r² (log10) | Slope | MAPD | RMSD (mg m⁻³) |
 |---|---:|---:|---:|---:|
