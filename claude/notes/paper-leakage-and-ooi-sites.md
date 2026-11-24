@@ -244,3 +244,36 @@ the slope and shelf nearly all peaks are at the surface, so the boxes collapse.
   The Argo GLORYS12 fetch (physics_pilot/extract_glorys_argo.py →
   ~/shared-public/chla-z/glorys12/argo_profiles) was started 2026-11-24 for a
   rerun on Argo, OOI and both with the QC exclusion and `argo_bias`.
+
+## 11. Gliders as a third platform (poster v2, #22 / PR #25, 2026-11-24)
+
+Release `2026_11_24` (fish-pace-datasets#14; Argo and OOI tables identical to
+`2026_11_23`): 2,289 glider training rows, 20 deployments (Rutgers 10 Slocum,
+Scripps 5 and WHOI 5 Spray). Run: `runs/platform-glider` (`argo_bias`, one
+offset per non-Argo platform). Glider QC scan: 0 of 60 deployment-months
+flagged. Glider Chl *a* is Sauzède only, dark offset not subtracted
+(fish-pace-datasets `claude/notes/chla-z-glider.md`, "Dark offset").
+
+- **Table 2 barely moves** (v1 → v2 r²: open 0.69 → 0.68, slope 0.69 → 0.67,
+  shelf 0.28 → 0.30); the gain is coverage: units shelf 11 → 25, slope 43 → 54.
+- **Shelf integrated R² −1.20 → 0.28 is pooling**, not skill: within platform
+  Argo −1.30 (92), glider 0.02 (65); the two clusters sit at different levels.
+  Slope integrated R² by platform: OOI 0.68, Argo 0.41, glider 0.26. Idea for
+  a fairer shelf measure: #24.
+- **Offsets are stable** (glider 0–10 m −0.057 ± 0.008 log10 over folds and
+  repeats; OOI +0.004). Per-instrument median residual after the offset
+  (0–30 m) has SD 0.20 for Argo floats, 0.16 for glider deployments, 0.16 for
+  OOI instruments: gliders are not worse calibrated than floats as a group.
+  Month-to-month glider changes are mostly which deployments are active.
+- **Calibration vs region, a hint:** California Current deployments differ
+  from −0.21 to +0.13 within one region, while the three ru34 deployments
+  (southern New England) agree (−0.10 to +0.02). With more deployments,
+  repeat the new-region test (section 3) with gliders, or hold out one
+  deployment at a time.
+- **Shelf surface compression** (0–10 m, median predicted/observed): OOI 1.27
+  below 0.5 mg m⁻³, 0.44 at 2–5, 0.27 at 5–10, 0.11 above 10; the 62 OOI
+  windows above 5 are ~1% of shelf surface rows. Blooms: Next Steps.
+- **Example profiles** (new Figure 1): random within the 25th–75th percentile
+  of per-profile RMSE in each class; slope and shelf median RMSE (log10) 0.26
+  and 0.27. A random shelf draw without that rule landed on bloom profiles
+  (76th–95th percentile), which look much worse than typical.
