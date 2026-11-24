@@ -12,5 +12,5 @@
 The Copernicus Marine 3D chlorophyll product (SOCA2024; Sauzède et al.) predicts 4D Chl *a*
 profiles with neural networks trained on BGC-Argo, from 5-band $R_{rs}$ plus physical
 fields. It is weekly at 0.25°, covers only water deeper than 1000 m, and currently ends in
-December 2023. Our model (CHLA-Z) is very similar and is used to explore whether daily hyperspectral (172 $R_{rs}$ bands) improves 4D CHLA estimation and tests prediction in coastal (slope and shelf) regions.
+December 2023. Our model (CHLA-Z) is very similar and is used to explore whether daily hyperspectral (172 $R_{rs}$ bands) improves 4D Chl *a* estimation and tests prediction in coastal (slope and shelf) regions.
 :::

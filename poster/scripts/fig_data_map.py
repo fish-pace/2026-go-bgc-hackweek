@@ -26,7 +26,7 @@ DATA_RELEASE = "2026_11_23"
 BATHY = Path.home() / "shared-public" / "chla-z" / "bathymetry"
 TABLE = BATHY / f"water_depth_{DATA_RELEASE}.parquet"
 OUT = Path(__file__).resolve().parents[1] / "figures" / "fig_data_map.png"
-HEIGHT_IN = 3.9
+HEIGHT_IN = 3.6
 
 # Categorical slots 1-3 of the dataviz reference palette, in fixed order; the
 # first three are the ones that validate for all pairs (scatter/map use).
