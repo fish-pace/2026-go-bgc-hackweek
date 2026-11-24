@@ -14,4 +14,13 @@ below 80 m in the open ocean. Integrated Chl *a* holds up better (R² 0.43 open,
 0.35 slope, 0.33 shelf), because the upper bins carry most of it. Coastal
 water is sampled mostly by fixed moorings, so few whole coastal profiles
 exist to train or test on.
+
+More importantly, ability to predict surface Chl in coastal regions depended on having trained on that region (OOI). In contrast, it was not needed to see areas of open ocean (Argo). Caveat is that we had limited coast sites (5 OOI).
+
+| Data | Split | 0–10 m | 50–60 m | 100–110 m | Integrated |
+|---|---|---:|---:|---:|---:|
+| Argo |  Space-time | 0.75 | 0.58 | 0.38 | 0.32 |
+| | New region | 0.74 | 0.56 | 0.35 | 0.26 |
+| OOI | Space-time | 0.54 | −0.01 | −0.09 | 0.18 |
+| | New region | 0.10 | −0.24 | −0.74 | −0.36 |
 :::

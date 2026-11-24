@@ -3,9 +3,12 @@
 --   ::: {.colbreak}                   start the next column
 --   ::: {#refs}                       where the bibliography goes
 --   ![Caption](figures/x.png){script="scripts/x.py"}
---                                     adds a "Code:" link to the script in the caption
+--                                     adds a "Code:" link to the script in the caption,
+--                                     unless the YAML header sets code-links: false
+--                                     (script= then only records which script made the figure)
 
 local code_base_url = ""
+local code_links = true
 local bibliography = {}
 local bibliography_style = nil
 
@@ -14,6 +17,10 @@ local function typst_escape(s)
 end
 
 local function get_meta(meta)
+  local cl = meta["code-links"]
+  if cl ~= nil then
+    code_links = (cl == true) or (pandoc.utils.stringify(cl) == "true")
+  end
   if meta["code-base-url"] then
     code_base_url = pandoc.utils.stringify(meta["code-base-url"])
   end
@@ -85,7 +92,7 @@ local function Figure(fig)
       script = script or img.attributes.script
     end,
   })
-  if not script then
+  if not script or not code_links then
     return nil
   end
   local link = pandoc.Link(script, code_base_url .. script)
