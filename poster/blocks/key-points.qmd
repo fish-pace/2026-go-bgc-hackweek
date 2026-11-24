@@ -5,5 +5,5 @@
 
 ::: {.block .highlight title="Key Findings"}
 - **Hyperspectral helped a little.** Models with hyperspectral information consistently beat models with multispectral bands by 0.01–0.03 in R². Most of that gain came from the PACE versus OLCI product, not extra bands.
-- **Coastal subsurface Chl *a* prediction may be possible.** On the continental slope, the model did about as well (r²) as in the open ocean and predicted integrated Chl *a* best. On the shelf, estimates were poor. This result is very preliminary since our shelf data are currently very limited.
+- **Coastal subsurface Chl *a* prediction may be possible.** On the continental slope, the model did about as well (r²) as in the open ocean and predicted integrated Chl *a* best. On the shelf, estimates were poor. This result is very preliminary since our shelf data are currently limited.
 :::
