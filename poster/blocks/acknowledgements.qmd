@@ -4,7 +4,7 @@
      https://go-bgc.github.io/go-bgc-dataworkshop-2026.github.io/index.html -->
 
 ::: {.bottom}
-**Acknowledgements.** This work was part of a project at the GO-BGC Data and Science Workshop 2026 (Seattle, 17–21 August). We thank GO-BGC and the workshop organizers for their support. Project
+**Acknowledgements.** This work was part of a project at the GO-BGC Data and Science Workshop 2026 (Seattle, 17–21 August). We thank GO-BGC and the workshop organizers for their support. Data: Argo GDACs, OOI, NASA OB.DAAC, EUMETSAT/Copernicus and NOAA NCEI. Project
 members (in addition to EE Holmes): Andrea Albright (Michigan Tech), Jodi Brewster
 (U. Miami), Peter Mastnak (Stanford), Charlie Turner (UC Davis), Nabir Mamnun (Imperial College), Haipeng Zhao (Georgia Tech) and Kai Yang (Xiamen University).
 :::
