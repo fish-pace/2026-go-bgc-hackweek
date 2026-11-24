@@ -6,7 +6,7 @@
      Physics pilot (GLORYS12, OOI) is in Next Steps, not here, for space. -->
 
 ::: {.block title="2. Is there hope for coastal regions?"}
-![Left: R² by depth for profiles in open-ocean, slope and shelf water (ETOPO 2022 depth); bins with fewer than 3 floats or sites not drawn. Right: integrated Chl *a*, observed vs predicted. Held-out data, space-time split, Argo + OOI model.](figures/fig_coastal_skill.png){#fig-coastal script="scripts/fig_coastal_skill.py" width="100%"}
+![Left: R² by depth for profiles in open-ocean, slope and shelf water (ETOPO 2022 depth); bins with fewer than 3 floats or sites not drawn. Right: integrated Chl *a*, observed vs predicted. Held-out data, space-time split; model trained and scored on Argo + OOI data together.](figures/fig_coastal_skill.png){#fig-coastal script="scripts/fig_coastal_skill.py" width="100%"}
 
 Skill falls with depth everywhere, and faster in shallow water: R² reaches
 about 0 by 20 m on the shelf and by 50 m on the slope, but stays near 0.35
@@ -19,8 +19,10 @@ More importantly, ability to predict surface Chl in coastal regions depended on 
 
 | Data | Split | 0–10 m | 50–60 m | 100–110 m | Integrated |
 |---|---|---:|---:|---:|---:|
-| Argo |  Space-time | 0.75 | 0.58 | 0.38 | 0.32 |
+| Argo | Space-time | 0.75 | 0.58 | 0.38 | 0.32 |
 | | New region | 0.74 | 0.56 | 0.35 | 0.26 |
 | OOI | Space-time | 0.54 | −0.01 | −0.09 | 0.18 |
 | | New region | 0.10 | −0.24 | −0.74 | −0.36 |
+
+: R² of log10 Chl *a* on held-out data, models trained on each platform alone (mean of 5 repeats). Space-time: 1° × 30-day blocks held out; new region: 10° boxes held out. {#tbl-region}
 :::
