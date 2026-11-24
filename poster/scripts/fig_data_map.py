@@ -73,7 +73,7 @@ def scatter_ooi(ax, o, size):
     for cls in reversed(list(CLASSES)):
         s = o[o["depth_class"] == cls]
         ax.scatter(s["lon"], s["lat"], s=size, c=CLASSES[cls][0], marker="D",
-                   edgecolors=INK, lw=1.2, transform=ccrs.PlateCarree(), zorder=5)
+                   edgecolors=INK, lw=0.6, transform=ccrs.PlateCarree(), zorder=5)
 
 
 def glider_tracks(ax, g, lw):
@@ -105,7 +105,7 @@ def main():
     ax.spines["geo"].set_edgecolor(INK_2)
     scatter_argo(ax, a, 3)
     glider_tracks(ax, g, 2.5)
-    scatter_ooi(ax, o, 40)
+    scatter_ooi(ax, o, 28)
     for text, lon, lat, tlon, tlat in ARRAY_LABELS:
         ax.annotate(text, (lon, lat), (tlon, tlat), xycoords=proj._as_mpl_transform(ax),
                     textcoords=proj._as_mpl_transform(ax), ha="center", va="center",
@@ -118,7 +118,7 @@ def main():
     plat_h = [
         Line2D([], [], ls="none", marker="o", ms=6, mfc=INK_2, mec="none",
                label="Argo profile"),
-        Line2D([], [], ls="none", marker="D", ms=8.5, mfc="white", mec=INK, mew=1.2,
+        Line2D([], [], ls="none", marker="D", ms=7, mfc="white", mec=INK, mew=0.7,
                label="OOI instrument"),
         Line2D([], [], color=INK, lw=4.5, label="Glider track"),
     ]
