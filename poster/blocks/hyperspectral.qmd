@@ -1,4 +1,6 @@
-<!-- Block: 1. Does hyperspectral help? (#10). Budget: about 90 words + table (5 rows).
+<!-- Integrated column (2026-11-24): same definition as Figure 3, profiles with >= 10 observed
+     bins, Chl a x 10 m summed over them, R² on log10, mean of 5 repeats (was >= 5 contiguous bins).
+     Block: 1. Does hyperspectral help? (#10). Budget: about 90 words + table (5 rows).
      Draft by the agent, 2026-11-23, for Eli to edit. Numbers: fish-pace-datasets 2026_11_23;
      poster/analysis/split_design/run_hyperspectral.py, then metrics.py and profile_metrics.py on
      ~/shared-public/chla-z/split-design/runs/hyperspectral (5 repeats, space-time split, 1° x 30 d).
@@ -18,11 +20,11 @@ rather than the extra bands.
 
 | Input | Trained on | 0–10 m | 50–60 m | 100–110 m | Integrated |
 |---|---|---:|---:|---:|---:|
-| OLCI-11 | Both | 0.75 | 0.57 | 0.39 | 0.28 |
-| PACE-11 | Both | 0.75 | 0.59 | 0.40 | 0.31 |
-| PACE-172 | Both | 0.76 | 0.60 | 0.41 | 0.32 |
-| OLCI-11 | All, 2.5× | 0.76 | 0.58 | 0.40 | 0.31 |
-| PACE-172 | All, 1.9× | **0.77** | **0.61** | **0.42** | **0.33** |
+| OLCI-11 | Both | 0.75 | 0.57 | 0.39 | 0.27 |
+| PACE-11 | Both | 0.75 | 0.59 | 0.40 | 0.29 |
+| PACE-172 | Both | 0.76 | 0.60 | 0.41 | 0.30 |
+| OLCI-11 | All, 2.5× | 0.76 | 0.58 | 0.40 | 0.29 |
+| PACE-172 | All, 1.9× | **0.77** | **0.61** | **0.42** | **0.32** |
 
 : R² of log10 Chl *a* for BGC-Argo, scored on the same held-out profiles (space-time split, mean of 5 repeats). {#tbl-hyperspectral}
 :::

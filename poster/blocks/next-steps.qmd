@@ -21,4 +21,6 @@
 - **Add ocean physics.** Test reanalysis physics (GLORYS12 temperature structure and
   mixed-layer depth) as inputs, starting with BGC-Argo.
 - **More coastal training data**, from gliders and coastal moorings.
+- **Test bloom prediction.** Blooms were rare in our training data, but are important
+  features to predict.
 :::

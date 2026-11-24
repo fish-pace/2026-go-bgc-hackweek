@@ -2,5 +2,5 @@
      (Eli, 2026-11-24); the Data block refers to it with @fig-data. -->
 
 ::: {.block}
-![Training data. Argo is mainly open ocean > 1000 m, while OOI platforms provide shelf, slope and open-ocean data. Water depth from ETOPO 2022.](figures/fig_data_map.png){#fig-data script="scripts/fig_data_map.py" width="100%"}
+![Training data. BGC-Argo is mainly open ocean > 1000 m, while OOI platforms provide shelf, slope and open-ocean data. Water depth from ETOPO 2022.](figures/fig_data_map.png){#fig-data script="scripts/fig_data_map.py" width="100%"}
 :::

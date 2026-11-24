@@ -17,7 +17,7 @@
      Below ~20 m near the coast the model mostly predicts each site's average (paper note §6). -->
 
 ::: {.block title="2. Predictions in coastal regions"}
-Measured as SOCA2024 validates its open-ocean product, our model does as well on the
+Measured as SOCA2024 validates its open-ocean product, CHLA-Z does about as well (r²) on the
 continental slope as in the open ocean (@tbl-coastal), and it predicts integrated Chl *a*
 best on the slope (@fig-coastal). On the shelf it captures the surface but not the profile:
 predictions are too flat, and few whole shelf profiles exist.
@@ -35,5 +35,5 @@ predictions are too flat, and few whole shelf profiles exist.
 #v(0.3in)
 ```
 
-![Integrated Chl *a* (sum over the observed 10 m bins to 200 m), observed vs predicted, for profiles with at least 10 observed bins, by water depth (ETOPO 2022). Dashed: 1:1; dotted: ±50%. Held-out data, space-time split, Argo + OOI model.](figures/fig_profiles_by_class.png){#fig-coastal script="scripts/fig_profiles_by_class.py" width="100%"}
+![Integrated Chl *a* (sum over the observed 10 m bins to 200 m), observed vs predicted, for profiles with at least 10 observed bins, by water depth (ETOPO 2022). Dashed: 1:1; dotted: ±50%. Held-out data, space-time split, BGC-Argo + OOI model.](figures/fig_profiles_by_class.png){#fig-coastal script="scripts/fig_profiles_by_class.py" width="100%"}
 :::

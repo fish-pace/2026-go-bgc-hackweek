@@ -7,7 +7,7 @@
      2026-11-24; source notes for it are in blocks/existing-approaches.qmd (no longer included). -->
 
 ::: {.block title="Introduction"}
-Resolving the spatiotemporal variability of chlorophyll *a* (Chl *a*) throughout the euphotic zone, including subsurface chlorophyll maxima, helps characterize phytoplankton distributions and constrain estimates of depth-integrated primary production. Previous research (Sauzède et al., 2016, 2025) has established that satellite remote-sensing reflectance ($R_{rs}$) at multiple bands can be used to infer subsurface Chl *a* concentration and locations of subsurface chlorophyll peaks in the open ocean. In this study, we use a similar model ("CHLA-Z") to explore whether hyperspectral information (172 $R_{rs}$ bands from NASA's Plankton, Aerosol, Cloud, ocean Ecosystem (PACE) mission) improves subsurface Chl *a* estimation and whether the approach transfers to coastal waters. 
+Resolving the spatiotemporal variability of chlorophyll *a* (Chl *a*) throughout the euphotic zone, including subsurface chlorophyll maxima, helps characterize phytoplankton distributions and constrain estimates of depth-integrated primary production. Previous research (Sauzède et al., 2016, 2025) has established that satellite remote-sensing reflectance (R~rs~) at multiple bands can be used to infer subsurface Chl *a* concentration and locations of subsurface chlorophyll peaks in the open ocean. In this study, we use a similar model ("CHLA-Z") to explore whether hyperspectral information (172 R~rs~ bands from NASA's Plankton, Aerosol, Cloud, ocean Ecosystem (PACE) mission) improves subsurface Chl *a* estimation and whether the approach transfers to coastal waters. 
 
 ```{=typst}
 #v(0.15in)
@@ -19,7 +19,7 @@ Resolving the spatiotemporal variability of chlorophyll *a* (Chl *a*) throughout
 #v(0.15in)
 ```
 
-**Relation to existing approaches.** The Copernicus Marine 3D chlorophyll product (SOCA2024; Sauzède et al., 2025) predicts weekly 0.25° Chl *a* profiles for water deeper than 1000 m, using neural networks trained on BGC-Argo with 5-band $R_{rs}$ plus physical fields; it currently ends in December 2023. Our aim is not to replace it but to study what $R_{rs}$ alone can tell us about subsurface Chl *a*. CHLA-Z uses daily hyperspectral PACE $R_{rs}$ without physics, adds OOI moorings to BGC-Argo to test the slope and shelf, and uses boosted regression trees.
+**Relation to existing approaches.** The Copernicus Marine 3D chlorophyll product (SOCA2024; Sauzède et al., 2025) predicts weekly 0.25° Chl *a* profiles for water deeper than 1000 m, using neural networks trained on BGC-Argo with 5-band R~rs~ plus physical fields; it currently ends in December 2023. Our aim is not to replace it but to study what R~rs~ alone can tell us about subsurface Chl *a*. CHLA-Z uses daily hyperspectral PACE R~rs~ without physics, adds Ocean Observatories Initiative (OOI) moorings to BGC-Argo to test the slope and shelf, and uses boosted regression trees.
 
 ```{=typst}
 #v(0.3in)
