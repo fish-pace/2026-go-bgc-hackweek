@@ -53,7 +53,9 @@ import pandas as pd
 from joblib import Parallel, delayed
 from sklearn.ensemble import HistGradientBoostingRegressor
 
-DATA_RELEASE = "2026_11_23"
+# 2026_11_24 adds the glider tables (fish-pace-datasets#14); its Argo and OOI
+# tables are identical to 2026_11_23, the release poster v1 was made with.
+DATA_RELEASE = "2026_11_24"
 DATA_URL = (
     "https://raw.githubusercontent.com/fish-pace/fish-pace-datasets/"
     f"{DATA_RELEASE}/datasets/chla_z/data"
@@ -70,12 +72,10 @@ PLATFORM_CODE = {"argo": 0, "ooi": 1, "glider": 2}
 PLATFORMS_V1 = ("argo", "ooi")
 PLATFORMS_V2 = ("argo", "ooi", "glider")
 DEFAULT_CACHE = Path.home() / "shared-public" / "chla-z" / "fish-pace-datasets" / DATA_RELEASE
-# The glider table is not in a release yet (fish-pace-datasets#14). Until it is,
-# it is read from this folder, filled by glider_prerelease.py. When it is
-# released: new DATA_RELEASE, and set this to None.
-GLIDER_PRERELEASE = Path.home() / "shared-public" / "chla-z" / "fish-pace-datasets" / "glider-prerelease"
 # Names outputs that depend on which rows are in the data (water depth table).
-DATA_TAG_V2 = DATA_RELEASE + ("_glider-prerelease" if GLIDER_PRERELEASE else "")
+# Until the release, v2 ran on a pre-release glider copy (tag
+# "2026_11_23_glider-prerelease", runs/platform-glider-prerelease).
+DATA_TAG_V2 = DATA_RELEASE
 DEFAULT_OUT = Path.home() / "shared-public" / "chla-z" / "split-design"
 
 BRT_KW = dict(
@@ -96,12 +96,6 @@ def fetch(cache: Path, platforms=PLATFORMS_V2) -> dict:
     out = {}
     for key in platforms:
         name = TABLES[key]
-        if key == "glider" and GLIDER_PRERELEASE:
-            p = GLIDER_PRERELEASE / name
-            if not p.exists():
-                raise FileNotFoundError(f"{p}: run glider_prerelease.py first")
-            out[key] = pd.read_parquet(p)
-            continue
         p = cache / name
         if not p.exists():
             tmp = p.with_suffix(".part")

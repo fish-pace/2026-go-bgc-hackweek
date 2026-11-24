@@ -29,8 +29,8 @@ from matplotlib.lines import Line2D
 
 from poster_style import COLUMN_WIDTH_IN, DPI, apply_style
 
-# v2 (#22): the table with glider rows (run.DATA_TAG_V2); v1 was "2026_11_23".
-DATA_RELEASE = "2026_11_23_glider-prerelease"
+# v2 (#22): the table with glider rows (run.DATA_TAG_V2); v1 was "2026_11_23" (same Argo, OOI rows).
+DATA_RELEASE = "2026_11_24"
 BATHY = Path.home() / "shared-public" / "chla-z" / "bathymetry"
 TABLE = BATHY / f"water_depth_{DATA_RELEASE}.parquet"
 OUT = Path(__file__).resolve().parents[1] / "figures" / "fig_data_map.png"

@@ -46,7 +46,7 @@ SHARED = Path.home() / "shared-public" / "chla-z"
 # (run_platform.py, design "argo_bias").
 RUN = SHARED / "split-design" / "runs" / "platform-glider"  # v1: runs/platform
 DESIGN = "argo_bias"
-DEPTH = SHARED / "bathymetry" / "water_depth_2026_11_23_glider-prerelease.parquet"  # v1: _2026_11_23
+DEPTH = SHARED / "bathymetry" / "water_depth_2026_11_24.parquet"  # v1: _2026_11_23 (no gliders)
 OUT = Path(__file__).resolve().parents[1] / "figures" / "fig_profiles_by_class.png"
 CLASSES = [("open ocean", "Open ocean > 1000 m"), ("slope", "Slope 200–1000 m"), ("shelf", "Shelf < 200 m")]
 COLORS = {"argo": "#2a78d6", "ooi": "#eb6834", "glider": "#1baf7a"}
