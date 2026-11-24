@@ -18,8 +18,7 @@
 Measured as SOCA2024 validates its open-ocean product, our model does as well on the
 continental slope as in the open ocean (@tbl-coastal), and it predicts integrated Chl *a*
 best on the slope (@fig-coastal). On the shelf it captures the surface but not the profile:
-predictions are too flat, and few whole shelf profiles exist. There is hope for the slope;
-the jury is still out for the shelf.
+predictions are too flat, and few whole shelf profiles exist.
 
 | | r² (log10) | Slope | MAPD | RMSD (mg m⁻³) |
 |---|---:|---:|---:|---:|
@@ -28,7 +27,11 @@ the jury is still out for the shelf.
 | Slope | 0.69 | 0.71 | 45% | 0.60 |
 | Shelf | 0.28 | 0.40 | 46% | 0.77 |
 
-: Skill on held-out data with SOCA2024's validation metrics, all depths pooled. Data: open ocean 13,544 profiles or OOI windows (819 floats or OOI sites); slope 5,331 (43); shelf 11,621 (11). SOCA2024 row from its own validation. {#tbl-coastal}
+: Skill on held-out data with SOCA2024's validation metrics, which pool all depths together. Data: open ocean 13,544 profiles or OOI windows (819 floats or OOI sites); slope 5,331 (43); shelf 11,621 (11). SOCA2024 row from its own validation. {#tbl-coastal}
+
+```{=typst}
+#v(0.3in)
+```
 
 ![Integrated Chl *a* (sum over the observed 10 m bins to 200 m), observed vs predicted, for profiles with at least 10 observed bins, by water depth (ETOPO 2022). Dashed: 1:1; dotted: ±50%. Held-out data, space-time split, Argo + OOI model.](figures/fig_profiles_by_class.png){#fig-coastal script="scripts/fig_profiles_by_class.py" width="100%"}
 :::
