@@ -124,3 +124,24 @@ split by row:
 Same answer as the story's finding 1: hyperspectral PACE does no better than
 the 11 OLCI bands. Deep bins (100–200 m) improve most with the extra data
 (PACE-full R² roughly 0.21–0.41 → 0.30–0.46).
+
+## Suspect OOI data: Pioneer offshore profilers, Aug–Sep 2026 (found 2026-11-24)
+
+`ooi-cp13nopm-wfp01-04-flortk000` and `ooi-cp13sopm-wfp01-04-flortk000` read a
+monthly median of 4–10 mg m⁻³ in August and September 2026, nearly the same at
+20, 50 and 70 m, while PACE `pace_chlor_a` at the site is about 0.22 mg m⁻³. A
+uniform high value through a stratified summer column looks like fouling or a
+calibration problem, not a bloom. The release's biofouling flag
+(`flag_deep_biofouling`, run.py) only looks at 100–200 m bins, which these
+shelf profilers (about 80 m deep at most) don't reach.
+
+360 OOI windows, 5% of shelf rows. In the Argo + OOI space-time run they double
+the shelf RMSE at depth in mg m⁻³ (50–60 m: 1.56 with them, 0.74 without;
+70–80 m: 1.86 vs 0.74); R² on log10 barely changes. They also explain the
+shelf "outlier" Eli saw in the exploratory linear figure
+(`explore_coastal_depth.py --scale linear`).
+
+cp13sopm also has uniform ~2 mg m⁻³ columns in Nov–Dec 2024 and Oct 2025;
+those could be real winter mixing and were not flagged here.
+
+Not fixed yet. The QC belongs in fish-pace-datasets (not edited from here).
