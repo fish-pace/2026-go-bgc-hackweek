@@ -44,6 +44,11 @@
     width: width,
     height: height,
     margin: (x: 1in, top: 0.8in, bottom: 1.2in),
+    // Page-level columns (not columns()), so a full-width float with
+    // scope: "parent" (the .bottom div: Acknowledgements) sits at the foot of
+    // the page. Inside columns() the container ends where the tallest column
+    // ends, so the float landed mid-page (2026-11-24).
+    columns: ncols,
     fill: poster-background,
     numbering: none,
     footer: if footer != none {
@@ -82,12 +87,13 @@
     .map(((i, a)) => [#super(str(i + 1))#a.name])
     .join([#h(1em)])
 
-  block(
+  set columns(gutter: 0.7in)
+  // Title banner: a full-width float at the top of page 1.
+  place(top, scope: "parent", float: true, clearance: 0.7in, block(
     width: 100%,
     fill: poster-primary,
     radius: 14pt,
     inset: 0.6in,
-    below: 0.7in,
   )[
     #set text(fill: white)
     #grid(
@@ -106,7 +112,7 @@
         if qr-caption != none { block(above: 0.15in, text(size: 0.8em, qr-caption)) }
       },
     )
-  ]
+  ])
 
-  columns(ncols, gutter: 0.7in, doc)
+  doc
 }
