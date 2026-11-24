@@ -23,7 +23,7 @@ Eli (2026-11-24) replaced the skill-by-depth figure with:
 
 Predictions: out-of-fold, Argo + OOI model, space-time split (1° x 30 d), QC'd
 data (OOI exclusion, fish-pace-datasets#13), all OOI windows. RUN and DESIGN
-below pick the run; switch them when the platform-input decision is made.
+below pick the run (predicted as Argo plus a per-depth OOI offset).
 Water-depth class: ETOPO 2022 at the profile.
 """
 
@@ -37,8 +37,11 @@ from scipy.ndimage import uniform_filter1d
 from poster_style import COLUMN_WIDTH_IN, DPI, apply_style
 
 SHARED = Path.home() / "shared-public" / "chla-z"
-RUN = SHARED / "split-design" / "runs" / "window-weights"
-DESIGN = "all"
+# Eli, 2026-11-24: the model as a map would use it. Trained with the platform input,
+# every row predicted as Argo, OOI rows then shifted by a per-bin OOI offset
+# (run_platform.py, design "argo_bias").
+RUN = SHARED / "split-design" / "runs" / "platform"
+DESIGN = "argo_bias"
 DEPTH = SHARED / "bathymetry" / "water_depth_2026_11_23.parquet"
 OUT = Path(__file__).resolve().parents[1] / "figures" / "fig_profiles_by_class.png"
 CLASSES = [("open ocean", "Open ocean > 1000 m"), ("slope", "Slope 200–1000 m"), ("shelf", "Shelf < 200 m")]
