@@ -12,9 +12,8 @@ release `2026_11_23`.
 
 ## State (2026-11-24)
 
-**AGU26 poster: version 1 is done** (Eli: "good enough") on branch
-`leakage-split-design` (47 commits ahead of `main`, pushed, **no PR yet**).
-Build: `make` in `poster/` (or `quarto render poster.qmd`); one 42 × 42 in
+**AGU26 poster: version 1 is done** (Eli: "good enough"), merged to `main` in
+PR #21 (2026-11-24). Build: `make` in `poster/` (or `quarto render poster.qmd`); one 42 × 42 in
 page, printing at posternerd.com (PDF accepted). Eli is doing a close read.
 
 Poster structure, settled with Eli on 2026-11-24 (details and why:
@@ -32,15 +31,15 @@ as Argo with a per-depth OOI offset (`run_platform.py`, design `argo_bias`).
 
 ## Open threads
 
-- **Physics rerun** (Eli, "in the morning"): Argo GLORYS12 fetch running on
-  the hub (`physics_pilot/extract_glorys_argo.py`, log
-  `~/shared-public/chla-z/glorys12/argo_fetch.log`; rerun to resume, then
-  `--retry-failed`). Then rerun the physics pilot on Argo, OOI and both with
-  the QC exclusion and `argo_bias`. Not for the poster; Next Steps only.
-- **Bloom prediction test** (Eli): dedicated test later; thin shelf bins
-  holding blooms are dropped from depth figures (paper note §5).
-- **OOI QC in the release**: fish-pace-datasets#13 (Eli fixes it there).
-- **PR** for `leakage-split-design` when Eli says the poster is done.
+- **Poster v2 with glider data** (#22, branch `poster-v2-glider`): add the
+  IOOS Glider DAC tables (fish-pace/fish-pace-datasets#14, not yet released)
+  as a third platform, same analyses. Eli may not keep it. The issue lists the
+  loader, platform-offset, QC, bathymetry and rerun changes.
+- **Physics inputs** (#23, Eli later, not for the poster): Argo GLORYS12
+  fetch on the hub (`physics_pilot/extract_glorys_argo.py`; rerun to resume,
+  then `--retry-failed`), then the pilot rerun with the QC'd data.
+- **Bloom prediction test** (Eli): later; paper note §5.
+- **OOI QC in the release**: fish-pace/fish-pace-datasets#13.
 
 ## Notes
 
