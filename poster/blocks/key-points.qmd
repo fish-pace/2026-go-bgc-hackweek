@@ -1,9 +1,11 @@
 <!-- Block: Key Points (#14). Budget: about 70 words.
      Three findings, one line each.
-     Replace the dummy text; keep within the budget so the poster stays on one page. -->
+     Eli, 2026-11-24: open-ocean skill bullet dropped (known from SOCA). Bullet 1 numbers
+     to recheck after the block 1 rerun on the QC'd data. Bullet 2 pending the new Figure 3. -->
 
 ::: {.block .highlight title="Key Points"}
-- Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized
-- Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized
-- Dummy text sized to this block's budget so the layout can be checked before the real text is written. Dummy text sized
+- Hyperspectral information (172 $R_{rs}$ bands) consistently beats 11 multispectral bands by
+  [0.01–0.03] in R², but most of that gain appears to come from the PACE sensor, not the
+  extra bands.
+- [Coastal bullet: pending the new Figure 3.]
 :::
