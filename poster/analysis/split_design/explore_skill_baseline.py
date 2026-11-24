@@ -17,7 +17,16 @@ Rows (columns = open ocean, slope, shelf by ETOPO 2022 depth):
   3  mean observed Chl a (mg m^-3)
 
 Argo and OOI scored separately (one model trained on both). A point needs
->= 30 rows and >= 3 instruments. Predictions are back-transformed as
+>= --min-n rows (100) and >= --min-frac (10%) of the largest bin's row count in
+its line (platform x water-depth class). Added 2026-11-24 (Eli) to
+drop thin bins whose site mix jumps from the neighbours: on the shelf most
+bins have ~4,000 rows (mostly Pioneer), but 10-20 m has 332 (Endurance shelf
+profilers in summer upwelling plus Argo, no Pioneer) and 80-110 m ~330 or
+fewer. The median (instead of the largest bin) let those through, because
+the many near-empty deep shelf bins pull it down to ~330. A first rule (no site > 75% of rows) backfired: Pioneer dominates
+nearly every shelf bin, so it removed the shelf and kept the 10-20 m spike.
+Caveat, noted for the paper: this can also drop real blooms that few sites
+sampled; bloom prediction gets its own test later. Predictions are back-transformed as
 10**yhat (median-type; no retransformation-bias correction).
 """
 
@@ -38,7 +47,7 @@ COLORS = {"argo": "#1f6fd1", "ooi": "#e4572e", "argo+ooi": "0.2"}
 CLASS_COLORS = {"open ocean": "#1f6fd1", "slope": "#e4572e", "shelf": "#2a9d6f"}
 
 
-def score(p: pd.DataFrame) -> pd.DataFrame:
+def score(p: pd.DataFrame, min_n: int = 100, min_frac: float = 0.1) -> pd.DataFrame:
     # Baseline per (repeat, fold, bin): mean log10 Chl a of the rows NOT in that fold.
     s = p.groupby(["repeat", "bin", "fold"])["y"].agg(["sum", "count"])
     tot = s.groupby(["repeat", "bin"]).transform("sum")
@@ -48,11 +57,11 @@ def score(p: pd.DataFrame) -> pd.DataFrame:
     p = p.assign(ae_model=(yh - y).abs(), ae_base=(yb - y).abs(), obs=y)
     rows = []
     for (pl, dc, b, r), g in p.groupby(["platform", "depth_class", "bin", "repeat"]):
-        if len(g) < 30 or g["instrument"].nunique() < 3:
-            continue
         rows.append(dict(platform=pl, depth_class=dc, z=int(b.split("_")[1]) + 5, repeat=r, n=len(g),
                          mae_model=g["ae_model"].mean(), mae_base=g["ae_base"].mean(), mean_obs=g["obs"].mean()))
     m = pd.DataFrame(rows).groupby(["platform", "depth_class", "z"]).mean(numeric_only=True).reset_index()
+    typical = m.groupby(["platform", "depth_class"])["n"].transform("max")
+    m = m[(m["n"] >= min_n) & (m["n"] >= min_frac * typical)]
     m["skill"] = 1 - m["mae_model"] / m["mae_base"]
     return m
 
@@ -63,6 +72,8 @@ def main():
     ap.add_argument("--pattern", default="both__*__1deg_30d__r*.parquet")
     ap.add_argument("--design", default="all", help="design value to keep (window-weights: all/weighted/oneday)")
     ap.add_argument("--out", type=Path, default=None)
+    ap.add_argument("--min-n", type=int, default=100)
+    ap.add_argument("--min-frac", type=float, default=0.1)
     args = ap.parse_args()
 
     wd = pd.read_parquet(DEPTH, columns=["profile_id", "depth_class"])
@@ -73,7 +84,7 @@ def main():
     p = p.merge(wd, on="profile_id")
     # Pooled line too (Eli: can Argo and OOI be shown together?). The baseline is
     # computed within each scored group, so pooled uses the pooled training mean.
-    m = score(pd.concat([p, p.assign(platform="argo+ooi")], ignore_index=True))
+    m = score(pd.concat([p, p.assign(platform="argo+ooi")], ignore_index=True), args.min_n, args.min_frac)
     (args.out or args.run / "figs" / "x").parent.mkdir(parents=True, exist_ok=True)
     m.to_csv((args.out or args.run / "figs" / "x").with_name(f"skill_baseline_{args.design}.csv"), index=False)
 

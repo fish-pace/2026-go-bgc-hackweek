@@ -114,3 +114,24 @@ position (`~/shared-public/chla-z/bathymetry/water_depth_2026_11_23.parquet`).
 Open (2026-11-24): whether low R² at depth near coasts is low skill or low
 variance (R² is small when Chl *a* barely varies). Check RMSE/MAE and the SD
 of observed log10 Chl *a* by depth and class, Argo and OOI separately.
+
+## 5. Thin depth bins dropped from the skill-by-depth figure (bloom caveat)
+
+Decided 2026-11-24. `explore_skill_baseline.py` (and the poster Figure 3 built
+from it) draws a depth bin only if it has at least 100 rows and at least 10% of
+the largest bin's row count in the same line (platform × water-depth class).
+On the shelf this drops 10–20 m (332 rows) and 80–110 m (≤ 330), where the
+site mix jumps: most shelf bins have ~4,000 rows, mostly Pioneer, but 10–20 m
+has no Pioneer data, only the four Endurance shelf profilers off Oregon (161
+rows, mostly summer upwelling, up to 32 mg m⁻³) plus Argo shelf floats.
+
+**Caveat (Eli): this may in effect remove outliers.** The dropped 10–20 m shelf
+bin holds real summer blooms, and not being able to predict blooms would be a
+serious limitation. Model errors there were large (shelf MAE about 1.2 mg m⁻³
+at 15 m vs 0.26 at 5 m). Bloom prediction gets its own dedicated test later;
+the paper should report it, not hide it behind the bin rule.
+
+Rules tried and rejected: "no single site > 75% of rows" (Pioneer dominates
+nearly every shelf bin, so it removed the shelf and kept the 10–20 m spike);
+"10% of the median bin" (the many near-empty deep shelf bins pull the median
+down to ~330, so the thin bins passed).
