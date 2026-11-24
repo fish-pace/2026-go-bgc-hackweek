@@ -167,3 +167,80 @@ Pooled vs separate platforms: the pooled line follows Argo in the open ocean
 and OOI on the slope and shelf (row counts). At 75–175 m Argo does better than
 OOI (open ocean 20–30% vs 0–10%; slope 20–30% vs ~5%); see
 `runs/window-weights/figs/skill_baseline_all.png`.
+
+## 7. Is the model just predicting each site's average? (OOI, 2026-11-24)
+
+Model vs two baselines built from the training folds only: each site's
+all-year average and each site's calendar-month average (OOI site = array
+code; runs/window-weights, Argo + OOI model, all windows). R² of log10:
+
+| OOI | Model | Site average | Site × month |
+|---|---:|---:|---:|
+| Shelf 0–10 m | 0.54 | 0.09 | 0.38 |
+| Shelf 20–30 m | 0.02 | 0.00 | 0.03 |
+| Shelf 50–60 m | −0.09 | −0.01 | −0.14 |
+| Slope 0–10 m | 0.50 | −0.02 | 0.07 |
+| Open ocean 20–30 m | 0.44 | −0.03 | −0.07 |
+
+At the surface Rrs beats even the seasonal climatology (real day-to-day
+information). Below ~20 m near the coast the model is no better than the site
+average, and the seasonal cycle does not help either. The apparent shelf skill
+against a global average profile (section 6) is the model learning the site's
+level. Linear-scale view (explore_coastal_depth.py --scale linear): at depth
+both errors and Chl *a* are small, so "R² ≈ 0" costs little in mg m⁻³.
+
+## 8. Platform as an input (run_platform.py, runs/platform, 5 repeats)
+
+| R² (log10) | 0–10 m | 20–30 m | 50–60 m | 100–110 m |
+|---|---:|---:|---:|---:|
+| Argo, with platform input | 0.75 | 0.77 | 0.58 | 0.38 |
+| Argo, no platform input | 0.75 | 0.77 | 0.57 | 0.36 |
+| Argo, as Argo + OOI offset | 0.75 | 0.77 | 0.58 | 0.38 |
+| OOI, with platform input | 0.63 | 0.23 | 0.03 | −0.08 |
+| OOI, no platform input | 0.62 | 0.20 | −0.03 | −0.26 |
+| OOI, as Argo + OOI offset | 0.61 | 0.17 | −0.08 | −0.46 |
+
+Decision (Eli): the poster uses "as Argo + per-depth OOI offset" (design
+`argo_bias`), how a map would be made. For Argo it is identical to the model
+with the platform input. For OOI a single offset per depth cannot replace the
+flag below the surface because offsets differ by site (section 3).
+
+## 9. SOCA2024 metrics by water depth (poster Table 2)
+
+SOCA2024 validates with all depths pooled: r² and slope of a regression of
+predicted on observed log10 Chl *a*, MAPD, RMSD (QUID 015-010 section IV.2;
+random 20% of BGC-Argo profiles, 11,340; open ocean only). Ours, `argo_bias`,
+space-time split, 5 repeats (scripts/fig_profiles_by_class.py):
+
+| | r² | Slope | MAPD | RMSD | rows (floats/sites) |
+|---|---:|---:|---:|---:|---|
+| SOCA2024 | 0.83 | 0.82 | 30% | 0.19 | |
+| Open ocean | 0.69 | 0.69 | 43% | 0.22 | 13,544 (819) |
+| Slope | 0.69 | 0.71 | 45% | 0.60 | 5,331 (43) |
+| Shelf | 0.28 | 0.40 | 46% | 0.77 | 11,621 (11) |
+
+Integrated Chl *a* R² (profiles with ≥ 10 observed bins): open 0.40, slope
+0.67, shelf −1.20 (92 Argo profiles, 7 floats, mostly Baltic; no OOI shelf
+profiler reaches 10 bins). Pooled-depth r² rewards getting the general profile
+shape; our per-depth R² is a harder test. The gap to SOCA is mostly inputs and
+data (physics, 8-day Rrs median, ~6x more profiles), not the split: for Argo
+random and space-time splits give the same skill (section 1).
+
+Peak depth (talk figure, tried for the poster and dropped): open ocean errors
+centre on 0 for peaks above 100 m and run ~30 m shallow for deeper peaks; on
+the slope and shelf nearly all peaks are at the surface, so the boxes collapse.
+
+## 10. Data notes found while making the poster
+
+- 24 Argo profiles sit at the sensor floor (0.000–0.02 mg m⁻³ at every depth;
+  10 from float 2902882). Bad data, but removing them moves open-ocean
+  integrated R² only 0.41 → 0.42. Not excluded; a blanket "max < 0.05" rule
+  would also drop deep single-depth OOI sensors that are legitimately low.
+- The open-ocean integrated scatter shows a second Argo cloud under-predicted
+  at high integrals. Not investigated.
+- Hyperspectral (block 1) on the QC'd data: unchanged at 2 decimals; PACE-172
+  beats OLCI-11 by 0.004–0.035 in every repeat.
+- Physics pilot (OOI only, pre-QC, 2 repeats) is not trustworthy on its own.
+  The Argo GLORYS12 fetch (physics_pilot/extract_glorys_argo.py →
+  ~/shared-public/chla-z/glorys12/argo_profiles) was started 2026-11-24 for a
+  rerun on Argo, OOI and both with the QC exclusion and `argo_bias`.

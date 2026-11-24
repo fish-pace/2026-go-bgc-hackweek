@@ -12,7 +12,7 @@ affiliations:
     name: University of Washington
 qr: figures/qr_code.svg
 qr-caption: fish-pace.github.io/chla-z
-poster-footer: "AGU26 · Session A43L · Poster board TBD · Contact: eli.holmes@noaa.gov"
+poster-footer: "AGU26 · Session A43L · Contact: eli.holmes@noaa.gov"
 code-base-url: https://github.com/fish-pace/2026-go-bgc-hackweek/blob/main/poster/
 code-links: false   # no "Code:" in captions on the printed poster; set true to show them
 font-paths: [fonts]
