@@ -35,11 +35,14 @@ so blocks can be written in parallel without conflicts in this file. Space budge
 are in blocks/README.md and in a comment at the top of each block file.
 -->
 
+<!-- Acknowledgements first: a full-width float at the foot of page 1 (see poster.lua .bottom). -->
+{{< include blocks/acknowledgements.qmd >}}
+
 {{< include blocks/key-points.qmd >}}
 
 {{< include blocks/introduction.qmd >}}
 
-{{< include blocks/existing-approaches.qmd >}}
+<!-- Relation to existing approaches: now a paragraph in the Introduction (Eli, 2026-11-24). -->
 
 ::: {.colbreak}
 :::
@@ -60,4 +63,3 @@ are in blocks/README.md and in a comment at the top of each block file.
 <!-- Conclusions: left out for space; Key Points carry the conclusions (Eli to decide). blocks/conclusions.qmd is kept. -->
 <!-- No References block: Eli, 2026-11-23, not needed. -->
 
-{{< include blocks/acknowledgements.qmd >}}

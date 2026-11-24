@@ -1,12 +1,9 @@
 <!-- Block: Key Points (#14). Budget: about 70 words.
-     Three findings, one line each.
+     Three findings, one line each. No header (Eli, 2026-11-24): the colored box is enough.
      Eli, 2026-11-24: open-ocean skill bullet dropped (known from SOCA). Bullet 1 numbers
      to recheck after the block 1 rerun on the QC'd data. Bullet 2 drafted by the agent (2026-11-24) from block 2; numbers depend on the platform test. -->
 
-::: {.block .highlight title="Key Points"}
-- Hyperspectral information (172 $R_{rs}$ bands) consistently beats 11 multispectral bands by
-  [0.01–0.03] in R², but most of that gain appears to come from the PACE versus OLCI sensors or their L3 products, not the extra bands.
-- Near the coast there is hope for the continental slope: on SOCA2024's validation metrics
-  the model does as well there as in the open ocean, and predicts integrated Chl *a* best
-  there. On the shelf the jury is still out.
+::: {.block .highlight}
+- Hyperspectral helped a little: Models with hyperspectral information consistently beat models with multispectral bands by [0.01–0.03] in R². Most of that gain came from the PACE versus OLCI product, not extra bands.
+- Coastal 4D Chl may be possible: On the continental slope, the model did almost as well as in the open ocean and predicted integrated Chl *a* best. On the shelf estimates were poor though our data are extremely limited currently.
 :::

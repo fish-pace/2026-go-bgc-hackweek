@@ -1,6 +1,9 @@
 -- Turns the poster markup used in poster.qmd into Typst:
 --   ::: {.block title="Methods"}     a titled box; add .highlight for an accent box
 --   ::: {.colbreak}                   start the next column
+--   ::: {.bottom}                     full width across all columns at the foot of the
+--                                     page, no box (Acknowledgements; Eli, 2026-11-24).
+--                                     Put it before the column content so it lands on page 1.
 --   ::: {#refs}                       where the bibliography goes
 --   ![Caption](figures/x.png){script="scripts/x.py"}
 --                                     adds a "Code:" link to the script in the caption,
@@ -67,6 +70,15 @@ local function Div(div)
   end
   if div.classes:includes("colbreak") then
     return pandoc.RawBlock("typst", "#colbreak()")
+  end
+  if div.classes:includes("bottom") then
+    -- A float with scope "parent" spans all columns and shortens them to make room.
+    local blocks = pandoc.Blocks({
+      pandoc.RawBlock("typst", "#place(bottom, scope: \"parent\", float: true, clearance: 0.5in)[\n#set text(size: 0.8em)"),
+    })
+    blocks:extend(div.content)
+    blocks:insert(pandoc.RawBlock("typst", "]"))
+    return blocks
   end
   if div.classes:includes("block") then
     local args = {}

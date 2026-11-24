@@ -1,10 +1,10 @@
-<!-- Block: Acknowledgements (#16). Budget: about 25 words (now longer: Eli asked for the
+<!-- Block: Acknowledgements (#16). Full width at the foot of the page, no box (Eli, 2026-11-24). Budget: about 25 words (now longer: Eli asked for the
      participant list, 2026-11-24). Participants and affiliations from the repo README
      (Collaborators table), shortened to the institution. Workshop name and dates from
      https://go-bgc.github.io/go-bgc-dataworkshop-2026.github.io/index.html -->
 
-::: {.block title="Acknowledgements"}
-This work was part of a project at the GO-BGC Data and Science Workshop 2026 (Seattle, 17–21 August). We thank GO-BGC and the workshop organizers for their support. Project
+::: {.bottom}
+**Acknowledgements.** This work was part of a project at the GO-BGC Data and Science Workshop 2026 (Seattle, 17–21 August). We thank GO-BGC and the workshop organizers for their support. Project
 members (in addition to EE Holmes): Andrea Albright (Michigan Tech), Jodi Brewster
 (U. Miami), Peter Mastnak (Stanford), Charlie Turner (UC Davis), Nabir Mamnun (Imperial College), Haipeng Zhao (Georgia Tech) and Kai Yang (Xiamen University).
 :::
