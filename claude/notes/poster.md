@@ -67,7 +67,7 @@ The poster board number arrives by email in mid-November 2026.
 - **`code-links: false`** in the YAML hides the "Code:" caption links on the
   printed poster; `script=` stays in the source as a record of which script
   made each figure.
-- **Spacing**: block inset 0.4 in, gap 0.5 in, `.bottom` clearance 0.4 in.
+- **Spacing**: block inset 0.4 in (was 0.5, so a column is now ~12.1 in; figures are still drawn at 11.8 in and scale up ~2%), gap 0.5 in, `.bottom` clearance 0.4 in.
   Raw Typst `#v(0.15in)` adds space inside a block (Introduction).
 - **Fitting**: overflow pushes whole blocks into the next column, then onto a
   page 2 (`pdfinfo poster.pdf | grep Pages`). `pdftotext -bbox` gives block
