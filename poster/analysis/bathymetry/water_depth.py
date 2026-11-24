@@ -17,12 +17,14 @@ depth_class uses water_depth_m: shelf < 200 m, slope 200-1000 m, open ocean
 right at the coast) is kept with its negative depth and classed as shelf.
 
 Positions are fetched in chunks; each chunk is written to its own file in
-CACHE and skipped on a rerun, and each request is retried with backoff, so
+CACHE, and a rerun fetches only the positions no cached chunk holds (so new
+rows, such as the v2 gliders, add chunks without refetching the rest), and each request is retried with backoff, so
 the script can be stopped and restarted unattended.
 
     python poster/analysis/bathymetry/water_depth.py
 """
 
+import hashlib
 import json
 import sys
 import time
@@ -48,7 +50,7 @@ SOURCE = {
     "bathymetry_access": f"{ERDDAP}/{DATASET} (NOAA CoastWatch West Coast ERDDAP)",
 }
 OUT_DIR = Path.home() / "shared-public" / "chla-z" / "bathymetry"
-OUT = OUT_DIR / f"water_depth_{run.DATA_RELEASE}.parquet"
+OUT = OUT_DIR / f"water_depth_{run.DATA_TAG_V2}.parquet"
 CACHE = OUT_DIR / "cache" / DATASET
 
 # Half of a PACE L3 4 km pixel (1/24 degree).
@@ -80,10 +82,11 @@ def fetch_box(lat: float, lon: float) -> tuple[float, float]:
     return -float(box.loc[i, "z"]), -float(box["z"].median())
 
 
-def fetch_chunk(k: int, pos: pd.DataFrame) -> pd.DataFrame:
-    path = CACHE / f"chunk_{k:04d}.parquet"
-    if path.exists():
-        return pd.read_parquet(path)
+def fetch_chunk(pos: pd.DataFrame) -> pd.DataFrame:
+    # Named by its positions, not its index: on a rerun with new rows the
+    # missing positions form new chunks, and no name can hold other positions.
+    h = hashlib.sha1(pos[["lat", "lon"]].to_numpy().tobytes()).hexdigest()[:16]
+    path = CACHE / f"pos_{h}.parquet"
     with ThreadPoolExecutor(WORKERS) as ex:
         res = list(ex.map(fetch_box, pos["lat"], pos["lon"]))
     out = pos.assign(
@@ -104,21 +107,25 @@ def depth_class(z: pd.Series) -> pd.Series:
 
 def main():
     CACHE.mkdir(parents=True, exist_ok=True)
-    d, _, _ = run.load(run.DEFAULT_CACHE)
+    d, _, _ = run.load(run.DEFAULT_CACHE, run.PLATFORMS_V2)
     d["lon"] = d["lon180"]  # ETOPO is -180..180
 
-    # Positions are sorted so chunk k always holds the same positions on a rerun.
     pos = (
         d[["lat", "lon"]].round(5).drop_duplicates().sort_values(["lat", "lon"]).reset_index(drop=True)
     )
-    n_chunks = int(np.ceil(len(pos) / CHUNK))
-    print(f"{len(d)} rows, {len(pos)} distinct positions, {n_chunks} chunks of {CHUNK}")
-    parts = []
+    cached = [pd.read_parquet(f) for f in sorted(CACHE.glob("*.parquet"))]
+    done = pd.concat(cached, ignore_index=True).drop_duplicates(["lat", "lon"]) if cached else None
+    todo = pos if done is None else pos.merge(done[["lat", "lon"]], how="left", indicator=True).query(
+        "_merge == 'left_only'")[["lat", "lon"]].reset_index(drop=True)
+    n_chunks = int(np.ceil(len(todo) / CHUNK))
+    print(f"{len(d)} rows, {len(pos)} distinct positions, {len(todo)} to fetch in {n_chunks} chunks of {CHUNK}")
+    parts = [] if done is None else [done]
     for k in range(n_chunks):
         t0 = time.time()
-        parts.append(fetch_chunk(k, pos.iloc[k * CHUNK : (k + 1) * CHUNK]))
+        parts.append(fetch_chunk(todo.iloc[k * CHUNK : (k + 1) * CHUNK]))
         print(f"chunk {k + 1}/{n_chunks} {time.time() - t0:.1f}s", flush=True)
-    depth = pd.concat(parts, ignore_index=True)
+    depth = pd.concat(parts, ignore_index=True).drop_duplicates(["lat", "lon"])
+    depth = pos.merge(depth, on=["lat", "lon"], how="left")
 
     key = d[["lat", "lon"]].round(5)
     t = (
@@ -132,7 +139,7 @@ def main():
 
     meta = {
         **SOURCE,
-        "data_release": f"fish-pace-datasets {run.DATA_RELEASE}",
+        "data_release": f"fish-pace-datasets {run.DATA_TAG_V2}",
         "water_depth_m": "depth (m, positive down) of the ETOPO 2022 15-arcsec cell nearest the profile",
         "water_depth_pixel_median_m": "median ETOPO 2022 depth over a 1/24 degree box centred on the profile",
         "depth_class": "shelf < 200 m, slope 200-1000 m, open ocean > 1000 m (from water_depth_m)",
@@ -147,7 +154,7 @@ def main():
     (OUT_DIR / "README.md").write_text(
         f"# Water depth under the CHLA-Z training profiles\n\n"
         f"`{OUT.name}`: one row per training row of fish-pace-datasets release "
-        f"`{run.DATA_RELEASE}` (after the Rrs and biofouling filters).\n\n"
+        f"`{run.DATA_TAG_V2}` (after the Rrs and biofouling filters).\n\n"
         + "".join(f"- **{k}**: {v}\n" for k, v in meta.items())
         + "\nThe same metadata is in the parquet schema metadata under the key `chla_z`.\n"
     )
@@ -156,7 +163,7 @@ def main():
 
 
 def summary(t: pd.DataFrame):
-    """Rows and independent units per class (Argo: floats; OOI: PACE pixels = sites)."""
+    """Rows and independent units per class (Argo: floats; OOI: PACE pixels = sites; gliders: deployments)."""
     cls = pd.Categorical(t["depth_class"], ["shelf", "slope", "open ocean"], ordered=True)
     g = t.assign(depth_class=cls).groupby(["depth_class", "platform"], observed=True)
     s = pd.DataFrame({"rows": g.size(), "instruments": g["instrument"].nunique(), "sites": g["pixel"].nunique()})

@@ -28,6 +28,13 @@ gets one out-of-fold prediction per repeat. Groups are shuffled per repeat and
 assigned to folds greedily by row count, which keeps folds near 20% even when
 groups differ a lot in size (OOI sites do).
 
+Platforms (poster v2, #22): Argo, OOI and IOOS gliders. The model input
+`type` is a platform code, 0 Argo, 1 OOI, 2 glider; it was a 0/1 OOI flag in
+v1, and the code keeps Argo and OOI rows exactly as they were. A tree can
+isolate any of the three codes in two splits, so the order does not matter.
+Glider instrument = deployment (dataset id), which is also its `pixel` unit,
+as a float is for Argo (a glider moves, so it has no fixed PACE pixel).
+
 Model settings and the biofouling filter are those of
 contributor_folders/nama/chla_z_uq.ipynb.
 """
@@ -46,7 +53,9 @@ import pandas as pd
 from joblib import Parallel, delayed
 from sklearn.ensemble import HistGradientBoostingRegressor
 
-DATA_RELEASE = "2026_11_23"
+# 2026_11_24 adds the glider tables (fish-pace-datasets#14); its Argo and OOI
+# tables are identical to 2026_11_23, the release poster v1 was made with.
+DATA_RELEASE = "2026_11_24"
 DATA_URL = (
     "https://raw.githubusercontent.com/fish-pace/fish-pace-datasets/"
     f"{DATA_RELEASE}/datasets/chla_z/data"
@@ -54,8 +63,19 @@ DATA_URL = (
 TABLES = {
     "argo": "CHLA_argo_profiles_plus_PACE.parquet",
     "ooi": "CHLA_ooi_profiles_plus_PACE.parquet",
+    "glider": "CHLA_glider_profiles_plus_PACE.parquet",
 }
+PLATFORM_CODE = {"argo": 0, "ooi": 1, "glider": 2}
+# load() defaults to the v1 platforms so that the analyses that stay as they
+# were (block 1 hyperspectral, window tests, physics pilot) do not pick up
+# gliders; the v2 scripts (run_platform.py, water_depth.py) ask for these:
+PLATFORMS_V1 = ("argo", "ooi")
+PLATFORMS_V2 = ("argo", "ooi", "glider")
 DEFAULT_CACHE = Path.home() / "shared-public" / "chla-z" / "fish-pace-datasets" / DATA_RELEASE
+# Names outputs that depend on which rows are in the data (water depth table).
+# Until the release, v2 ran on a pre-release glider copy (tag
+# "2026_11_23_glider-prerelease", runs/platform-glider-prerelease).
+DATA_TAG_V2 = DATA_RELEASE
 DEFAULT_OUT = Path.home() / "shared-public" / "chla-z" / "split-design"
 
 BRT_KW = dict(
@@ -71,10 +91,11 @@ N_FOLDS = 5
 # --------------------------------------------------------------------- data
 
 
-def fetch(cache: Path) -> dict:
+def fetch(cache: Path, platforms=PLATFORMS_V2) -> dict:
     cache.mkdir(parents=True, exist_ok=True)
     out = {}
-    for key, name in TABLES.items():
+    for key in platforms:
+        name = TABLES[key]
         p = cache / name
         if not p.exists():
             tmp = p.with_suffix(".part")
@@ -101,25 +122,27 @@ def flag_deep_biofouling(df, deep_bins, min_valid=5, min_chl=1.0, max_spread=2):
     return (n >= min_valid) & (lo > min_chl) & ((hi - lo) < max_spread)
 
 
-OOI_QC_EXCLUDE = Path(__file__).with_name("ooi_qc_exclude.csv")
+QC_EXCLUDE = [Path(__file__).with_name(f"{p}_qc_exclude.csv") for p in ("ooi", "glider")]
 
 
 def qc_exclude(df: pd.DataFrame, id_col: str = "profile_id") -> pd.Series:
-    """True for OOI windows in an instrument-month flagged by ooi_qc_scan.py.
+    """True for windows in an instrument-month flagged by ooi_qc_scan.py.
 
     Added 2026-11-24: the release's only biofouling test (below) misses
-    shallow profilers and fixed single-depth instruments. The list is
-    reviewed by eye; see ooi_qc_scan.py. Absent file = nothing excluded.
+    shallow profilers and fixed single-depth instruments. The lists (one per
+    platform: OOI instruments, glider deployments) are reviewed by eye; see
+    ooi_qc_scan.py. Absent file = nothing excluded for that platform.
     """
-    if not OOI_QC_EXCLUDE.exists():
+    ex = [pd.read_csv(f, dtype=str) for f in QC_EXCLUDE if f.exists()]
+    if not ex:
         return pd.Series(False, index=df.index)
-    ex = pd.read_csv(OOI_QC_EXCLUDE, dtype=str)
+    ex = pd.concat(ex)
     key = df[id_col].astype(str).str.replace(r"(\d{6})\d{2}(T\d{2})?$", r"\1", regex=True)
     return key.isin(ex["inst"] + "_" + ex["month"])
 
 
-def load(cache: Path) -> tuple[pd.DataFrame, list, list]:
-    t = fetch(cache)
+def load(cache: Path, platforms=PLATFORMS_V1) -> tuple[pd.DataFrame, list, list]:
+    t = fetch(cache, platforms)
     a = t["argo"].rename(columns={"LATITUDE": "lat", "LONGITUDE": "lon", "TIME": "time"})
     o = t["ooi"]
     rrs = [c for c in o.columns if c.startswith("pace_Rrs_") and c[-1].isdigit()]
@@ -135,17 +158,22 @@ def load(cache: Path) -> tuple[pd.DataFrame, list, list]:
         # profile_id is <instrument>_<YYYYMMDD>T<HH> for the 3 h windows.
         instrument=o["profile_id"].astype(str).str.replace(r"_\d{8}(T\d{2})?$", "", regex=True),
     )
-    d = pd.concat([a[keep + ["platform", "instrument"]], o[keep + ["platform", "instrument"]]], ignore_index=True)
+    # Glider profile_id is <dataset id>_<YYYYMMDD>T<HH>; dataset id = deployment.
+    parts = [a, o]
+    if "glider" in platforms:
+        g = t["glider"]
+        parts.append(g.assign(platform="glider", instrument="glider-" + g["dataset_id"].astype(str)))
+    d = pd.concat([x[keep + ["platform", "instrument"]] for x in parts], ignore_index=True)
     d = d.dropna(subset=rrs, how="all")
     d["solar_hour"] = solar_hour(d["time"], d["lon"])
-    d["type"] = (d["platform"] == "ooi").astype(int)
+    d["type"] = d["platform"].map(PLATFORM_CODE).astype(int)
 
     deep = [c for c in chl if 100 <= 0.5 * sum(map(int, c.split("_")[1:])) <= 200]
     bad = flag_deep_biofouling(d, deep)
     print(f"biofouling flagged: {bad.sum()} of {len(d)}")
     d = d.loc[~bad].reset_index(drop=True)
     qc = qc_exclude(d)
-    print(f"OOI QC excluded: {qc.sum()} windows ({OOI_QC_EXCLUDE.name})")
+    print(f"QC excluded: {qc.sum()} windows ({', '.join(f.name for f in QC_EXCLUDE if f.exists())})")
     d = d.loc[~qc].reset_index(drop=True)
 
     # Grouping keys used by the designs.
@@ -226,7 +254,7 @@ def fit_predict(X, y, train, test, seed):
 
 
 def run_unit(d, feats, bins, dataset, design, variant, rep, out: Path, n_jobs):
-    sub = d if dataset == "both" else d[d["platform"] == dataset]
+    sub = d if dataset == "both" else d[d["platform"] == dataset]  # "both" = all platforms
     sub = sub.reset_index(drop=True)
     seed = 1000 + rep
     folds = folds_for(sub, design, variant, seed)
@@ -283,6 +311,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT / "runs" / "full")
     ap.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
+    ap.add_argument("--platforms", nargs="+", default=list(PLATFORMS_V1), help="rows to load")
     ap.add_argument("--datasets", nargs="+", default=["argo", "ooi", "both"])
     ap.add_argument(
         "--designs", nargs="+", default=["row", "period", "instrument", "site", "spacetime", "region"]
@@ -297,10 +326,10 @@ def main():
     ap.add_argument("--shard", default="0/1", help="i/n: run every n-th unit starting at i")
     args = ap.parse_args()
 
-    d, feats, chl = load(args.cache)
+    d, feats, chl = load(args.cache, args.platforms)
     bins = chl if args.bins == "all" else chl[::2]
     (args.out / "preds").mkdir(parents=True, exist_ok=True)
-    print(f"rows {len(d)}: argo {sum(d.platform == 'argo')}, ooi {sum(d.platform == 'ooi')}; bins {len(bins)}")
+    print(f"rows {len(d)}: {d.platform.value_counts().to_dict()}; bins {len(bins)}")
 
     i, n = map(int, args.shard.split("/"))
     todo = list(units(args))[i::n]

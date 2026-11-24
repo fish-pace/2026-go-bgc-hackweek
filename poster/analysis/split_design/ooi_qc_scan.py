@@ -24,13 +24,23 @@ median). Tests, each on monthly medians:
         3x PACE chlor_a. Winter mixing can make a uniform column, but not one
         far above the surface value.
 
-A month needs >= 10 windows to be tested. Output (next to the release cache
-in the split-design folder): ooi_qc_months.csv (all diagnostics),
-ooi_qc_flags.csv (flagged instrument-months), and ooi_qc_scan.png (monthly
-series per instrument, flagged months shaded) for checking by eye.
+Gliders (poster v2, #22; `--platform glider`): the same tests, with the
+deployment as the instrument. A glider moves, so its "own baseline" is the
+deployment's median relation to PACE over the region it covers; deployments
+stay within one region (fish-pace-datasets claude/notes/chla-z-glider.md).
+The glider release already replaced deployments that looked wrong as a whole,
+so this scan is for shorter episodes.
+
+A month needs >= 10 windows to be tested. Output (in the split-design folder,
+<platform>-qc/): <platform>_qc_months.csv (all diagnostics),
+<platform>_qc_flags.csv (flagged instrument-months), and
+<platform>_qc_scan.png (monthly series per instrument, flagged months
+shaded) for checking by eye. The reviewed list, <platform>_qc_exclude.csv,
+sits next to this script and is read by run.load.
 """
 
 import argparse
+import re
 from pathlib import Path
 
 import matplotlib
@@ -53,27 +63,29 @@ MIN_N = 10
 
 # Flags checked by eye on ooi_qc_scan.png (Eli asked to drop anything wonky,
 # 2026-11-24). These three look natural, so they are kept in the data:
-REVIEWED_KEEP = {
+REVIEWED_KEEP = {"ooi": {
     ("ooi-cp10cnsm-rid27-02-flortd000", "202502"):
         "low vs PACE, but all three Pioneer surface moorings read low that month: likely winter satellite bias",
     ("ooi-gi01sumo-rii11-02-flordg032", "202502"):
         "70 m sensor in Irminger winter mixing; in situ and PACE both low",
     ("ooi-cp14nepm-wfp01-04-flortk000", "202408"):
         "20-30 m high vs PACE but 100-200 m floor normal: likely a subsurface maximum",
-}
-EXCLUDE_FILE = Path(__file__).with_name("ooi_qc_exclude.csv")
+}, "glider": {}}
 
 
-def load_ooi(cache: Path) -> pd.DataFrame:
-    run.fetch(cache)  # downloads the release tables if not cached
-    o = pd.read_parquet(cache / "CHLA_ooi_profiles_plus_PACE.parquet")
+def exclude_file(platform: str) -> Path:
+    return Path(__file__).with_name(f"{platform}_qc_exclude.csv")
+
+
+def load(cache: Path, platform: str) -> pd.DataFrame:
+    o = run.fetch(cache, [platform])[platform]  # downloads the release tables if not cached
     o["inst"] = o["profile_id"].astype(str).str.replace(r"_\d{8}(T\d{2})?$", "", regex=True)
     o["month"] = o["profile_id"].astype(str).str.extract(r"_(\d{6})\d{2}")[0]
     return o
 
 
 def scan(o: pd.DataFrame):
-    bins = [c for c in o.columns if c.startswith("CHLA_")]
+    bins = [c for c in o.columns if re.fullmatch(r"CHLA_\d+_\d+", c)]  # not CHLA_FLUOR_* (gliders)
     top = {b: int(b.split("_")[1]) for b in bins}
     rows = []
     for inst, g in o.groupby("inst"):
@@ -107,7 +119,7 @@ def scan(o: pd.DataFrame):
     return m
 
 
-def plot(m: pd.DataFrame, out: Path):
+def plot(m: pd.DataFrame, out: Path, platform: str):
     insts = sorted(m["inst"].unique())
     nc = 5
     nr = int(np.ceil(len(insts) / nc))
@@ -128,7 +140,7 @@ def plot(m: pd.DataFrame, out: Path):
     for a in ax.flat[len(insts):]:
         a.axis("off")
     ax[0, 0].legend(fontsize=6)
-    fig.suptitle("OOI monthly medians; orange = flagged month", fontsize=11)
+    fig.suptitle(f"{platform.upper() if platform == 'ooi' else platform.capitalize()} monthly medians; orange = flagged month", fontsize=11)
     fig.tight_layout()
     fig.savefig(out, dpi=80)
 
@@ -136,18 +148,21 @@ def plot(m: pd.DataFrame, out: Path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--cache", type=Path, default=run.DEFAULT_CACHE)
-    ap.add_argument("--out", type=Path, default=run.DEFAULT_OUT / "ooi-qc")
+    ap.add_argument("--platform", choices=["ooi", "glider"], default="ooi")
+    ap.add_argument("--out", type=Path, default=None, help="default: <split-design>/<platform>-qc")
     args = ap.parse_args()
-    args.out.mkdir(parents=True, exist_ok=True)
-    m = scan(load_ooi(args.cache))
-    m.to_csv(args.out / "ooi_qc_months.csv", index=False)
+    pf = args.platform
+    out = args.out or run.DEFAULT_OUT / f"{pf}-qc"
+    out.mkdir(parents=True, exist_ok=True)
+    m = scan(load(args.cache, pf))
+    m.to_csv(out / f"{pf}_qc_months.csv", index=False)
     f = m[m["flag"]]
-    f.to_csv(args.out / "ooi_qc_flags.csv", index=False)
-    keep = f.apply(lambda r: (r["inst"], r["month"]) in REVIEWED_KEEP, axis=1)
+    f.to_csv(out / f"{pf}_qc_flags.csv", index=False)
+    keep = f.apply(lambda r: (r["inst"], r["month"]) in REVIEWED_KEEP[pf], axis=1)
     ex = f.loc[~keep, ["inst", "month", "n", "flag_sat", "flag_floor", "flag_flat"]]
-    ex.to_csv(EXCLUDE_FILE, index=False)  # read by run.load; committed with the code
-    print(f"excluded (after review): {len(ex)} instrument-months, {ex['n'].sum()} windows -> {EXCLUDE_FILE.name}")
-    plot(m, args.out / "ooi_qc_scan.png")
+    ex.to_csv(exclude_file(pf), index=False)  # read by run.load; committed with the code
+    print(f"excluded (after review): {len(ex)} instrument-months, {ex['n'].sum()} windows -> {exclude_file(pf).name}")
+    plot(m, out / f"{pf}_qc_scan.png", pf)
     cols = ["inst", "month", "n", "shallow_med", "sat_med", "sat_anom", "floor_med", "flat_ratio",
             "flag_sat", "flag_floor", "flag_flat"]
     print(f"{len(f)} of {len(m)} instrument-months flagged; {f['n'].sum()} of {m['n'].sum()} windows")

@@ -25,6 +25,10 @@ Predictions: out-of-fold, Argo + OOI model, space-time split (1° x 30 d), QC'd
 data (OOI exclusion, fish-pace-datasets#13), all OOI windows. RUN and DESIGN
 below pick the run (predicted as Argo plus a per-depth OOI offset).
 Water-depth class: ETOPO 2022 at the profile.
+
+Poster v2 (#22): Argo + OOI + glider model (runs/platform-glider), each
+non-Argo platform with its own per-depth offset; glider deployments count as
+units in `floats_or_sites`, and glider profiles are a third colour.
 """
 
 from pathlib import Path
@@ -40,12 +44,13 @@ SHARED = Path.home() / "shared-public" / "chla-z"
 # Eli, 2026-11-24: the model as a map would use it. Trained with the platform input,
 # every row predicted as Argo, OOI rows then shifted by a per-bin OOI offset
 # (run_platform.py, design "argo_bias").
-RUN = SHARED / "split-design" / "runs" / "platform"
+RUN = SHARED / "split-design" / "runs" / "platform-glider"  # v1: runs/platform
 DESIGN = "argo_bias"
-DEPTH = SHARED / "bathymetry" / "water_depth_2026_11_23.parquet"
+DEPTH = SHARED / "bathymetry" / "water_depth_2026_11_24.parquet"  # v1: _2026_11_23 (no gliders)
 OUT = Path(__file__).resolve().parents[1] / "figures" / "fig_profiles_by_class.png"
 CLASSES = [("open ocean", "Open ocean > 1000 m"), ("slope", "Slope 200–1000 m"), ("shelf", "Shelf < 200 m")]
-COLORS = {"argo": "#2a78d6", "ooi": "#eb6834"}
+COLORS = {"argo": "#2a78d6", "ooi": "#eb6834", "glider": "#1baf7a"}
+LABELS = {"argo": "Argo", "ooi": "OOI", "glider": "Glider"}
 PEAK_BINS = [0, 50, 100, 150, 201]
 PEAK_LABELS = ["0–50", "50–100", "100–150", "150–200"]
 DEPTHS = np.arange(5, 200, 10)
@@ -120,11 +125,11 @@ def main():
     for j, (dc, title) in enumerate(CLASSES):
         g = r0[r0["depth_class"] == dc]
         b = ax[j]
-        for pl in ["argo", "ooi"]:
+        for pl in COLORS:
             q = g[g["platform"] == pl]
             if len(q):
                 b.scatter(q["int_obs"], q["int_pred"], s=4, alpha=0.3, color=COLORS[pl],
-                          label="Argo" if pl == "argo" else "OOI", rasterized=True)
+                          label=LABELS[pl], rasterized=True)
         b.plot(xx, xx, "k--", lw=1)
         b.plot(xx, 0.5 * xx, ":", color="0.4", lw=1)
         b.plot(xx, 1.5 * xx, ":", color="0.4", lw=1)

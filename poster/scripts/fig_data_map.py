@@ -9,6 +9,12 @@ small dots; OOI has only a handful of sites, so its instruments are large
 outlined diamonds. Eli (2026-11-24): the two coastal insets (Endurance &
 Cabled, Pioneer) were dropped as clutter; the legend takes their place on the
 right. INSETS and inset_grids.py are kept in case the insets come back.
+
+Poster v2 (#22): gliders as tracks (Eli, 2026-11-24): one line per
+deployment through its profiles in time order, each segment coloured by the
+water-depth class of the profile it starts at, over a dark casing so the
+tracks stand apart from the Argo dots. The OOI array labels were moved into
+open water away from the glider tracks, and made smaller.
 """
 
 from pathlib import Path
@@ -18,11 +24,13 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.collections import LineCollection
 from matplotlib.lines import Line2D
 
 from poster_style import COLUMN_WIDTH_IN, DPI, apply_style
 
-DATA_RELEASE = "2026_11_23"
+# v2 (#22): the table with glider rows (run.DATA_TAG_V2); v1 was "2026_11_23" (same Argo, OOI rows).
+DATA_RELEASE = "2026_11_24"
 BATHY = Path.home() / "shared-public" / "chla-z" / "bathymetry"
 TABLE = BATHY / f"water_depth_{DATA_RELEASE}.parquet"
 OUT = Path(__file__).resolve().parents[1] / "figures" / "fig_data_map.png"
@@ -45,10 +53,10 @@ INSETS = {
     "pioneer": ("Pioneer", -75.4, -74.35, 35.6, 36.3),
 }
 ARRAY_LABELS = [  # (text, array lon, lat, label lon, lat) on the world map
-    ("Irminger", -39.6, 59.9, -20, 70),
-    ("Papa", -144.5, 50.1, -160, 66),
-    ("Endurance", -125.0, 45.0, -148, 28),
-    ("Pioneer", -74.9, 36.0, -55, 20),
+    ("Irminger", -39.6, 59.9, -18, 70),
+    ("Papa", -144.5, 50.1, -163, 62),
+    ("Endurance", -125.0, 45.0, -155, 28),
+    ("Pioneer", -74.9, 36.0, -45, 22),
 ]
 
 
@@ -65,7 +73,18 @@ def scatter_ooi(ax, o, size):
     for cls in reversed(list(CLASSES)):
         s = o[o["depth_class"] == cls]
         ax.scatter(s["lon"], s["lat"], s=size, c=CLASSES[cls][0], marker="D",
-                   edgecolors=INK, lw=1.2, transform=ccrs.PlateCarree(), zorder=5)
+                   edgecolors=INK, lw=0.6, transform=ccrs.PlateCarree(), zorder=5)
+
+
+def glider_tracks(ax, g, lw):
+    for _, t in g.sort_values("profile_id").groupby("instrument"):
+        xy = t[["lon", "lat"]].to_numpy()
+        ax.plot(xy[:, 0], xy[:, 1], color=INK, lw=lw + 2, solid_capstyle="round",
+                transform=ccrs.PlateCarree(), zorder=4)
+        seg = np.stack([xy[:-1], xy[1:]], axis=1)
+        cols = [CLASSES[c][0] for c in t["depth_class"].iloc[:-1]]
+        ax.add_collection(LineCollection(seg, colors=cols, lw=lw, capstyle="round",
+                                         transform=ccrs.PlateCarree(), zorder=4.5))
 
 
 def main():
@@ -74,6 +93,7 @@ def main():
     a = t[t["platform"] == "argo"]
     # One marker per OOI instrument position; co-located instruments overlap.
     o = t[t["platform"] == "ooi"].drop_duplicates("instrument")
+    g = t[t["platform"] == "glider"]
 
     fig = plt.figure(figsize=(COLUMN_WIDTH_IN, HEIGHT_IN), layout="none")
     proj = ccrs.PlateCarree()
@@ -84,11 +104,12 @@ def main():
     ax.coastlines("110m", lw=0.5, color=INK_2, zorder=2)
     ax.spines["geo"].set_edgecolor(INK_2)
     scatter_argo(ax, a, 3)
-    scatter_ooi(ax, o, 70)
+    glider_tracks(ax, g, 2.5)
+    scatter_ooi(ax, o, 28)
     for text, lon, lat, tlon, tlat in ARRAY_LABELS:
         ax.annotate(text, (lon, lat), (tlon, tlat), xycoords=proj._as_mpl_transform(ax),
                     textcoords=proj._as_mpl_transform(ax), ha="center", va="center",
-                    fontsize=20, color=INK, zorder=6,
+                    fontsize=16, color=INK, zorder=6,
                     bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.85),
                     arrowprops=dict(arrowstyle="-", color=INK, lw=1.0, shrinkB=6))
 
@@ -97,11 +118,12 @@ def main():
     plat_h = [
         Line2D([], [], ls="none", marker="o", ms=6, mfc=INK_2, mec="none",
                label="Argo profile"),
-        Line2D([], [], ls="none", marker="D", ms=11, mfc="white", mec=INK, mew=1.2,
+        Line2D([], [], ls="none", marker="D", ms=7, mfc="white", mec=INK, mew=0.7,
                label="OOI instrument"),
+        Line2D([], [], color=INK, lw=4.5, label="Glider track"),
     ]
     fig.legend(handles=plat_h + cls_h, loc="center left", bbox_to_anchor=(0.73, 0.5), ncol=1,
-               frameon=False, fontsize=19, handletextpad=0.3, borderaxespad=0.1, labelspacing=0.35)
+               frameon=False, fontsize=19, handlelength=1.4, handletextpad=0.5, borderaxespad=0.1, labelspacing=0.35)
     fig.savefig(OUT, dpi=DPI, facecolor="white")
     plt.close(fig)
     print(f"wrote {OUT}")

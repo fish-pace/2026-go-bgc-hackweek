@@ -14,7 +14,13 @@ product. Three variants, Argo + OOI data, same folds, same held-out rows:
               and compared with OOI.
 
 All OOI windows, unweighted (the window test showed weighting barely
-matters). QC exclusion applied by run.load. Same BRT, space-time split
+matters). QC exclusion applied by run.load.
+
+Poster v2 (#22) adds gliders: `type` is the platform code (run.PLATFORM_CODE)
+and argo_bias gets one offset per non-Argo platform, each the mean as-Argo
+residual of that platform's training rows in the fold. Column
+`platform_bias` is the offset applied to the row (0 for Argo); in v1 it was
+`ooi_bias`. With only Argo and OOI rows the results are v1's. Same BRT, space-time split
 (1° x 30 d) and seeds as run.py, which it imports unchanged. Output: one
 parquet per (variant, repeat), variant name in `design`, so metrics.py and
 explore_skill_baseline.py work on it. Reruns skip finished units.
@@ -39,7 +45,8 @@ MODELS = ["with_type", "no_type", "argo_bias"]
 def run_unit(d, feats, bins, rep, out_dir: Path, n_jobs):
     seed = 1000 + rep
     folds = run.folds_for(d, "spacetime", VARIANT, seed)
-    ooi = (d["platform"] == "ooi").to_numpy()
+    plat = d["platform"].to_numpy()
+    others = [k for k in run.PLATFORM_CODE if k != "argo" and (plat == k).any()]
     X = d[feats].to_numpy(dtype=float)
     ti = feats.index("type")
     X_argo = X.copy()
@@ -59,14 +66,17 @@ def run_unit(d, feats, bins, rep, out_dir: Path, n_jobs):
         p_with = m.predict(X[idx])
         p_no = m0.predict(X_no[idx])
         p_argo = m.predict(X_argo[idx])
-        tro = tr & ooi
-        bias = (ly[tro] - m.predict(X_argo[tro])).mean() if tro.any() else 0.0
-        p_bias = p_argo + np.where(ooi[idx], bias, 0.0)
+        bias = np.zeros(len(idx))
+        for k in others:
+            trk = tr & (plat == k)
+            if trk.any():
+                bias[plat[idx] == k] = (ly[trk] - m.predict(X_argo[trk])).mean()
+        p_bias = p_argo + bias
         parts = []
         for name, yp in [("with_type", p_with), ("no_type", p_no), ("argo_bias", p_bias)]:
             parts.append(pd.DataFrame({"row": idx, "bin": b, "fold": f, "design": name,
                                        "y": ly[idx].astype("float32"), "yhat": yp.astype("float32"),
-                                       "ooi_bias": np.float32(bias)}))
+                                       "platform_bias": bias.astype("float32")}))
         return pd.concat(parts)
 
     tasks = [(f, b) for f in range(run.N_FOLDS) for b in bins]
@@ -83,12 +93,14 @@ def run_unit(d, feats, bins, rep, out_dir: Path, n_jobs):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", type=Path, default=run.DEFAULT_OUT / "runs" / "platform")
+    ap.add_argument("--platforms", nargs="+", default=list(run.PLATFORMS_V2),
+                    help="v1 (poster v1, runs/platform): argo ooi")
+    ap.add_argument("--out", type=Path, default=run.DEFAULT_OUT / "runs" / "platform-glider")
     ap.add_argument("--repeats", type=int, default=5)
     ap.add_argument("--n-jobs", type=int, default=os.cpu_count())
     ap.add_argument("--bins", type=int, default=None, help="first N bins only (testing)")
     args = ap.parse_args()
-    d, feats, chl = run.load(run.DEFAULT_CACHE)
+    d, feats, chl = run.load(run.DEFAULT_CACHE, args.platforms)
     bins = chl[: args.bins] if args.bins else chl
     out = args.out / "preds"
     out.mkdir(parents=True, exist_ok=True)
