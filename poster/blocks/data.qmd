@@ -5,5 +5,5 @@
 ::: {.block title="Data"}
 ![Depth from ETOPO 2022; inset lines at 200, 1000 m. Argo floats / OOI sites: shelf 9 / 8, slope 41 / 4, open ocean 818 / 10.](figures/fig_data_map.png){#fig-data script="scripts/fig_data_map.py" width="100%"}
 
-Chl *a* profiles from BGC-Argo floats and OOI moorings (March 2024 – October 2026), estimated from in situ fluorescence, were averaged into 10 m bins to 200 m. The satellite data were remote-sensing reflectance ($R_{rs}$): PACE OCI L3 daily 4 km (172 bands) and OLCI L3 daily (11 bands). After dropping likely-biofouled profiles, 9,542 Argo profiles (831 floats, global distribution) and 22,081 OOI 3 h windows (30 instruments, 5 locations) had PACE matchups; more had OLCI.
+Chl *a* profiles from BGC-Argo floats and OOI moorings (March 2024 – October 2026), estimated from in situ fluorescence, were averaged into 10 m bins to 200 m. The satellite data were remote-sensing reflectance ($R_{rs}$): PACE OCI L3 daily 4 km (172 bands) and OLCI L3 daily (11 bands). After dropping likely-biofouled or otherwise suspect data, 9,542 Argo profiles (831 floats, global distribution) and 20,971 OOI 3 h windows (30 instruments, 5 locations) had PACE matchups; more had OLCI.
 :::
