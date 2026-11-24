@@ -105,7 +105,7 @@ def main():
     ax.spines["geo"].set_edgecolor(INK_2)
     scatter_argo(ax, a, 3)
     glider_tracks(ax, g, 2.5)
-    scatter_ooi(ax, o, 70)
+    scatter_ooi(ax, o, 40)
     for text, lon, lat, tlon, tlat in ARRAY_LABELS:
         ax.annotate(text, (lon, lat), (tlon, tlat), xycoords=proj._as_mpl_transform(ax),
                     textcoords=proj._as_mpl_transform(ax), ha="center", va="center",
@@ -118,7 +118,7 @@ def main():
     plat_h = [
         Line2D([], [], ls="none", marker="o", ms=6, mfc=INK_2, mec="none",
                label="Argo profile"),
-        Line2D([], [], ls="none", marker="D", ms=11, mfc="white", mec=INK, mew=1.2,
+        Line2D([], [], ls="none", marker="D", ms=8.5, mfc="white", mec=INK, mew=1.2,
                label="OOI instrument"),
         Line2D([], [], color=INK, lw=4.5, label="Glider track"),
     ]
