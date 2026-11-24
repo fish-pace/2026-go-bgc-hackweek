@@ -38,11 +38,9 @@ are in blocks/README.md and in a comment at the top of each block file.
 <!-- Acknowledgements first: a full-width float at the foot of page 1 (see poster.lua .bottom). -->
 {{< include blocks/acknowledgements.qmd >}}
 
-{{< include blocks/key-points.qmd >}}
-
 {{< include blocks/introduction.qmd >}}
 
-<!-- Relation to existing approaches: now a paragraph in the Introduction (Eli, 2026-11-24). -->
+{{< include blocks/data-map.qmd >}}
 
 ::: {.colbreak}
 :::
@@ -51,14 +49,16 @@ are in blocks/README.md and in a comment at the top of each block file.
 
 {{< include blocks/methods.qmd >}}
 
-{{< include blocks/next-steps.qmd >}}
+{{< include blocks/hyperspectral.qmd >}}
 
 ::: {.colbreak}
 :::
 
-{{< include blocks/hyperspectral.qmd >}}
-
 {{< include blocks/coastal.qmd >}}
+
+{{< include blocks/key-points.qmd >}}
+
+{{< include blocks/next-steps.qmd >}}
 
 <!-- Conclusions: left out for space; Key Points carry the conclusions (Eli to decide). blocks/conclusions.qmd is kept. -->
 <!-- No References block: Eli, 2026-11-23, not needed. -->
