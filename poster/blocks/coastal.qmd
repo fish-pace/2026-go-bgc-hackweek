@@ -27,7 +27,7 @@ predictions are too flat, and few whole shelf profiles exist.
 | Slope | 0.69 | 0.71 | 45% | 0.60 |
 | Shelf | 0.28 | 0.40 | 46% | 0.77 |
 
-: Skill on held-out data with SOCA2024's validation metrics, which pool all depths together. Data: open ocean 13,544 profiles or OOI windows (819 floats or OOI sites); slope 5,331 (43); shelf 11,621 (11). SOCA2024 row from its own validation. {#tbl-coastal}
+: Skill on held-out data with SOCA2024's validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. Data: open ocean 13,544 profiles or OOI windows (819 floats or OOI sites); slope 5,331 (43); shelf 11,621 (11). SOCA2024 row from its own validation. {#tbl-coastal}
 
 ```{=typst}
 #v(0.3in)
