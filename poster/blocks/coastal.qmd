@@ -25,9 +25,9 @@ predictions are too flat, and few whole shelf profiles exist.
 | | r² (log10) | Slope | MAPD | RMSD (mg m⁻³) |
 |---|---:|---:|---:|---:|
 | SOCA2024 (open ocean) | 0.83 | 0.82 | 30% | 0.19 |
-| Open ocean | 0.69 | 0.69 | 43% | 0.22 |
-| Slope | 0.69 | 0.71 | 45% | 0.60 |
-| Shelf | 0.28 | 0.40 | 46% | 0.77 |
+| CHLA-Z open ocean | 0.69 | 0.69 | 43% | 0.22 |
+| CHLA-Z slope | 0.69 | 0.71 | 45% | 0.60 |
+| CHLA-Z shelf | 0.28 | 0.40 | 46% | 0.77 |
 
 : Skill on held-out data with SOCA2024's validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. SOCA2024 row from its own validation. {#tbl-coastal}
 
