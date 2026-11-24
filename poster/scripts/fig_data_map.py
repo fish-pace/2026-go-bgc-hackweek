@@ -9,6 +9,9 @@ small dots; OOI has only a handful of sites, so its instruments are large
 outlined diamonds. Eli (2026-11-24): the two coastal insets (Endurance &
 Cabled, Pioneer) were dropped as clutter; the legend takes their place on the
 right. INSETS and inset_grids.py are kept in case the insets come back.
+
+Poster v2 (#22): glider profiles as small outlined triangles; a glider moves,
+so each profile is drawn and the deployments show as short tracks.
 """
 
 from pathlib import Path
@@ -22,7 +25,8 @@ from matplotlib.lines import Line2D
 
 from poster_style import COLUMN_WIDTH_IN, DPI, apply_style
 
-DATA_RELEASE = "2026_11_23"
+# v2 (#22): the table with glider rows (run.DATA_TAG_V2); v1 was "2026_11_23".
+DATA_RELEASE = "2026_11_23_glider-prerelease"
 BATHY = Path.home() / "shared-public" / "chla-z" / "bathymetry"
 TABLE = BATHY / f"water_depth_{DATA_RELEASE}.parquet"
 OUT = Path(__file__).resolve().parents[1] / "figures" / "fig_data_map.png"
@@ -68,12 +72,20 @@ def scatter_ooi(ax, o, size):
                    edgecolors=INK, lw=1.2, transform=ccrs.PlateCarree(), zorder=5)
 
 
+def scatter_glider(ax, g, size):
+    for cls in reversed(list(CLASSES)):
+        s = g[g["depth_class"] == cls]
+        ax.scatter(s["lon"], s["lat"], s=size, c=CLASSES[cls][0], marker="^",
+                   edgecolors=INK, lw=0.6, transform=ccrs.PlateCarree(), zorder=4)
+
+
 def main():
     apply_style()
     t = pd.read_parquet(TABLE)
     a = t[t["platform"] == "argo"]
     # One marker per OOI instrument position; co-located instruments overlap.
     o = t[t["platform"] == "ooi"].drop_duplicates("instrument")
+    g = t[t["platform"] == "glider"]
 
     fig = plt.figure(figsize=(COLUMN_WIDTH_IN, HEIGHT_IN), layout="none")
     proj = ccrs.PlateCarree()
@@ -84,6 +96,7 @@ def main():
     ax.coastlines("110m", lw=0.5, color=INK_2, zorder=2)
     ax.spines["geo"].set_edgecolor(INK_2)
     scatter_argo(ax, a, 3)
+    scatter_glider(ax, g, 22)
     scatter_ooi(ax, o, 70)
     for text, lon, lat, tlon, tlat in ARRAY_LABELS:
         ax.annotate(text, (lon, lat), (tlon, tlat), xycoords=proj._as_mpl_transform(ax),
@@ -99,6 +112,8 @@ def main():
                label="Argo profile"),
         Line2D([], [], ls="none", marker="D", ms=11, mfc="white", mec=INK, mew=1.2,
                label="OOI instrument"),
+        Line2D([], [], ls="none", marker="^", ms=8, mfc="white", mec=INK, mew=0.8,
+               label="Glider profile"),
     ]
     fig.legend(handles=plat_h + cls_h, loc="center left", bbox_to_anchor=(0.73, 0.5), ncol=1,
                frameon=False, fontsize=19, handletextpad=0.3, borderaxespad=0.1, labelspacing=0.35)
