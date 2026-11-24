@@ -14,8 +14,7 @@ We trained the same model on the same BGC-Argo profiles with three inputs:
 OLCI's 11 bands, the 11 PACE bands nearest them, and all 172 PACE bands. PACE-172
 scores higher than OLCI-11 in every repeat, but only by 0.01–0.03 in R², and
 most of that gain already comes from PACE's 11 bands, which points to the sensor
-rather than the extra bands. Training each sensor on all of its own matchups
-helps about as much. For OOI, no input predicts below the surface.
+rather than the extra bands.
 
 | Input | Trained on | 0–10 m | 50–60 m | 100–110 m | Integrated |
 |---|---|---:|---:|---:|---:|
@@ -25,5 +24,5 @@ helps about as much. For OOI, no input predicts below the surface.
 | OLCI-11 | All, 2.5× | 0.76 | 0.58 | 0.40 | 0.31 |
 | PACE-172 | All, 1.9× | **0.77** | **0.61** | **0.42** | **0.33** |
 
-: R² of log10 Chl *a* for BGC-Argo, scored on the same held-out profiles (space-time split, mean of 5 repeats). Trained on profiles with both sensors, or on all of that sensor's matchups. {#tbl-hyperspectral}
+: R² of log10 Chl *a* for BGC-Argo, scored on the same held-out profiles (space-time split, mean of 5 repeats). {#tbl-hyperspectral}
 :::
