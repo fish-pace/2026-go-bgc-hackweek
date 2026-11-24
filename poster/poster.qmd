@@ -39,26 +39,25 @@ are in blocks/README.md and in a comment at the top of each block file.
 
 {{< include blocks/introduction.qmd >}}
 
-{{< include blocks/data.qmd >}}
+{{< include blocks/existing-approaches.qmd >}}
 
 ::: {.colbreak}
 :::
+
+{{< include blocks/data.qmd >}}
 
 {{< include blocks/methods.qmd >}}
 
-{{< include blocks/hyperspectral.qmd >}}
+{{< include blocks/next-steps.qmd >}}
 
 ::: {.colbreak}
 :::
 
+{{< include blocks/hyperspectral.qmd >}}
+
 {{< include blocks/coastal.qmd >}}
 
-{{< include blocks/existing-approaches.qmd >}}
-
 <!-- Conclusions: left out for space; Key Points carry the conclusions (Eli to decide). blocks/conclusions.qmd is kept. -->
-
-{{< include blocks/next-steps.qmd >}}
-
 <!-- No References block: Eli, 2026-11-23, not needed. -->
 
 {{< include blocks/acknowledgements.qmd >}}

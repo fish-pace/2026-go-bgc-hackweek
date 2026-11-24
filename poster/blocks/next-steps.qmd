@@ -1,6 +1,7 @@
 <!-- Block: Next Steps (#15). Budget: about 50 words. Draft by the agent for Eli to edit.
      Eli (2026-11-24): only the immediate next steps, physics first, then coastal data.
-     Softer wording until the pilot is rerun with the OOI QC and on Argo (Eli doubts the
+     Eli (2026-11-24): the Argo GLORYS fetch keeps running but its results are not on the
+     poster; physics is stated as the next step only. Earlier: softer wording until the pilot is rerun with the OOI QC and on Argo (Eli doubts the
      OOI-only, pre-QC result). Numbers below are that old pilot.
      Physics pilot: poster/analysis/physics_pilot/run_pilot.py, runs/physics-pilot-allbins,
      OOI only, 2 repeats, release 2026_11_23 BEFORE the OOI QC exclusion (fish-pace-datasets#13).
@@ -17,9 +18,9 @@
      so the model can still make maps. -->
 
 ::: {.block title="Next Steps"}
-- **Add ocean physics.** A pilot at the OOI sites suggests reanalysis physics (GLORYS12
-  temperature structure and mixed-layer depth) may help below the surface; we are testing
-  it on BGC-Argo.
+- **Add ocean physics.** Test reanalysis physics (GLORYS12 temperature structure and
+  mixed-layer depth) as inputs, starting with BGC-Argo. Physics is the main input SOCA2024
+  uses that our model lacks.
 - **More coastal training data**, from gliders and coastal moorings, with consistent
   calibration and quality control.
 :::
