@@ -43,6 +43,14 @@ from 0.89 to 0.58–0.65. Caveat: each variant was scored on its own rows. The
 fair comparison (same held-out rows; all / weighted 1/n per day / one random
 window per day) is `run_window_weights.py` → `runs/window-weights`.
 
+Result (2026-11-24, QC'd data, 5 repeats, space-time split, R² of log10):
+the weighting barely matters. Argo scored inside the Argo + OOI model gains
++0.003 to +0.007 with weighted or one-window training (less OOI dominance);
+OOI loses about 0.03 at the surface (0.63 all, 0.60 weighted/one window) and
+about 0.01-0.02 at 20-30 m; pooled R² changes by < 0.01. So the extra windows
+are not only leakage: under a grouped split they add a little OOI skill and
+cost Argo almost nothing. Decision: keep all windows, unweighted.
+
 ## 3. Why OOI fails at a new site: per-instrument offsets (surface)
 
 OOI surface Chl *a* tracks PACE `pace_chlor_a` (same pixel and day) about as

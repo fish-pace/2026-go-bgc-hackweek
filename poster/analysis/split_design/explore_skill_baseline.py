@@ -34,7 +34,8 @@ import matplotlib.pyplot as plt
 SHARED = Path.home() / "shared-public" / "chla-z"
 DEPTH = SHARED / "bathymetry" / "water_depth_2026_11_23.parquet"
 CLASSES = ["open ocean", "slope", "shelf"]
-COLORS = {"argo": "#1f6fd1", "ooi": "#e4572e"}
+COLORS = {"argo": "#1f6fd1", "ooi": "#e4572e", "argo+ooi": "0.2"}
+CLASS_COLORS = {"open ocean": "#1f6fd1", "slope": "#e4572e", "shelf": "#2a9d6f"}
 
 
 def score(p: pd.DataFrame) -> pd.DataFrame:
@@ -69,15 +70,20 @@ def main():
     p = pd.concat(pd.read_parquet(f, columns=cols) for f in sorted((args.run / "preds").glob(args.pattern)))
     if args.design:
         p = p[p["design"] == args.design]
-    m = score(p.merge(wd, on="profile_id"))
+    p = p.merge(wd, on="profile_id")
+    # Pooled line too (Eli: can Argo and OOI be shown together?). The baseline is
+    # computed within each scored group, so pooled uses the pooled training mean.
+    m = score(pd.concat([p, p.assign(platform="argo+ooi")], ignore_index=True))
+    (args.out or args.run / "figs" / "x").parent.mkdir(parents=True, exist_ok=True)
+    m.to_csv((args.out or args.run / "figs" / "x").with_name(f"skill_baseline_{args.design}.csv"), index=False)
 
     fig, ax = plt.subplots(3, 3, figsize=(12, 13), sharey=True)
     for j, dc in enumerate(CLASSES):
-        for pl in ["argo", "ooi"]:
+        for pl in ["argo", "ooi", "argo+ooi"]:
             d = m[(m.platform == pl) & (m.depth_class == dc)].sort_values("z")
             if not len(d):
                 continue
-            lab = "Argo" if pl == "argo" else "OOI"
+            lab = {"argo": "Argo", "ooi": "OOI", "argo+ooi": "Argo + OOI"}[pl]
             ax[0, j].plot(d["mae_model"], d["z"], "o-", ms=3, color=COLORS[pl], label=f"{lab} model")
             ax[0, j].plot(d["mae_base"], d["z"], "--", color=COLORS[pl], label=f"{lab} average profile")
             ax[1, j].plot(d["skill"], d["z"], "o-", ms=3, color=COLORS[pl], label=lab)
@@ -105,6 +111,34 @@ def main():
     fig.savefig(out, dpi=90)
     print(out)
     print(m[m.z.isin([5, 25, 55, 105, 155])].round(3).to_string(index=False))
+
+    # Candidate Figure 3: pooled Argo + OOI, one line per water-depth class.
+    q = m[m.platform == "argo+ooi"]
+    # Eli (2026-11-24): % error reduction alone can hide "improved on horrible but
+    # still horrible", so the left panel shows the error itself next to how much
+    # Chl a there is (same units, one axis).
+    fig, ax = plt.subplots(1, 2, figsize=(11.8, 5.5), sharey=True)
+    for dc in CLASSES:
+        d = q[q.depth_class == dc].sort_values("z")
+        c = CLASS_COLORS[dc]
+        ax[0].plot(d["mean_obs"], d["z"], ":", lw=2, color=c, label=f"{dc}: mean Chl $a$")
+        ax[0].plot(d["mae_model"], d["z"], "o-", ms=4, color=c, label=f"{dc}: error (MAE)")
+        ax[1].plot(100 * d["skill"], d["z"], "o-", ms=4, color=c, label=dc)
+    ax[0].set_xlabel("Chl $a$ (mg m$^{-3}$)")
+    ax[0].set_xlim(left=0)
+    ax[1].axvline(0, color="0.5", lw=0.8)
+    ax[1].set_xlabel("Error reduction vs. average profile (%)")
+    ax[1].set_xlim(-25, 75)
+    ax[0].set_ylabel("Depth (m)")
+    ax[0].invert_yaxis()
+    ax[0].legend(fontsize=8)
+    ax[1].legend(fontsize=8)
+    for a in ax:
+        a.grid(alpha=0.3)
+    fig.tight_layout()
+    out2 = (args.out or args.run / "figs" / "x").with_name(f"fig3_candidate_{args.design}.png")
+    fig.savefig(out2, dpi=90)
+    print(out2)
 
 
 if __name__ == "__main__":
