@@ -39,7 +39,7 @@ predictions are too flat, and few whole shelf profiles exist.
 | CHLA-Z slope | 0.67 | 0.71 | 44% | 0.56 |
 | CHLA-Z shelf | 0.30 | 0.42 | 45% | 0.75 |
 
-: Skill on held-out data with SOCA2024's validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. SOCA2024 row from its own validation. {#tbl-coastal}
+: Skill on held-out data with SOCA2024`’`{=typst}s validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. SOCA2024 row from its own validation. {#tbl-coastal}
 
 ```{=typst}
 #v(0.3in)
