@@ -1,19 +1,29 @@
 <!-- Block: 2. Is there hope for coastal regions? (#11). Budget: about 70 words + figure + table.
      Draft by the agent, 2026-11-24, for Eli to edit. Source: scripts/fig_profiles_by_class.py
-     (prints the table). Run: split-design/runs/platform, design "argo_bias" (QC'd data,
-     fish-pace-datasets#13; all OOI windows; every row predicted as Argo, OOI rows shifted by a
-     per-depth OOI offset: how a map would be made; Eli, 2026-11-24).
+     (prints the table). Run: split-design/runs/platform-glider, design "argo_bias" (v2, #22: Argo +
+     OOI + glider, release 2026_11_24; QC'd data, fish-pace-datasets#13; all OOI windows; every row
+     predicted as Argo, OOI and glider rows each shifted by a per-depth platform offset: how a map
+     would be made; Eli, 2026-11-24). v1 numbers (Argo + OOI, runs/platform): open 0.69/0.69/43%/0.22,
+     slope 0.69/0.71/45%/0.60, shelf 0.28/0.40/46%/0.77; integrated R² 0.40/0.67/-1.20.
+     Platform offsets are one constant per platform and bin (no time term), stable across folds and
+     repeats (glider 0-10 m -0.057 +/- 0.008 log10; OOI +0.004). Per-instrument median residual after
+     the offset (0-30 m) scatters as much for Argo floats (SD 0.20) as for glider deployments (0.16) and
+     OOI instruments (0.16), so one offset per platform is fair; month-to-month glider changes are mostly
+     which deployments are active.
      Table: SOCA2024 metrics (Copernicus QUID 015-010, IV.2): all depths pooled; r² and slope from a
      linear regression on log10; MAPD and RMSD on linear values. SOCA2024 row: its own validation
      (random 20% of BGC-Argo profiles, 11,340), open ocean only (product masked to > 1000 m).
      Not like for like: SOCA adds physics (T/S, SLA, ADT, PAR), an 8-day Rrs median and ~6x more
      training profiles, and pools depths possibly deeper than 200 m.
      Integrated Chl a: profiles with >= 10 observed 10 m bins, sum of Chl a x 10 m over them;
-     R² on log10, mean over 5 repeats: open 0.40, slope 0.67, shelf -1.20. Open-ocean R² is not caused by the 24 Argo profiles
+     R² on log10, mean over 5 repeats: open 0.40, slope 0.64, shelf 0.28 (v2). The shelf 0.28 is a
+     pooling effect: within platform shelf stays poor (Argo -1.30, n 92; glider 0.02, n 65); the two
+     clusters sit at different levels. Integrated to the bottom instead: #24. Open-ocean R² is not caused by the 24 Argo profiles
      at the sensor floor (removing them: 0.42); predictions are compressed toward the middle.
      Rows (profiles or OOI windows) and floats/OOI sites by class, dropped from the caption
-     2026-11-24: open ocean 13,544 (819), slope 5,331 (43), shelf 11,621 (11).
-     Shelf profiles: 92 Argo (7 floats, mostly Baltic); no OOI shelf profiler reaches 10 bins.
+     2026-11-24: open ocean 14,496 (832), slope 5,959 (54), shelf 12,330 (25) (v2; floats, OOI sites,
+     glider deployments). Shelf profiles: 92 Argo (7 floats, mostly Baltic) + 65 glider; no OOI shelf
+     profiler reaches 10 bins.
      Below ~20 m near the coast the model mostly predicts each site's average (paper note §6). -->
 
 ::: {.block title="2. Predictions in coastal regions"}
@@ -25,9 +35,9 @@ predictions are too flat, and few whole shelf profiles exist.
 | | r² (log10) | Slope | MAPD | RMSD (mg m⁻³) |
 |---|---:|---:|---:|---:|
 | SOCA2024 (open ocean) | 0.83 | 0.82 | 30% | 0.19 |
-| CHLA-Z open ocean | 0.69 | 0.69 | 43% | 0.22 |
-| CHLA-Z slope | 0.69 | 0.71 | 45% | 0.60 |
-| CHLA-Z shelf | 0.28 | 0.40 | 46% | 0.77 |
+| CHLA-Z open ocean | 0.68 | 0.69 | 43% | 0.22 |
+| CHLA-Z slope | 0.67 | 0.71 | 44% | 0.56 |
+| CHLA-Z shelf | 0.30 | 0.42 | 45% | 0.75 |
 
 : Skill on held-out data with SOCA2024's validation metrics, which pool all depths together: r² and slope from a regression of predicted on observed log10 Chl *a*; MAPD, median absolute percent difference; RMSD, root mean square difference. SOCA2024 row from its own validation. {#tbl-coastal}
 
@@ -35,5 +45,5 @@ predictions are too flat, and few whole shelf profiles exist.
 #v(0.3in)
 ```
 
-![Integrated Chl *a* (sum over the observed 10 m bins to 200 m), observed vs predicted, for profiles with at least 10 observed bins, by water depth (ETOPO 2022). Dashed: 1:1; dotted: ±50%. Held-out data, space-time split, BGC-Argo + OOI model.](figures/fig_profiles_by_class.png){#fig-coastal script="scripts/fig_profiles_by_class.py" width="100%"}
+![Integrated Chl *a* (sum over the observed 10 m bins to 200 m), observed vs predicted, for profiles with at least 10 observed bins, by water depth (ETOPO 2022). Dashed: 1:1; dotted: ±50%. Held-out data, space-time split, all platforms.](figures/fig_profiles_by_class.png){#fig-coastal script="scripts/fig_profiles_by_class.py" width="100%"}
 :::

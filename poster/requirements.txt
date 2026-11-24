@@ -1,5 +1,11 @@
 # Python packages for the figure scripts in scripts/.
 # Rendering the poster itself needs only Quarto (>= 1.5).
+# The scripts read prepared tables from ~/shared-public/chla-z (parquet) and
+# do not rerun the models; those need the packages of poster/analysis.
+cartopy>=0.22
 matplotlib>=3.7
 numpy>=1.24
+pandas>=2.0
+pyarrow>=14
+scipy>=1.10
 segno>=1.5
