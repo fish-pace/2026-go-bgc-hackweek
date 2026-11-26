@@ -33,8 +33,19 @@ posternerd.com. `poster/requirements.txt` was checked in a clean venv.
 ## Open threads
 
 - **Glider release `2026_11_26`** (280 deployments, #27, branch
-  `glider-release-2026-11-26`): rerun done for the talk; poster story holds,
-  no reprint. Remaking the poster on it: steps at the end of #27.
+  `glider-release-2026-11-26`, not yet a PR): poster story holds, no
+  reprint. Then (2026-11-26) a session on glider QC with Eli; she will resume
+  that conversation. Findings in [notes/paper-leakage-and-ooi-sites.md](notes/paper-leakage-and-ooi-sites.md)
+  §12a–b and #27 comments 1–6:
+  - deep glider bins (≥ 100 m) are unpredictable (the deep offset, mostly
+    Sprays, is not temperature-driven);
+  - with them cut, glider data helps on the shelf and slope;
+  - the shelf is not harder at equal surface Chl *a*;
+  - the low shelf r² is mostly OOI shelf rows.
+  - Undecided: the glider depth rule and the dark offset; OOI shelf and deep
+    bins not yet examined.
+  - Runs are in `~/shared-public/chla-z/split-design/runs/*2026_11_26*` and
+    `glider-value-2026_11_26`.
 
 - **Physics inputs** (#23, Eli later, not for the poster): Argo GLORYS12
   fetch (`physics_pilot/extract_glorys_argo.py`; rerun to resume, then

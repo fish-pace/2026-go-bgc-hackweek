@@ -298,3 +298,74 @@ deployment-months (not yet reviewed by eye).
 - **Open-question cluster**: open-ocean glider profiles observed at 3–10
   mg m⁻² integrated, predicted ~40 (glider open-ocean integrated R² 0.33 →
   0.14). Check against the release's `scan_check` notes before the paper.
+
+### 12a. Glider dark offset and deep bins (2026-11-26; #27 comments 1–5)
+
+- **The open-ocean drop is the glider bins at 100–200 m** (r² 0.02–0.06;
+  Argo 0.33–0.46 there). Gliders read ~4× Argo at 150–200 m. Re-scoring
+  with glider bins above 100 m only recovers Argo-level skill. The release's
+  `scan_check` notes do not explain it.
+- **Argo's method** (QC manual v3.1, July 2026, doi:10.13155/35385):
+  - `CHLA_ADJUSTED = (FLUO − DARK') × SCALE`, then NPQ (Xing 2012), then
+    ÷ PHYSIO_RATIO (the Sauzède 2025 LUT, replacing factor 2).
+  - DARK' = median of the profile minima (running median, > 5 dbar) of the
+    first 5 profiles deeper than 950 dbar. It is subtracted at all depths.
+  - The release uses Argo QC {1, 2, 5, 8}. Gliders and OOI get Sauzède only.
+  - The Argo method on gliders gives the same answer as the release's
+    below-300 m dark (night PACE/glider 1.72 vs 1.72).
+- **Additive, not a gain bias** (California Current, night):
+  - Dark-subtracted PACE/glider grows from 1.6 to 24 as PACE chlor_a falls
+    from 0.4–0.8 to < 0.1. Uncorrected it is flat at ~1.
+  - Argo in the same box: 0.90 (n 149).
+  - In clear water the surface reads about the same as below 300 m
+    (0.164 vs 0.159), while there is a clear DCM at ~80 m.
+- **Not temperature:** within-profile deep fluorescence rises only ~+0.006
+  from 300 to ~950 m in the California Current, ~1/6 of what a
+  temperature-dependent dark would need (`glider_dark_depth.py`, 73
+  deployments). Temperature was not added to the release.
+- **Mostly Spray gliders:**
+  - Of 142 deployments with a value (138 never reach 300 m; offset unknown),
+    53 have a median > 0.1.
+  - Spray: 47 of 65 above 0.1 (median 0.159). Slocum: 5 of 66 (0.033).
+    Seaglider: 1 of 10.
+  - Slocums in the same Pacific water read ~0.05, so this looks like the
+    sensor or setup, not deep organic matter (an idea from comment 4,
+    withdrawn in comment 5).
+  - Fluorometer model not checked. Region and platform are confounded.
+- **Deployment rules don't fix it:** refits dropping offset > 0.1 or all
+  Sprays gain only 0.01–0.03 pooled. Glider 100–200 m bins stay at r² ~0.05
+  either way, because even small offsets (0.03–0.05) exceed real Chl *a* at
+  depth (~0.02). The lever is a **depth rule** for glider bins.
+- **OOI deep bins are also unpredictable** (r² ~0.00 at 100–200 m; OOI is
+  not dark-corrected). Not yet looked at.
+
+### 12b. Glider bins < 100 m: value of glider data, shelf skill (#27 comment 6)
+
+Run `runs/glider-value-2026_11_26` (`run_glider_value.py`, 3 repeats): glider
+bins ≥ 100 m removed on all classes, plus an Argo + OOI-only model on the same
+folds and held-out rows. Analysis: `analyze_glider_value.py`.
+
+- **Pooled r²:** open 0.69, slope 0.70, shelf 0.43 (Argo + OOI rows only:
+  0.69 / 0.70 / 0.29). Deep glider bins did no harm in training: dropping
+  them only from scoring gives the same numbers.
+- **Glider data helps where the gliders are** (held-out glider rows, bins
+  < 100 m, with vs without gliders):
+  - shelf RMSE 0.363 → 0.327, r² 0.43 → 0.51;
+  - slope RMSE 0.353 → 0.321, r² 0.49 → 0.54;
+  - open ocean, small gain.
+  - Not just the platform offset (bias-removed RMSE without gliders: shelf
+    0.361, slope 0.345).
+  - Little effect on OOI shelf rows (0.24 → 0.26); none on Argo.
+  - Caveat: the 1° × 30 d split keeps the same region at other times in
+    training. This is "regional coverage" value, not transfer to unsampled
+    shelves.
+- **The shelf is not harder at equal surface Chl *a*:** per-profile RMSE
+  (log10, bins < 100 m) by PACE chlor_a is 0.30–0.34 on the shelf, slope and
+  open ocean below 2 mg m⁻³. The model beats a mixed column at the true
+  surface value in every class.
+  - Above 2 mg m⁻³ error rises everywhere (shelf and slope 0.43, open
+    0.36); the shelf has more such water (738 profiles vs 106).
+  - Clear shelf water is barely sampled (6 profiles < 0.1, 256 at 0.1–0.2).
+- **The low pooled shelf r² is mostly the OOI shelf rows** (31k rows,
+  r² 0.26; 50–100 m r² 0.02; inshore fixed instruments and profilers,
+  suspect Pioneer data). Next candidate to look at.
