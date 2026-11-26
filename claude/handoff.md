@@ -32,6 +32,10 @@ posternerd.com. `poster/requirements.txt` was checked in a clean venv.
 
 ## Open threads
 
+- **Glider release `2026_11_26`** (280 deployments, #27, branch
+  `glider-release-2026-11-26`): rerun done for the talk; poster story holds,
+  no reprint. Remaking the poster on it: steps at the end of #27.
+
 - **Physics inputs** (#23, Eli later, not for the poster): Argo GLORYS12
   fetch (`physics_pilot/extract_glorys_argo.py`; rerun to resume, then
   `--retry-failed`), then the pilot rerun with the QC'd data.

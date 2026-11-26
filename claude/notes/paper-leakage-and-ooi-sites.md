@@ -277,3 +277,24 @@ flagged. Glider Chl *a* is Sauzède only, dark offset not subtracted
   of per-profile RMSE in each class; slope and shelf median RMSE (log10) 0.26
   and 0.27. A random shelf draw without that rule landed on bloom profiles
   (76th–95th percentile), which look much worse than typical.
+
+## 12. Glider release 2026_11_26: 280 deployments (#27, 2026-11-26)
+
+Full numbers and figures: #27; code `compare_glider_release.py`, run
+`runs/platform-glider-2026_11_26` (set `CHLAZ_DATA_RELEASE=2026_11_26`; the
+default stays `2026_11_24`, the printed poster). 21,609 glider windows, 258
+deployments, after dropping `deep_offset_flag` rows (12,555) and 7 flagged
+deployment-months (not yet reviewed by eye).
+
+- **Pooled class metrics move because gliders are now 42–61% of rows**, not
+  because the model changed: r² on Argo + OOI rows alone is unchanged
+  (0.69 / 0.70 / 0.30). Gliders score r² ≈ 0.52 pointwise in every class.
+  Pooled r² open 0.64, slope 0.61, shelf 0.46; integrated R² 0.32 / 0.54 / 0.29.
+- **Shelf is now skill-limited, not data-limited**: 188 glider deployments,
+  1,293 whole profiles, glider integrated R² 0.02 → 0.26; predictions still
+  compressed (~30–60 mg m⁻² vs 10–500 observed).
+- **Glider surface offset** −0.056 → −0.006 log10: with many deployments,
+  glider and Argo calibration agree at the surface.
+- **Open-question cluster**: open-ocean glider profiles observed at 3–10
+  mg m⁻² integrated, predicted ~40 (glider open-ocean integrated R² 0.33 →
+  0.14). Check against the release's `scan_check` notes before the paper.
