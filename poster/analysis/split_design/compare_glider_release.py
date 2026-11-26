@@ -96,8 +96,50 @@ def figures():
     fig_data_map.main()
 
 
+# Glider QC rules (#27, Eli 2026-11-26): refits with run_platform.py
+# --glider-rule, 3 repeats each; compared with repeats 0-2 of the full run.
+RULES = {
+    "all gliders": "platform-glider-2026_11_26",
+    "drop deep offset > 0.1": "platform-glider-2026_11_26-large-offset",
+    "drop Spray gliders": "platform-glider-2026_11_26-no-spray",
+}
+
+
+def compare_rules(repeats=(0, 1, 2)):
+    fpc.DEPTH = SHARED / "bathymetry" / "water_depth_2026_11_26.parquet"
+    out = {}
+    for name, run in RULES.items():
+        fpc.RUN = SHARED / "split-design" / "runs" / run
+        p = fpc.load()
+        p = p[p["repeat"].isin(repeats)]
+        pr = fpc.profiles(p)
+        pr = pr.assign(li=np.log10(pr["int_obs"]), lp=np.log10(pr["int_pred"]))
+        r = {}
+        for dc in ORDER:
+            q = p[p["depth_class"] == dc]
+            r[("r2 pooled", dc)] = fpc.soca_metrics(q)["r2"].iloc[0]
+            r[("r2 Argo+OOI rows", dc)] = fpc.soca_metrics(q[q.platform != "glider"])["r2"].iloc[0]
+            gq = q[q.platform == "glider"]
+            r[("r2 glider rows", dc)] = fpc.soca_metrics(gq)["r2"].iloc[0] if len(gq) else np.nan
+            ip = pr[pr["depth_class"] == dc]
+            r[("integrated R2", dc)] = ip.groupby("repeat").apply(r2_log, include_groups=False).mean()
+            gi = ip[ip.platform == "glider"]
+            r[("integrated R2 glider", dc)] = gi.groupby("repeat").apply(r2_log, include_groups=False).mean() if len(gi) > 2 else np.nan
+            r0 = gq[gq["repeat"] == repeats[0]]
+            r[("glider deployments", dc)] = r0["instrument"].nunique()
+            r[("glider rows", dc)] = r0["profile_id"].nunique()
+        out[name] = r
+    t = pd.DataFrame(out)
+    print(f"Glider QC rules, repeats {list(repeats)}:")
+    print(t.round(2).to_string())
+    return t
+
+
 def main():
     pd.set_option("display.width", 160)
+    if "--rules" in sys.argv:
+        compare_rules()
+        return
     for name, (run, tag) in RUNS.items():
         s = summarize(run, tag)
         print(f"\n===== {name}: runs/{run}")

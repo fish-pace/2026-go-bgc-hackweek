@@ -91,6 +91,27 @@ def run_unit(d, feats, bins, rep, out_dir: Path, n_jobs):
         f.with_suffix(".part").rename(f)
 
 
+# Glider QC rules tested on #27 (Eli, 2026-11-26). The deep offset
+# (`dark_offset`, fluorometer reading below 300 m) is large mostly on Spray
+# gliders; deployments that never reach 300 m have no value and are kept.
+LARGE_OFFSET = 0.1  # deployment median dark_offset, fluorometer units
+
+
+def drop_gliders(d, rule):
+    g = run.fetch(run.DEFAULT_CACHE, ["glider"])["glider"]
+    dep = g.groupby("dataset_id").agg(dark=("dark_offset", "median"), ptype=("platform_type", "first"))
+    if rule == "large-offset":
+        bad = dep.index[dep["dark"] > LARGE_OFFSET]
+    elif rule == "no-spray":
+        bad = dep.index[dep["ptype"].str.contains("Spray", na=False)]
+    else:
+        raise ValueError(rule)
+    out = d["instrument"].isin("glider-" + bad.astype(str))
+    print(f"glider rule {rule}: {len(bad)} deployments, {out.sum()} rows dropped; "
+          f"{(~out & (d.platform == 'glider')).sum()} glider rows left")
+    return d.loc[~out].reset_index(drop=True)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--platforms", nargs="+", default=list(run.PLATFORMS_V2),
@@ -98,9 +119,13 @@ def main():
     ap.add_argument("--out", type=Path, default=run.DEFAULT_OUT / "runs" / "platform-glider")
     ap.add_argument("--repeats", type=int, default=5)
     ap.add_argument("--n-jobs", type=int, default=os.cpu_count())
+    ap.add_argument("--glider-rule", choices=["large-offset", "no-spray"], default=None,
+                    help="drop glider deployments (#27): median deep offset > LARGE_OFFSET, or Spray gliders")
     ap.add_argument("--bins", type=int, default=None, help="first N bins only (testing)")
     args = ap.parse_args()
     d, feats, chl = run.load(run.DEFAULT_CACHE, args.platforms)
+    if args.glider_rule:
+        d = drop_gliders(d, args.glider_rule)
     bins = chl[: args.bins] if args.bins else chl
     out = args.out / "preds"
     out.mkdir(parents=True, exist_ok=True)
