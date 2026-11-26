@@ -1,0 +1,142 @@
+
+===== old (2026_11_24, poster): runs/platform-glider
+Block 2 table (SOCA metrics, all depths pooled) + integrated R²:
+               r2  slope   MAPD  RMSD  profiles  floats_or_sites  int_R2  r2_argo_ooi  int_R2_argo_ooi  glider_row_share
+depth_class                                                                                                             
+open ocean   0.68   0.69  42.80  0.22     14496              832    0.40         0.69             0.40              0.08
+slope        0.67   0.71  44.12  0.56      5959               54    0.64         0.69             0.67              0.16
+shelf        0.30   0.42  45.29  0.75     12330               25    0.28         0.28            -1.30              0.11
+
+Integrated R² by platform within class (n profiles, repeat 0):
+platform     argo  glider   ooi
+depth_class                    
+open ocean   0.32    0.33 -0.40
+shelf       -1.30    0.02   NaN
+slope        0.41    0.26  0.68
+platform       argo  glider     ooi
+depth_class                        
+open ocean   9062.0   952.0  1665.0
+shelf          92.0    65.0     NaN
+slope         169.0   628.0  3036.0
+
+Pointwise SOCA metrics by platform and class:
+                      r2  slope   MAPD  RMSD
+       depth_class                          
+argo   open ocean   0.67   0.67  43.61  0.21
+       shelf        0.63   1.09  43.73  0.32
+       slope        0.68   0.72  42.91  0.40
+glider open ocean   0.50   0.70  38.89  0.18
+       shelf        0.45   0.61  38.53  0.54
+       slope        0.52   0.74  40.89  0.33
+ooi    open ocean   0.67   0.71  40.86  0.28
+       shelf        0.25   0.35  46.28  0.78
+       slope        0.69   0.70  44.78  0.60
+
+Rows (profiles/windows) and units (floats, OOI instruments, glider deployments):
+platform     argo  glider    ooi
+depth_class                     
+open ocean   9170     952   4374
+shelf         171     709  11450
+slope         184     628   5147
+platform     argo  glider  ooi
+depth_class                   
+open ocean    816      13   14
+shelf           9      14   10
+slope          41      11    6
+
+Platform offsets (log10; mean, SD over folds, repeat 0):
+                        mean    std
+platform bin                       
+glider   CHLA_0_10    -0.056  0.010
+ooi      CHLA_0_10     0.006  0.005
+glider   CHLA_50_60   -0.035  0.011
+ooi      CHLA_50_60    0.089  0.013
+glider   CHLA_100_110  0.283  0.010
+ooi      CHLA_100_110  0.268  0.031
+
+===== new (2026_11_26): runs/platform-glider-2026_11_26
+Block 2 table (SOCA metrics, all depths pooled) + integrated R²:
+               r2  slope   MAPD  RMSD  profiles  floats_or_sites  int_R2  r2_argo_ooi  int_R2_argo_ooi  glider_row_share
+depth_class                                                                                                             
+open ocean   0.64   0.66  44.01  0.27     21958              954    0.32         0.69             0.39              0.42
+slope        0.61   0.66  45.14  0.74     10053              186    0.54         0.70             0.67              0.58
+shelf        0.46   0.55  44.67  1.09     19932              199    0.29         0.30            -1.83              0.61
+
+Integrated R² by platform within class (n profiles, repeat 0):
+platform     argo  glider   ooi
+depth_class                    
+open ocean   0.31    0.14 -0.37
+shelf       -1.83    0.26   NaN
+slope        0.42    0.32  0.68
+platform       argo  glider     ooi
+depth_class                        
+open ocean   9062.0  7633.0  1665.0
+shelf          92.0  1293.0     NaN
+slope         169.0  4498.0  3036.0
+
+Pointwise SOCA metrics by platform and class:
+                      r2  slope   MAPD  RMSD
+       depth_class                          
+argo   open ocean   0.67   0.67  43.87  0.21
+       shelf        0.63   1.11  47.68  0.35
+       slope        0.68   0.72  43.59  0.40
+glider open ocean   0.51   0.55  45.04  0.33
+       shelf        0.53   0.60  44.47  1.26
+       slope        0.52   0.61  45.87  0.85
+ooi    open ocean   0.68   0.71  40.02  0.28
+       shelf        0.27   0.37  44.86  0.77
+       slope        0.70   0.71  44.18  0.58
+
+Rows (profiles/windows) and units (floats, OOI instruments, glider deployments):
+platform     argo  glider    ooi
+depth_class                     
+open ocean   9170    8414   4374
+shelf         171    8311  11450
+slope         184    4722   5147
+platform     argo  glider  ooi
+depth_class                   
+open ocean    816     135   14
+shelf           9     188   10
+slope          41     143    6
+
+Platform offsets (log10; mean, SD over folds, repeat 0):
+                        mean    std
+platform bin                       
+glider   CHLA_0_10    -0.006  0.005
+ooi      CHLA_0_10     0.010  0.006
+glider   CHLA_50_60    0.034  0.004
+ooi      CHLA_50_60    0.086  0.014
+glider   CHLA_100_110  0.274  0.010
+ooi      CHLA_100_110  0.273  0.018
+SOCA-style metrics, all depths pooled (mean over repeats):
+               r2  slope   MAPD  RMSD  profiles  floats_or_sites
+depth_class                                                     
+open ocean   0.64   0.66  44.01  0.27     21958              954
+shelf        0.46   0.55  44.67  1.09     19932              199
+slope        0.61   0.66  45.14  0.74     10053              186
+
+| | r² (log10) | Slope | MAPD | RMSD (mg m⁻³) |
+|---|---:|---:|---:|---:|
+| SOCA2024 (open ocean, own validation) | 0.83 | 0.82 | 30% | 0.19 |
+| Open ocean | 0.64 | 0.66 | 44% | 0.27 |
+| Slope | 0.61 | 0.66 | 45% | 0.74 |
+| Shelf | 0.46 | 0.55 | 45% | 1.09 |
+
+Integrated Chl a R² (log10), mean over repeats:
+depth_class
+open ocean    0.32
+shelf         0.29
+slope         0.54
+
+Peak depth error: median |error| (m), share within 20 m:
+             median_abs  within20
+depth_class                      
+open ocean         10.0      0.89
+shelf               0.0      0.97
+slope               0.0      0.96
+/home/jovyan/2026-go-bgc-hackweek/poster/analysis/split_design/figures_2026_11_26/fig_profiles_by_class.png
+Open ocean 7902137_0032  RMSE 0.25  percentile 30 of 3720
+Open ocean 5906514_0067  RMSE 0.25  percentile 52 of 1950
+Slope      sp041-20240801T1715_20240822T18  RMSE 0.24  percentile 33 of 5165
+Shelf      sp020-20250919T1720_20251121T03  RMSE 0.24  percentile 45 of 4752
+wrote /home/jovyan/2026-go-bgc-hackweek/poster/analysis/split_design/figures_2026_11_26/fig_data_map.png

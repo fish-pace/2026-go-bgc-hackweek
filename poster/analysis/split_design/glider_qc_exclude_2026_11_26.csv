@@ -1,0 +1,8 @@
+inst,month,n,flag_sat,flag_floor,flag_flat
+ce_1153-20260226T1945,202603,213,True,False,False
+dfo-rosie713-20240501T2102,202408,19,False,False,True
+gp_363-20240601T1554-delayed,202502,27,False,False,True
+gp_380-20250523T1827-delayed,202603,80,False,False,True
+gp_563-20240601T1507-delayed,202503,161,False,False,True
+sp041-20260415T1703,202605,235,True,False,False
+sp209-20251105T1645,202602,17,False,True,False

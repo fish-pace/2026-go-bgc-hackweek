@@ -55,7 +55,12 @@ from sklearn.ensemble import HistGradientBoostingRegressor
 
 # 2026_11_24 adds the glider tables (fish-pace-datasets#14); its Argo and OOI
 # tables are identical to 2026_11_23, the release poster v1 was made with.
-DATA_RELEASE = "2026_11_24"
+# 2026_11_26 rebuilds the glider tables from the whole Glider DAC (20 -> 280
+# deployments; Argo and OOI unchanged). The printed poster v2 used 2026_11_24,
+# so that stays the default; set CHLAZ_DATA_RELEASE=2026_11_26 to rerun on the
+# new release (issue: effect of more glider data). Every output path that
+# depends on the rows (cache, water-depth table, run folders) carries the tag.
+DATA_RELEASE = os.environ.get("CHLAZ_DATA_RELEASE", "2026_11_24")
 DATA_URL = (
     "https://raw.githubusercontent.com/fish-pace/fish-pace-datasets/"
     f"{DATA_RELEASE}/datasets/chla_z/data"
@@ -122,7 +127,16 @@ def flag_deep_biofouling(df, deep_bins, min_valid=5, min_chl=1.0, max_spread=2):
     return (n >= min_valid) & (lo > min_chl) & ((hi - lo) < max_spread)
 
 
-QC_EXCLUDE = [Path(__file__).with_name(f"{p}_qc_exclude.csv") for p in ("ooi", "glider")]
+def qc_exclude_file(platform: str) -> Path:
+    """Reviewed exclusion list for a platform. OOI is the same in every release;
+    the glider list is per release from 2026_11_26 on, so rescanning the new
+    gliders cannot change what the 2026_11_24 (printed poster) run excludes."""
+    if platform == "glider" and DATA_RELEASE != "2026_11_24":
+        return Path(__file__).with_name(f"glider_qc_exclude_{DATA_RELEASE}.csv")
+    return Path(__file__).with_name(f"{platform}_qc_exclude.csv")
+
+
+QC_EXCLUDE = [qc_exclude_file(p) for p in ("ooi", "glider")]
 
 
 def qc_exclude(df: pd.DataFrame, id_col: str = "profile_id") -> pd.Series:
@@ -162,6 +176,11 @@ def load(cache: Path, platforms=PLATFORMS_V1) -> tuple[pd.DataFrame, list, list]
     parts = [a, o]
     if "glider" in platforms:
         g = t["glider"]
+        if "deep_offset_flag" in g:
+            # 2026_11_26+: fluorometer reads > 0.2 below 300 m (mostly California
+            # Current Sprays); the release notes say to drop these rows.
+            print(f"glider deep_offset_flag dropped: {int(g.deep_offset_flag.sum())} of {len(g)}")
+            g = g[~g["deep_offset_flag"].astype(bool)]
         parts.append(g.assign(platform="glider", instrument="glider-" + g["dataset_id"].astype(str)))
     d = pd.concat([x[keep + ["platform", "instrument"]] for x in parts], ignore_index=True)
     d = d.dropna(subset=rrs, how="all")

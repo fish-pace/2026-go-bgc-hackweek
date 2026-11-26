@@ -74,11 +74,13 @@ REVIEWED_KEEP = {"ooi": {
 
 
 def exclude_file(platform: str) -> Path:
-    return Path(__file__).with_name(f"{platform}_qc_exclude.csv")
+    return run.qc_exclude_file(platform)
 
 
 def load(cache: Path, platform: str) -> pd.DataFrame:
     o = run.fetch(cache, [platform])[platform]  # downloads the release tables if not cached
+    if "deep_offset_flag" in o:  # 2026_11_26+: dropped by run.load too
+        o = o[~o["deep_offset_flag"].astype(bool)].copy()
     o["inst"] = o["profile_id"].astype(str).str.replace(r"_\d{8}(T\d{2})?$", "", regex=True)
     o["month"] = o["profile_id"].astype(str).str.extract(r"_(\d{6})\d{2}")[0]
     return o
@@ -152,7 +154,8 @@ def main():
     ap.add_argument("--out", type=Path, default=None, help="default: <split-design>/<platform>-qc")
     args = ap.parse_args()
     pf = args.platform
-    out = args.out or run.DEFAULT_OUT / f"{pf}-qc"
+    out = args.out or run.DEFAULT_OUT / (f"{pf}-qc" if run.DATA_RELEASE == "2026_11_24" or pf == "ooi"
+                                         else f"{pf}-qc-{run.DATA_RELEASE}")
     out.mkdir(parents=True, exist_ok=True)
     m = scan(load(args.cache, pf))
     m.to_csv(out / f"{pf}_qc_months.csv", index=False)
